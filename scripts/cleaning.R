@@ -1,42 +1,17 @@
 source(here::here("scripts", "libraries.r"))
 source(here("scripts", "update_data.r"))
 
+google_api <- rstudioapi::askForSecret("Google API Key")
+register_google(google_api)
+
 studies <- read_rds(here("data_raw", "studies.rds")) %>%
   mutate(unique_id = as_factor(unique_id))
 
 rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
   mutate(country = as_factor(country),
-         record_id = 1:nrow(rodent_data))
+         record_id = 1:nrow(.))
 
-ggplot(studies) +
-  geom_bar(aes(x = year_publication)) +
-  theme_minimal() +
-  labs(x = "Publication year",
-       y = "Number of publications",
-       title = "Studies reporting rodent trapping in West African countries",
-       caption = paste("N =", length(unique(studies$unique_id)), sep = " "))
-
-studies %<>%
-  full_join(., rodent_data %>%
-              distinct(unique_id, country),
-            by = "unique_id")
-studies$iso2 <- countrycode(as.character(studies$country), "country.name", "iso2c")
-
-studies %>%
-  group_by(country, iso2) %>%
-  summarise(n = n()) %>%
-  drop_na(country) %>%
-  ggplot(aes(x = reorder(country, n), y = n)) +
-  geom_col() +
-  geom_flag(aes(image = iso2, y = -2)) +
-  coord_flip() +
-  theme_minimal() +
-  labs(
-    x = "Number of studies",
-    y = "Country",
-    title = "Countries with rodent trapping studies",
-    caption = paste("N =", length(unique(studies$unique_id)), sep = " ")
-  )
+retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_night_unit", "record_id")
 
 rodent_data %<>%
   separate(col = longitude_DMS_W, into = c("long_degrees", "long_minutes", "long_seconds"), "_") %>%
@@ -46,54 +21,61 @@ rodent_data %<>%
          lat_hemi = ifelse(lat_degrees<0, "S", "N"),
          gps_dms = ifelse(is.na(lat_degrees|long_degrees), F, T),
          long_dms = ifelse(gps_dms == T,
-                           paste(long_degrees, 'd',
-                                 ifelse(is.na(long_minutes), 0, long_minutes), '\'',
-                                 ifelse(is.na(long_seconds), 0, long_seconds), '" ',
-                                 long_hemi,
+                           paste(long_hemi, long_degrees, " ",
+                                 ifelse(is.na(long_minutes), 0, long_minutes), '.',
+                                 ifelse(is.na(long_seconds), 0, long_seconds),
                                  sep = ""), NA),
          lat_dms = ifelse(gps_dms == T,
-                           paste(lat_degrees, 'd',
-                                 ifelse(is.na(lat_minutes), 0, lat_minutes), '\'',
-                                 ifelse(is.na(lat_seconds), 0, lat_seconds), '" ',
-                                 lat_hemi,
-                                 sep = ""), NA))
+                           paste(lat_hemi, lat_degrees, " ",
+                                 ifelse(is.na(lat_minutes), 0, lat_minutes), '.',
+                                 ifelse(is.na(lat_seconds), 0, lat_seconds),
+                                 sep = ""), NA),
+         long_dms = gsub("-", "", long_dms),
+         lat_dms = gsub("-", "", lat_dms))
 
 dms <- rodent_data %>%
   drop_na(long_dms, lat_dms)
-dms$long_dms <- as.numeric(char2dms(dms[["long_dms"]]))
-dms$lat_dms <- as.numeric(char2dms(dms[["lat_dms"]]))
+dms <- dms %>%
+  mutate(lon_dd = parzer::parse_lon(long_dms),
+         lat_dd = parzer::parse_lat(lat_dms)) %>%
+  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WHS84")
 
 dd <- rodent_data %>%
-  drop_na(longitude_D_E,latitude_D_N)
-dd$long_dms <- as.numeric(dd2dms(dd[["longitude_D_E"]]))
-dd$lat_dms <- as.numeric(dd2dms(dd[["latitude_D_N"]]))
+  drop_na(longitude_D_E,latitude_D_N) %>%
+  mutate(lon_dd = longitude_D_E,
+         lat_dd = latitude_D_N) %>%
+  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WHS84")
 
 utm <- rodent_data %>%
   drop_na(UTM_coordinates) %>%
-  separate(col = UTM_coordinates, into = c("zone", "first", "second"), "_")
-utm_q <- utm %>%
-  filter(zone == "28Q")
-utm_q_transform <- SpatialPoints(cbind(as.double(utm_q$first), as.double(utm_q$second)), proj4string = CRS("+proj=utm +zone=28Q +datum=WGS84"))
-utm_q_transform <- spTransform(utm_q_transform, CRS("+proj=longlat +datum=WGS84"))
-utm_q <- utm_q %>%
-  mutate(long_dms = utm_q_transform@coords[,1],
-         lat_dms = utm_q_transform@coords[,2])
-utm_p <- utm %>%
-  filter(zone == "28P")
-utm_p_transform <- SpatialPoints(cbind(as.double(utm_p$first), as.double(utm_p$second)), proj4string = CRS("+proj=utm +zone=28P +datum=WGS84"))
-utm_p_transform <- spTransform(utm_p_transform, CRS("+proj=longlat +datum=WGS84"))
-utm_p <- utm_p %>%
-  mutate(long_dms = utm_p_transform@coords[,1],
-         lat_dms = utm_p_transform@coords[,2])
+  separate(col = UTM_coordinates, into = c("zone", "easting", "northing"), "_")
 
-gps_data <- bind_rows(dms, dd, utm_q, utm_p)
+utm_q <- utm %>%
+  filter(zone == "28Q") %>%
+  st_as_sf(coords = c("easting", "northing"), crs = "+proj=utm +zone=28Q +datum=WGS84") %>%
+  st_transform(crs = "+proj=longlat +datum=WGS84") %>%
+  dplyr::select(all_of(retain_columns))
+
+utm_p <- utm %>%
+  filter(zone == "28P") %>%
+  st_as_sf(coords = c("easting", "northing"), crs = "+proj=utm +zone=28P +datum=WGS84") %>%
+  st_transform(crs = "+proj=longlat +datum=WGS84") %>%
+  dplyr::select(all_of(retain_columns))
+
+rodent_gps <- bind_rows(dms, dd) %>%
+  dplyr::select(all_of(retain_columns)) %>%
+  bind_rows(utm_q, utm_p)
 
 no_gps <- rodent_data %>%
-  filter(!record_id %in% gps_data$record_id) %>%
+  filter(!record_id %in% rodent_gps$record_id) %>%
   mutate(long_dms = as.double(long_dms),
          lat_dms = as.double(lat_dms))
 
-rodent_gps <- bind_rows(gps_data, no_gps) %>%
-  select(unique_id, year_trapping, month_trapping, country, region, long_dms, lat_dms, town_village, habitat, intensity_use, genus, species, number, trap_night_unit, record_id) %>%
-  rename("x" = long_dms,
-         "y" = lat_dms)
+all_rodent <- bind_rows(rodent_gps, no_gps) %>%
+  dplyr::select(all_of(c(retain_columns, "long_dms", "lat_dms"))) %>%
+  rename("longitude" = long_dms,
+         "latitude" = lat_dms)
+
+write_rds(rodent_gps, here("data_clean", "rodent_spatial.rds"))
+write_rds(no_gps, here("data_clean", "rodent_missing_spatial.rds"))
+write_rds(all_rodent, here("data_clean", "rodent_df.rds"))
