@@ -63,7 +63,8 @@ trapping_map <- tm_shape(benin, bbox = bbox_rodent) + tm_polygons(col = "#f2f0f0
   tm_shape(cameroon) + tm_polygons(col = "white") + tm_text("NAME_0") +
   tm_shape(western_sahara) + tm_polygons(col = "white") +
   tm_shape(algeria) + tm_polygons(col = "white") + tm_text("NAME_0") +
-  tm_shape(rodent_spatial) + tm_dots(col = "black", size = 0.05, shape = 19) +
+  tm_shape(rodent_spatial %>%
+             distinct(geometry)) + tm_dots(col = "black", size = 0.05, shape = 19) +
   tm_scale_bar(position = c("left", "bottom")) +
   tm_compass(position = c("right", "top"))
 
