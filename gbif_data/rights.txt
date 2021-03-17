@@ -1,0 +1,109 @@
+
+Dataset: Collection of  occurrence data on animal species in  the Biosphere Reserve of Pendjari in 2001, 2004, and 2013.
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Lund Museum of Zoology (MZLU)
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: California State University, Long Beach Mammals
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Museo Argentino de Ciencias Naturales "Bernardino Rivadavia" (MACN). Mammalogy National Collection (MACNMa)
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Census of animal species in Biosphere Reserve of Pendjari. Data mobilzed in the framework of JRS Biodiversity Foundation funded project in Benin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: UMZC Zoological Specimens
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Museu de Ciències Naturals de Barcelona: MCNB-Cord
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: UWBM Mammalogy Collection (Arctos)
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: TTU Mammals Collection
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Animal Collections Of The Department of Zoology- Nasarawa State University Keffi
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Inventaire faunique dans le cadre de l'Etude socio-économique de référence des possibilités de valorisation durable des produits forestiers non ligneux dans les réserves de faune de la pendjari
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Pedestrian mammals census in W National Park
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: KUBI Mammalogy Collection
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: NMNH_material_samples
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Occurrences de vecteurs de maladies recensées à l'Hôpital de Mènontin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Mammal osteology MZS
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: UCM Mammal Collection (Arctos)
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Natural History Museum Rotterdam - Specimens
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: CMNH Mammals
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: List of animal species censused during activities of ODDB NGO in Benin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Sapo National Park Bio-monitoring Data
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: CRCM Vertebrate Collection
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Biodiversity Research and Teaching Collections - TCWC Vertebrates
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Census of plant and animal species in sacred forests of RAMSAR sites 1017 and 1018 in Benin
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Vertebrate Zoology Division - Mammalogy, Yale Peabody Museum
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Macaulay Library Audio and Video Collection
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: UAZ Mammals
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: University of Michigan Museum of Zoology, Division of Mammals
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Liste d'espèces animales recensées au cours des activités de l'Organisation pour le Développement Durable et la Biodiversité (ODDB ONG) au Bénin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Mammifères: Etude d'état initial de la biodiversité dans la concession minière de Guinea Alumina Corporation(GAC) dans la region de Boké (CESP2016-022)
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: MSU Mammalogy, Ornithology and Vertebrate Paleontology Collections
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Monitoring of willdife in Benin protected areas
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Paleobiology Database
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: UF Florida Museum of Natural History Mammals
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Census of the species of Benin. Data mobilized in the framework of JRS Benin project and funded by JRS Biodiversity Foundation
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: IICT Colecção Zoológica
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: LACM Vertebrate Collection
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Census of the threatened species of Benin.
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: MVZ Mammal Collection (Arctos)
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Observation.org, Nature data from around the World
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Museum of Comparative Zoology, Harvard University
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: List of animalia, fungi and plant species recorded through naturalist observations and research activities in Benin. Data mobilized in the framework of a JRS Biodiversity Foundation project of Benin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Census of animal of Benin: Database 1
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Mammalogy Collection - Royal Ontario Museum
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: AMNH Mammal Collections
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Vertebrate observation dataset of North and West Africa (CIBIO-Biodeserts)
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Field Museum of Natural History (Zoology) Mammal Collection
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Inventaire des espèces animales présentes dans les aires protégées et parcs nationaux au Bénin
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: MSB Mammal Collection (Arctos)
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Census of the animals of Benin
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Natural History Museum (London) Collection Specimens
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: African Mammalia
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: The mammals collection (ZM) of the Muséum national d'Histoire naturelle (MNHN - Paris)
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: NMNH Extant Specimen Records
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode

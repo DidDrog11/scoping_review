@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="cf3753af-0fde-4de8-9bae-efa08bf5c2f6"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/8pimcc</alternateIdentifier>
+        <alternateIdentifier>http://ipt-benin.gbif.fr/resource?r=mamals_pendjari</alternateIdentifier>
+    <title>Collection of  occurrence data on animal species in  the Biosphere Reserve of Pendjari in 2001, 2004, and 2013.</title>
+    <creator>
+    <individualName>
+<givenName>Ogoudje Isidore</givenName>          <surName>AMAHOWE</surName>
+    </individualName>
+<organizationName>Direction Générale des Eaux, Forêts et Chasse du Bénin</organizationName><positionName>Researcher</positionName>    <address>
+<city>Cotonou</city><administrativeArea>Atlantique</administrativeArea><postalCode>229</postalCode><country>BENIN</country>    </address>
+<phone>22994507890</phone><electronicMailAddress>ogoudje.amahowe@gmail.com</electronicMailAddress>    </creator>
+    <creator>
+    <individualName>
+<givenName>Parfait</givenName>          <surName>NSERA</surName>
+    </individualName>
+<organizationName>DPNP</organizationName><positionName>Research assistant</positionName>    <address>
+<city>Tanguiéta</city><administrativeArea>Atacora</administrativeArea><postalCode>229</postalCode><country>BENIN</country>    </address>
+<phone>2296443836</phone><electronicMailAddress>parfaitnsera@yahoo.fr</electronicMailAddress>    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>Ogoudje Isidore</givenName>          <surName>AMAHOWE</surName>
+    </individualName>
+<organizationName>Direction Générale des Eaux, Forêts et Chasse du Bénin</organizationName><positionName>Researcher</positionName>    <address>
+<city>Cotonou</city><administrativeArea>Atlantique</administrativeArea><postalCode>229</postalCode><country>BENIN</country>    </address>
+<phone>22994507890</phone><electronicMailAddress>ogoudje.amahowe@gmail.com</electronicMailAddress>    </metadataProvider>
+    <associatedParty>
+    <individualName>
+<givenName>Ogoudje Isidore</givenName>          <surName>AMAHOWE</surName>
+    </individualName>
+<organizationName>Direction Générale des Eaux, Forêts et Chasse du Bénin</organizationName><positionName>Researcher</positionName>    <address>
+<city>Cotonou</city><administrativeArea>Atlantique</administrativeArea><postalCode>229</postalCode><country>BENIN</country>    </address>
+<phone>22994507890</phone><electronicMailAddress>ogoudje.amahowe@gmail.com</electronicMailAddress>    <role>USER</role>
+    </associatedParty>
+      <pubDate>
+      2016-09-07
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>Data on mammal species  were collected during wildlife census on foot during monitoring  linear transects. All the animal observation geographical points were recorded using GPS  by fauna guards and ecological staff. These data were directly registered on paper sheets on field and controlled by team leaders. A total number  of   1925 occurrence data on animal  species were collected during the annual census in 2001, 2004 and 2013  in the Biosphere Reserve of Pendjari</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Animal species</keyword>
+              <keyword>occurrence data</keyword>
+              <keyword>Occurrence</keyword>
+              <keyword>wildlife census</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Animal species</keyword>
+              <keyword>Observation</keyword>
+              <keyword>occurrence data</keyword>
+              <keyword>wildlife census</keyword>
+              <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+      <intellectualRights>
+        <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+      </intellectualRights>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>Data on mammal species  were collected during wildlife census on foot during monitoring  linear transects. All the animal observation geographical points were recorded using GPS  by fauna guards and ecological staff. These data were directly registered on paper sheets on field and controlled by team leaders. A total number of   1925 occurrence data on animal  species were collected during the annual census in 2001, 2004 and 2013  in the Biosphere Reserve of Pendjari</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>1</westBoundingCoordinate>
+                      <eastBoundingCoordinate>3.67</eastBoundingCoordinate>
+                      <northBoundingCoordinate>12.5</northBoundingCoordinate>
+                      <southBoundingCoordinate>6.5</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+          <temporalCoverage>
+            <rangeOfDates>
+              <beginDate>
+                <calendarDate>      2001-01-11
+</calendarDate>
+              </beginDate>
+              <endDate>
+                <calendarDate>      2013-12-31
+</calendarDate>
+              </endDate>
+            </rangeOfDates>
+          </temporalCoverage>
+              <taxonomicCoverage>
+                    <taxonomicClassification>
+                          <taxonRankName>Kingdom</taxonRankName>
+                        <taxonRankValue>Animals</taxonRankValue>
+                          <commonName>Animals</commonName>
+                    </taxonomicClassification>
+              </taxonomicCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>Ogoudje Isidore</givenName>          <surName>AMAHOWE</surName>
+    </individualName>
+<organizationName>Direction Générale des Eaux, Forêts et Chasse du Bénin</organizationName><positionName>Researcher</positionName>    <address>
+<city>Cotonou</city><administrativeArea>Atlantique</administrativeArea><postalCode>229</postalCode><country>BENIN</country>    </address>
+<phone>22994507890</phone><electronicMailAddress>ogoudje.amahowe@gmail.com</electronicMailAddress>      </contact>
+      <methods>
+            <methodStep>
+                <description>
+                    <para></para>
+                </description>
+            </methodStep>
+      </methods>
+
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:52Z</dateStamp>
+      <citation>AMAHOWE O I, NSERA P (2016). Collection of  occurrence data on animal species in  the Biosphere Reserve of Pendjari in 2001, 2004, and 2013.. GBIF Benin. Occurrence dataset https://doi.org/10.15468/8pimcc accessed via GBIF.org on 2021-03-03.</citation>
+              <bibliography>
+      <citation>Lamarque F.2004. Les grands mammifères du complexe WAP.   Montpellier : CIRAD, 250 p. ISBN 2-87614-586-3	
+www.iucnredlist.org</citation>
+              </bibliography>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

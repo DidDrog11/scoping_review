@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="43f9dcb0-80e1-40ec-906f-93a186e993b2"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/52ubri</alternateIdentifier>
+        <alternateIdentifier>43f9dcb0-80e1-40ec-906f-93a186e993b2</alternateIdentifier>
+        <alternateIdentifier>http://197.189.235.147:8080/iptliberia/resource?r=sapobiomon</alternateIdentifier>
+    <title>Sapo National Park Bio-monitoring Data</title>
+    <creator>
+    <individualName>
+<givenName>Benedictus</givenName>          <surName>Freeman</surName>
+    </individualName>
+<organizationName>Biodiversity Institute, University of Kansas</organizationName><positionName>PhD student</positionName>    <address>
+<deliveryPoint>1301 West 24th Street</deliveryPoint><city>Lawrence</city><administrativeArea>KS</administrativeArea><postalCode>66046</postalCode><country>UNITED_STATES</country>    </address>
+<phone>2674075623</phone><electronicMailAddress>benedictusfreeman@gmail.com</electronicMailAddress>    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>Matthew</givenName>          <surName>Varney</surName>
+    </individualName>
+<organizationName>Fauna &amp; Flora International, Liberia</organizationName><positionName>Biomonitoring Coordinator</positionName>    <address>
+<deliveryPoint>Congo Town</deliveryPoint><city>Monrovia</city><postalCode>1000</postalCode><country>LIBERIA</country>    </address>
+<electronicMailAddress>matthew.varney@fauna-flora.org</electronicMailAddress>    </metadataProvider>
+      <pubDate>
+      2018-08-14
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>These data were collected as part of a bi-annual biomonitoring program implemented by the Forestry Development Authority of Liberia in collaboration with Fauna &amp;amp; Flora International in Sapo National Park, Liberia. Data are collected along a system of 90 predefined 2 km each line transects across the park.</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Occurrence</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Observation</keyword>
+              <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+      <intellectualRights>
+        <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+      </intellectualRights>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>Sapo National Park</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>-8.687</westBoundingCoordinate>
+                      <eastBoundingCoordinate>-8.388</eastBoundingCoordinate>
+                      <northBoundingCoordinate>5.55</northBoundingCoordinate>
+                      <southBoundingCoordinate>5.28</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+          <temporalCoverage>
+            <rangeOfDates>
+              <beginDate>
+                <calendarDate>      2014
+</calendarDate>
+              </beginDate>
+              <endDate>
+                <calendarDate>      2015
+</calendarDate>
+              </endDate>
+            </rangeOfDates>
+          </temporalCoverage>
+              <taxonomicCoverage>
+                    <generalTaxonomicCoverage>Mammals, Birds</generalTaxonomicCoverage>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Aves</taxonRankValue>
+                          <commonName>Birds</commonName>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Mammalia</taxonRankValue>
+                          <commonName>Mammals</commonName>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Reptilia</taxonRankValue>
+                          <commonName>Reptiles</commonName>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Mollusca</taxonRankValue>
+                          <commonName>Molluscs</commonName>
+                    </taxonomicClassification>
+              </taxonomicCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>Matthew</givenName>          <surName>Varney</surName>
+    </individualName>
+<organizationName>Fauna &amp; Flora International, Liberia</organizationName><positionName>Biomonitoring Coordinator</positionName>    <address>
+<deliveryPoint>Congo town</deliveryPoint><city>Monrovia</city><administrativeArea>montserrado</administrativeArea><postalCode>1000</postalCode><country>LIBERIA</country>    </address>
+<electronicMailAddress>matthew.varney@fauna-flora.org</electronicMailAddress>      </contact>
+
+      <project id="BID-AF2017-0168-SMA">
+          <title>Building Capacity for Biodiversity Data Mobilization and Conservation in Liberia</title>
+          <personnel>
+    <individualName>
+<givenName>Benedictus</givenName>          <surName>Freeman</surName>
+    </individualName>
+    <role>ORIGINATOR</role>
+          </personnel>
+          <abstract>
+              <para>The project seeks to build the capacity of Liberian biodiversity data collectors, academic institutions, government agencies and other stakeholders to mobilize, process and conserve Liberia’s biodiversity data in standard data sharing formats (Darwin Core) to be published and accessed by national and international data users.</para>
+          </abstract>
+          <funding>
+              <para>This project is funded by the European Union Commission and GBIF.</para>
+          </funding>
+            <studyAreaDescription>
+                <descriptor name="generic" citableClassificationSystem="false">
+                    <descriptorValue>Data mobilized from this project covered all taxa in Liberia from mainly observational studies.</descriptorValue>
+                </descriptor>
+            </studyAreaDescription>
+            <designDescription>
+                <description>
+                    <para>The project goal is to mobilize and publish Liberian biodiversity data.</para>
+                </description>
+            </designDescription>
+      </project>
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:54Z</dateStamp>
+      <citation>Freeman B, Varney M (2018). Sapo National Park Bio-monitoring Data. Version 1.1. Forestry Development Authority. Occurrence dataset https://doi.org/10.15468/52ubri accessed via GBIF.org on 2021-03-03.</citation>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

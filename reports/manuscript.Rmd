@@ -1,0 +1,96 @@
+---
+title: "Associations of environmental and human factors with altered rodent populations in West Africa: A scoping review"
+description: |
+date: "`r Sys.Date()`"
+author: 
+  - first_name: "David"
+    last_name: "Simons"
+    url: https://www.dsimons.org
+    orcid_id: 0000-0001-9655-1656
+output: distill::distill_article
+bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+
+
+Rodents (Rodentia) are abundant and diverse, representing around 40% of the total number of mammalian species [@american_society_of_mammologists_asm_2021]. Rodents typically demonstrate ‘fast’ life history strategies characterised by early maturation, short generation times, low juvenile and adult survival and high fecundity [@dobson_fast_2007]. There is a degree of between-species heterogeneity, with commensal species and those that are reservoirs of zoonoses having traits consistent with faster life histories (Han et al., 2015). Rodents often compete with humans for food produced in agricultural systems [@fiedler_rodent_1988], with 5-10% of rodent species classed as major pests. Commensal species thrive in human adapted landscapes nesting in houses and obtaining nutrition from human food storage and preparation areas. In sub-Saharan Africa, Mastomys spp. and Arvicanthis spp. are identified as causing a significant burden as agricultural pests [@stenseth_mice_2003]. Crop loss within Afro-Malagasy small-holder farming communities is high, with 15% of pre-harvest crop being lost to rodent pest activity [@swanepoel_systematic_2017].
+
+Another important issue is the transmission of infectious diseases from rodents to humans. Zoonotic diseases (i.e. animal pathogens that impact human health) are transmitted via two pathways – a direct and an indirect pathway. The direct transmission pathway involves transmission of pathogens through rodents biting or scratching a human, or through contamination of food or water sources. The indirect pathway involves rodents acting as amplifying hosts for ectoparasites that themselves are vectors of zoonoses [@meerburg_rodent-borne_2009]. Several rodent-borne pathogens are global in their distribution, including bacteria such as Lyme disease (caused by *Borrelia burgdorferi*) and Leptospirosis (caused by *Leptospira spp.*) and parasites such as Toxoplasmosis (caused by *Toxoplasma gondii*) and Leishmaniasis (caused by *Leishmania spp.*). However, most rodent-borne pathogens have more limited geographic distributions, particularly viral diseases such as Hantavirus pulmonary syndrome (caused by Hantaviridae) concentrated in the Americas and Lassa fever (caused by Arenaviridae) limited to West Africa.
+
+Given the significant economic and public health burden of rodents, monitoring rodent distributions is therefore an ongoing focus of research efforts across multiple scientific disciplines, including (but not limited to) conservation science, development studies and infectious disease epidemiology. The distribution of rodent populations can be monitored via rodent trapping efforts, with traps deployed in habitats expected to contain rodent species of interest.
+
+There is increasing interest in the link between environmental and human factors and rodent populations to land use change and human population change. A recent review of studies included in the PREDICTS database [@hudson_predicts_2014] identified that land use change from primary (i.e. intact forests) to managed and urban systems is associated with a change in rodent assemblages towards species that are more likely to be hosts of zoonoses [@gibb_zoonotic_2020]. *Mastomys natalensis populations* in Tanzania, East Africa are sensitive to seasonal meteorological cycles, in years with below average rainfall and short wet seasons population density is lower [@makundi_reproduction_2007]. Future climate change projections include longer and wetter West African monsoon seasons which could lead to increased zoonotic disease host rodent populations [@akinsanola_projection_2019]. As West Africa contains several known rodent zoonotic reservoirs (e.g. *Mastomys natalensis* and *Arvicanthus niloticus*) and several potential reservoirs of zoonotic diseases (e.g. *Lemniscomys striatus*), this will be the geographic region of interest in this work.
+
+To date there has been no comprehensive overview of rodent trapping studies conducted in West Africa. The aim of this scoping review is therefore to synthesise the knowledge on rodent distributions throughout West Africa obtained from trapping studies.
+
+We specifically aim to address the following research questions :
+
+  +	RQ1: In which West African countries or regions have rodent trapping studies been performed?
+  + RQ2: What are the stated aims of these rodent trapping studies?
+  + RQ3: Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
+  + RQ4: How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
+  +	RQ5: Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
+  +	RQ6: Is there an association of land use change, human population change or the implementation of regulatory strategies with rodent species distributions?
+
+## Methods
+
+
+### Study design
+
+  + Scoping review
+  + Protocol pre-registered on the [Openscience Framework](...)
+
+### Eligibility criteria
+
+  + Studies were included if:
+    + Reported rodent trapping activity (as opposed to hand captures)
+    + Included trapping activity from at least one West African country: Benin, Burkina-Faso, Cape Verde, Gambia, Ghana, Guinea, Guinea-Bissau, Cote d'Ivoire, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone and Togo
+    + Trapping activity occurred within a stated area (e.g. national park, village, house)
+    + Recorded as outcome genus or species of trapped individual
+    + Were available in English
+    + Published in a peer-reviewed journal, a pre-print manuscript or a report by a an identifiable organisation/consultancy
+
+### Search strategy
+
+The following terms were searched for in OVID Medline, Web of Science (Core collection and Zoological Record), JSTOR, BioOne, African Journals Online, Global Health and the pre-print servers BioRxiv and EcoEvoRxiv:
+
+  1. Rodent
+  2. West Africa
+  3. 1. AND 2.
+
+Other resources including the UN Official Documents System, Open Grey, AGRIS FAO and Google Scholar were searched using combinations of the following terms:
+
+  1. Rodent
+  2. Rodent Trap*
+  3. West Africa
+
+Additional articles were identified through references within included articles and reports known to the study team. Searches were completed on 2021-03-01.
+
+### Selection of studies
+
+One reviewer screened titles, abstracts and full texts against the inclusion criteria. A random subset of each of these (10%) were reviewed by a second  reviewer.
+
+### Data extraction
+
+Data were extracted by one reviewer. A second reviewer verified a subset (10%) of included studies. A data extraction form was maintained on a Google sheets document. Data extracted included i) study identifiers; ii) study aims; iii) trapping methodology; iv) geolocation data; v) method of speciation; vi) trapping locations and dates; vii) trapped species; viii) number of trap-nights and ix) microorganisms of interest.
+
+
+## Results
+
+A total of 2,200 records were identified, with 102 studies included in narrative synthesis (see Figure 1).
+
+``` {r figure_1, echo = F, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given."}
+knitr::include_graphics(here::here("figures", "figure_1.png"))
+```
+
+The earliest studies identified were from 1974 with the majority (62%) published since 2010. The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
+
+Most studies (97, 95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (26, 20%) than any other country. Ghana (16, 12%) and Guinea (15, 12%) were the next most frequently trapped countries, followed by Nigeria (11, 9%), Benin, Mali and Niger (all 9, 7%), Sierra Leone (8, 6%), Mauritania (5, 4%), Burkina Faso and Liberia (both 3, 2%), Guinea-Bissau had a single recorded trapping activity. 
+
+The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites.  

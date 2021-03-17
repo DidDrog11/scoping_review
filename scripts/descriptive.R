@@ -1,4 +1,6 @@
 source(here::here("scripts", "libraries.r"))
+studies <- read_rds(here("data_clean", "studies.rds"))
+rodent_data <- read_rds(here("data_clean", "rodent_df.rds"))
 
 ggplot(studies) +
   geom_bar(aes(x = year_publication)) +
@@ -8,13 +10,15 @@ ggplot(studies) +
        title = "Studies reporting rodent trapping in West African countries",
        caption = paste("N =", length(unique(studies$unique_id)), sep = " "))
 
-studies %<>%
+countries <- studies %>%
   full_join(., rodent_data %>%
               distinct(unique_id, country),
-            by = "unique_id")
-studies$iso2 <- countrycode(as.character(studies$country), "country.name", "iso2c")
+            by = "unique_id") %>%
+  distinct(unique_id, country)
 
-studies %>%
+countries$iso2 <- countrycode(as.character(countries$country), "country.name", "iso2c")
+
+countries %>%
   group_by(country, iso2) %>%
   summarise(n = n()) %>%
   drop_na(country) %>%
@@ -26,6 +30,26 @@ studies %>%
   labs(
     x = "Number of studies",
     y = "Country",
-    title = "Countries with rodent trapping studies",
+    title = "Location of trapping activities for included studies",
     caption = paste("N =", length(unique(studies$unique_id)), sep = " ")
-  )
+    )
+
+ggsave(plot = last_plot(),filename = here("figures", "studies_country.png"), device = "png")
+
+a <- countries %>%
+  filter(!country %in% c("Cameroon", "Chad", "Morocco")) %>%
+  group_by(unique_id) %>%
+  summarise(n = n())
+table(a$n) # calculate the number of countries trapped in by each study
+
+sites <- studies %>%
+  full_join(., rodent_data  %>%
+              filter(!country %in% c("Cameroon", "Chad", "Morocco")) %>%
+              distinct(unique_id, region, town_village, habitat, geometry),
+            by = "unique_id")
+
+a <- sites %>%
+  group_by(unique_id) %>%
+  summarise(n = n())
+table(a$n)
+

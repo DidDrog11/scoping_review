@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="10.15468/dl.s52meh"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+        <alternateIdentifier>0205255-200613084148143</alternateIdentifier>
+    <title>GBIF Occurrence Download 10.15468/dl.s52meh</title>
+    <creator>
+    <individualName>
+          <surName>GBIF Download Service</surName>
+    </individualName>
+<electronicMailAddress>support@gbif.org</electronicMailAddress>    </creator>
+    <metadataProvider>
+    <individualName>
+          <surName>GBIF Download Service</surName>
+    </individualName>
+<electronicMailAddress>support@gbif.org</electronicMailAddress>    </metadataProvider>
+      <pubDate>
+      2021-03-03
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>A dataset containing all occurrences available in GBIF matching the query:
+{
+  &quot;and&quot; : [
+    &quot;Continent is Africa&quot;,
+    {
+      &quot;or&quot; : [
+        &quot;Country is Benin&quot;,
+        &quot;Country is Burkina Faso&quot;,
+        &quot;Country is Cabo Verde&quot;,
+        &quot;Country is Côte d’Ivoire&quot;,
+        &quot;Country is Gambia&quot;,
+        &quot;Country is Ghana&quot;,
+        &quot;Country is Guinea&quot;,
+        &quot;Country is Guinea-Bissau&quot;,
+        &quot;Country is Liberia&quot;,
+        &quot;Country is Mali&quot;,
+        &quot;Country is Mauritania&quot;,
+        &quot;Country is Niger&quot;,
+        &quot;Country is Nigeria&quot;,
+        &quot;Country is Saint Helena, Ascension and Tristan da Cunha&quot;,
+        &quot;Country is Senegal&quot;,
+        &quot;Country is Sierra Leone&quot;,
+        &quot;Country is Togo&quot;
+      ]
+    },
+    {
+      &quot;or&quot; : [
+        &quot;TaxonKey is Rodentia&quot;,
+        &quot;TaxonKey is Soricidae&quot;
+      ]
+    }
+  ]
+}
+The dataset includes records from the following constituent datasets. The full metadata for each constituent is also included in this archive:
+1 records from Collection of  occurrence data on animal species in  the Biosphere Reserve of Pendjari in 2001, 2004, and 2013.
+1 records from Lund Museum of Zoology (MZLU)
+1 records from California State University, Long Beach Mammals
+1 records from Museo Argentino de Ciencias Naturales &quot;Bernardino Rivadavia&quot; (MACN). Mammalogy National Collection (MACNMa)
+1 records from Census of animal species in Biosphere Reserve of Pendjari. Data mobilzed in the framework of JRS Biodiversity Foundation funded project in Benin
+1 records from UMZC Zoological Specimens
+1 records from Museu de Ciències Naturals de Barcelona: MCNB-Cord
+2 records from UWBM Mammalogy Collection (Arctos)
+2 records from TTU Mammals Collection
+2 records from Animal Collections Of The Department of Zoology- Nasarawa State University Keffi
+2 records from Inventaire faunique dans le cadre de l&apos;Etude socio-économique de référence des possibilités de valorisation durable des produits forestiers non ligneux dans les réserves de faune de la pendjari
+2 records from Pedestrian mammals census in W National Park
+3 records from KUBI Mammalogy Collection
+3 records from NMNH_material_samples
+4 records from Occurrences de vecteurs de maladies recensées à l&apos;Hôpital de Mènontin
+4 records from Mammal osteology MZS
+5 records from UCM Mammal Collection (Arctos)
+5 records from Natural History Museum Rotterdam - Specimens
+6 records from CMNH Mammals
+7 records from List of animal species censused during activities of ODDB NGO in Benin
+7 records from Sapo National Park Bio-monitoring Data
+8 records from CRCM Vertebrate Collection
+9 records from Biodiversity Research and Teaching Collections - TCWC Vertebrates
+9 records from Census of plant and animal species in sacred forests of RAMSAR sites 1017 and 1018 in Benin
+10 records from Vertebrate Zoology Division - Mammalogy, Yale Peabody Museum
+10 records from Macaulay Library Audio and Video Collection
+12 records from UAZ Mammals
+12 records from University of Michigan Museum of Zoology, Division of Mammals
+15 records from Liste d&apos;espèces animales recensées au cours des activités de l&apos;Organisation pour le Développement Durable et la Biodiversité (ODDB ONG) au Bénin
+15 records from Mammifères: Etude d&apos;état initial de la biodiversité dans la concession minière de Guinea Alumina Corporation(GAC) dans la region de Boké (CESP2016-022)
+20 records from MSU Mammalogy, Ornithology and Vertebrate Paleontology Collections
+26 records from Monitoring of willdife in Benin protected areas
+30 records from Paleobiology Database
+36 records from UF Florida Museum of Natural History Mammals
+68 records from Census of the species of Benin. Data mobilized in the framework of JRS Benin project and funded by JRS Biodiversity Foundation
+72 records from IICT Colecção Zoológica
+73 records from LACM Vertebrate Collection
+129 records from Census of the threatened species of Benin.
+147 records from MVZ Mammal Collection (Arctos)
+183 records from Observation.org, Nature data from around the World
+242 records from Museum of Comparative Zoology, Harvard University
+258 records from List of animalia, fungi and plant species recorded through naturalist observations and research activities in Benin. Data mobilized in the framework of a JRS Biodiversity Foundation project of Benin
+259 records from Census of animal of Benin: Database 1
+261 records from Mammalogy Collection - Royal Ontario Museum
+371 records from AMNH Mammal Collections
+486 records from Vertebrate observation dataset of North and West Africa (CIBIO-Biodeserts)
+682 records from Field Museum of Natural History (Zoology) Mammal Collection
+1109 records from Inventaire des espèces animales présentes dans les aires protégées et parcs nationaux au Bénin
+1573 records from MSB Mammal Collection (Arctos)
+1782 records from Census of the animals of Benin
+5042 records from Natural History Museum (London) Collection Specimens
+15305 records from African Mammalia
+19692 records from The mammals collection (ZM) of the Muséum national d&apos;Histoire naturelle (MNHN - Paris)
+23268 records from NMNH Extant Specimen Records
+</para>
+    </abstract>
+      <contact>
+    <individualName>
+          <surName>GBIF Download Service</surName>
+    </individualName>
+<electronicMailAddress>support@gbif.org</electronicMailAddress>      </contact>
+
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:57Z</dateStamp>
+      <citation identifier="10.15468/dl.s52meh">GBIF Occurrence Download 10.15468/dl.s52meh</citation>
+              <physical>
+                  <objectName>Darwin Core Archive</objectName>
+                  <characterEncoding>UTF-8</characterEncoding>
+                  <dataFormat>
+                      <externallyDefinedFormat>
+                          <formatName>Darwin Core Archive</formatName>
+                      </externallyDefinedFormat>
+                  </dataFormat>
+                  <distribution>
+                      <online>
+                          <url function="download">https://api.gbif.org/v1/occurrence/download/request/0205255-200613084148143.zip</url>
+                      </online>
+                  </distribution>
+              </physical>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

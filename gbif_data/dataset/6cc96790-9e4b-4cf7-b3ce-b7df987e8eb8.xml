@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="6cc96790-9e4b-4cf7-b3ce-b7df987e8eb8"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/gpdso5</alternateIdentifier>
+        <alternateIdentifier>http://ipt-guinee.gbif.fr/resource?r=gac_mamifres_2018</alternateIdentifier>
+    <title>Mammifères: Etude d&apos;état initial de la biodiversité dans la concession minière de Guinea Alumina Corporation(GAC) dans la region de Boké (CESP2016-022)</title>
+    <creator>
+    <individualName>
+<givenName>Mamadou</givenName>          <surName>Diawara</surName>
+    </individualName>
+<organizationName>Guinée Ecologie</organizationName><positionName>Directeur Exécutif Adjoint</positionName><electronicMailAddress>diawaramadou83@gmail.com</electronicMailAddress>    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>Thierno Mohamed</givenName>          <surName>Keita</surName>
+    </individualName>
+<organizationName>Guinée Ecologie</organizationName><positionName>Spécialiste des mammifères</positionName><electronicMailAddress>tmkeita2012@gmail.com</electronicMailAddress>    </metadataProvider>
+    <metadataProvider>
+    <individualName>
+<givenName>Ousmane</givenName>          <surName>Tounkara</surName>
+    </individualName>
+<organizationName>Guinén Ecologie</organizationName><positionName>Spécialiste des mammifères</positionName><electronicMailAddress>tounkarachimps@yahoo.com</electronicMailAddress>    </metadataProvider>
+    <associatedParty>
+    <individualName>
+<givenName>Saïdou</givenName>          <surName>Doumbouya</surName>
+    </individualName>
+<electronicMailAddress>doumbouyasaidou@yahoo.fr</electronicMailAddress>    <role>USER</role>
+    </associatedParty>
+      <pubDate>
+      2018-12-05
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>Etude d&amp;#39;état initial de la biodiversité (Mammifères) dans la concession minière de Guinea Alumina Corporation(GAC) dans la region de Boké. C&amp;#39;est un inventaire a été réalisé en 2018, par l&amp;#39;ONG Guinée Ecologie, au compte de GAC.</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Occurrence</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+      <intellectualRights>
+        <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para>
+      </intellectualRights>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>République de Guinée</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>-25.312</westBoundingCoordinate>
+                      <eastBoundingCoordinate>2.812</eastBoundingCoordinate>
+                      <northBoundingCoordinate>24.527</northBoundingCoordinate>
+                      <southBoundingCoordinate>-12.555</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>Mamadou</givenName>          <surName>Diawara</surName>
+    </individualName>
+<organizationName>Guinée Ecologie</organizationName><positionName>Directeur Exécutif Adjoint</positionName><electronicMailAddress>diawaramadou83@gmail.com</electronicMailAddress>      </contact>
+
+      <project id="CESP2016-022">
+          <title>Stimulate Guinea biodiversity information network</title>
+          <personnel>
+    <individualName>
+<givenName>DOUMBOUYA</givenName>          <surName>SAIDOU</surName>
+    </individualName>
+    <role>POINT_OF_CONTACT</role>
+          </personnel>
+          <abstract>
+              <para></para>
+          </abstract>
+          <funding>
+              <para></para>
+          </funding>
+      </project>
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:55Z</dateStamp>
+      <citation>Diawara M, Keita T M, Tounkara O (2018). Mammifères: Etude d&apos;état initial de la biodiversité dans la concession minière de Guinea Alumina Corporation(GAC) dans la region de Boké (CESP2016-022). Guinée Ecologie. Occurrence dataset https://doi.org/10.15468/gpdso5 accessed via GBIF.org on 2021-03-03.</citation>
+              <resourceLogoUrl>http://ipt-guinee.gbif.fr/logo.do?r=gac_mamifres_2018</resourceLogoUrl>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

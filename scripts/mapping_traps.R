@@ -1,7 +1,6 @@
 source(here::here("scripts", "libraries.r"))
 
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
-st_crs(rodent_spatial) <- 4326
 bbox_rodent <- st_bbox(rodent_spatial)
 
 #expand the bounding box
@@ -50,7 +49,7 @@ trapping_map <- tm_shape(benin, bbox = bbox_rodent) + tm_polygons(col = "#f2f0f0
   tm_shape(guinea) + tm_polygons(col = "#f2f0f0") +
   tm_shape(guinea_bissau) + tm_polygons(col = "#f2f0f0") +
   tm_shape(ivory_coast) + tm_polygons(col = "#f2f0f0") +
-  tm_shape(liberia) + tm_polygons(col = "white") +
+  tm_shape(liberia) + tm_polygons(col = "#f2f0f0") +
   tm_shape(mali) + tm_polygons(col = "#f2f0f0") +
   tm_shape(mauritania) + tm_polygons(col = "#f2f0f0") +
   tm_shape(niger) + tm_polygons(col = "#f2f0f0") +
@@ -78,5 +77,7 @@ afrmap <- tm_shape(afr) + tm_polygons() +
   tm_shape(bbox_rodent) + tm_polygons(col = "orange", alpha = 0.5) +
   tm_shape(region) + tm_borders(lwd = .2)
 
-trapping_map
 print(afrmap, vp = grid::viewport(0.13, 0.88, width = 0.23, height = 0.23))
+
+mapview(rodent_spatial,
+        zcol = "country")

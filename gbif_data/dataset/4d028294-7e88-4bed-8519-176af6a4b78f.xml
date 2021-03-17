@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="4d028294-7e88-4bed-8519-176af6a4b78f"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/4ptmwb</alternateIdentifier>
+        <alternateIdentifier>http://ipt.gbif.pt/ipt/resource?r=biodeserts</alternateIdentifier>
+    <title>Vertebrate observation dataset of North and West Africa (CIBIO-Biodeserts)</title>
+    <creator>
+    <individualName>
+<givenName>José Carlos</givenName>          <surName>Brito</surName>
+    </individualName>
+<organizationName>CIBIO</organizationName><positionName>Researcher</positionName>    <address>
+<deliveryPoint>Rua Padre Armando Quintas</deliveryPoint><city>Vairão</city><postalCode>4485-661</postalCode><country>PORTUGAL</country>    </address>
+<phone>351-252660426</phone><electronicMailAddress>jcbrito@cibio.up.pt</electronicMailAddress><onlineUrl>https://cibio.up.pt/people/details/jcbrito</onlineUrl>      <userId directory="http://orcid.org/">0000-0001-5444-8132</userId>
+    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>José Carlos</givenName>          <surName>Brito</surName>
+    </individualName>
+<organizationName>CIBIO</organizationName><positionName>Researcher</positionName>    <address>
+<deliveryPoint>Rua Padre Armando Quintas</deliveryPoint><city>Vairão</city><postalCode>4485-661</postalCode><country>PORTUGAL</country>    </address>
+<phone>351-252660426</phone><electronicMailAddress>jcbrito@cibio.up.pt</electronicMailAddress><onlineUrl>https://cibio.up.pt/people/details/jcbrito</onlineUrl>      <userId directory="http://orcid.org/">0000-0001-5444-8132</userId>
+    </metadataProvider>
+      <pubDate>
+      2019-09-26
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>Distribution data of vertebrates (fishes, amphibians, reptiles and mammals) from North and West Africa collected by Biodeserts Research Group of CIBIO-InBIO, from 1999 to 2017</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Occurrence</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Observation</keyword>
+              <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Mammalia</keyword>
+              <keyword>West Africa</keyword>
+              <keyword>Pisces</keyword>
+              <keyword>Amphibia</keyword>
+              <keyword>North Africa</keyword>
+              <keyword>Reptilia</keyword>
+              <keywordThesaurus>NA</keywordThesaurus>
+        </keywordSet>
+      <intellectualRights>
+        <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+      </intellectualRights>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>Dataset of observations from North and West Africa, including Algeria, Burkina Faso, Chad, Egypt, Guinea-Bissau, Libya, Mali, Mauritania, Morocco, Niger, Senegal, and Tunisia.
+A few scattered observations from Armenia, Greece, Iran, Malawi, Portugal, Spain, and Turkey are also included</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>-18.809</westBoundingCoordinate>
+                      <eastBoundingCoordinate>35.508</eastBoundingCoordinate>
+                      <northBoundingCoordinate>37.858</northBoundingCoordinate>
+                      <southBoundingCoordinate>11.006</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+          <temporalCoverage>
+            <rangeOfDates>
+              <beginDate>
+                <calendarDate>      1999-12-29
+</calendarDate>
+              </beginDate>
+              <endDate>
+                <calendarDate>      2017-04-30
+</calendarDate>
+              </endDate>
+            </rangeOfDates>
+          </temporalCoverage>
+              <taxonomicCoverage>
+                    <generalTaxonomicCoverage>Distribution data from Kingdom Animalia, Phylum Chordata
+
+1) Class Pisces
+Order Characiformes
+1.1) Family Alestiidae
+Order Cypriniformes
+1.2) Family Cyprinidae
+Order Perciformes
+1.3) Family Cichlidae
+Order Siluriformes
+1.4) Familiy Clariidae
+1.5) Familiy Schilbeidae
+1.6) Familiy Mochocidae
+
+2) Class Amphibia:
+Order Anura
+2.1) Family Alytidae
+2.2) Family Bufonidae
+2.3) Family Dicroglossidae
+2.4) Family Hylidae
+2.5) Family Hyperoliidae
+2.6) Family Phrynobatrachidae
+2.7) Family Ptychadenidae 
+2.8) Family Pyxicephalidae
+2.9) Family Ranidae
+Order Caudata
+2.10) Family Salamandridae
+
+
+3) Class Reptilia
+Order Crocodilia
+3.1) Family Crocodylidae
+
+Order Squamata
+3.2) Family Agamidae
+3.3) Family Amphisbenidae
+3.4) Family Anguidae
+3.5) Family Atractaspididae
+3.6) Family Boidae
+3.7) Family Chamaeleonidae
+3.8) Family Colubridae
+3.9) Family Elapidae
+3.10) Family Gekkonidae
+3.11) Family Lacertidae
+3.12) Family Lamprophiidae
+3.13) Family Phyllodactylidae
+3.14) Family Pythonidae
+3.15) Family Scincidae
+3.16) Family Sphaerodactylidae
+3.17) Family Varanidae
+3.18) Family Viperidae
+
+Order Testudines
+3.19) Family Emydidae
+3.20) Family Geoemydidae
+3.21) Family Pelomedusidae
+3.22) Family Testudinidae
+
+
+4) Class Mammalia
+Order Artiodactyla
+4.1) Family Suidae
+
+Order Carnivora
+4.2) Family Canidae
+4.3) Family Felidae
+4.4) Family Herpestidae
+4.5) Family Mustelidae
+4.6) Family Viverridae
+
+Order Chiroptera
+4.7) Family Hipposideridae
+4.8) Family Rhinopomatidae
+
+Order Erinaceomorpha
+4.9) Family Erinaceidae
+
+Order Eulipotyphla
+4.10) Family Bovidae
+
+Order Lagomorpha
+4.11) Family Leporidae
+
+Order Primates
+4.12) Family Cercopithecidae
+
+Order Rodentia
+4.13) Family Ctenodactylidae
+4.14) Family Dipodidae
+4.15) Family Gerbillidae
+4.16) Family Hystricidae
+4.17) Family Muridae
+4.18) Family Sciuridae
+
+Order Uranotheria
+4.19) Family Procaviidae</generalTaxonomicCoverage>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Amphibia</taxonRankValue>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Pisces</taxonRankValue>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Reptilia</taxonRankValue>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Mammalia</taxonRankValue>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Kingdom</taxonRankName>
+                        <taxonRankValue>Animalia</taxonRankValue>
+                    </taxonomicClassification>
+                    <taxonomicClassification>
+                          <taxonRankName>Phylum</taxonRankName>
+                        <taxonRankValue>Chordata</taxonRankValue>
+                    </taxonomicClassification>
+              </taxonomicCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>José Carlos</givenName>          <surName>Brito</surName>
+    </individualName>
+<organizationName>CIBIO</organizationName><positionName>Researcher</positionName>    <address>
+<deliveryPoint>Rua Padre Armando Quintas</deliveryPoint><city>Vairão</city><postalCode>4485-661</postalCode><country>PORTUGAL</country>    </address>
+<phone>351-252660426</phone><electronicMailAddress>jcbrito@cibio.up.pt</electronicMailAddress><onlineUrl>https://cibio.up.pt/research-groups-1/details/biodesert</onlineUrl>      <userId directory="http://orcid.org/">0000-0001-5444-8132</userId>
+      </contact>
+      <methods>
+            <methodStep>
+                <description>
+                    <para>Visual encounter surveys; species identification confirmed by molecular markers</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Most data comes from the deserts and arid regions of North and West Africa, especially from the Sahara and Sahel ecoregions</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Observations collected mostly using random sampling procedures</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>All data has been published in peer-reviewed scientific journals. In a large portions of the observations, tissue samples were collected and species identifications were confirmed by the use of molecular markers (barcoding)</para>
+                </description>
+            </qualityControl>
+      </methods>
+
+      <project id="PTDC/BIA-BIC/2903/2012 - PTDC/BIA-BEC/099934/2008 - NGS8412-08 - NGS7629-04">
+          <title>DESERTFLOW – METALAND</title>
+          <personnel>
+    <individualName>
+<givenName>José Carlos</givenName>          <surName>Brito</surName>
+    </individualName>
+      <userId directory="http://orcid.org/">0000-0001-5444-8132</userId>
+    <role>PRINCIPAL_INVESTIGATOR</role>
+          </personnel>
+          <abstract>
+              <para></para>
+          </abstract>
+          <funding>
+              <para>FCT - Fundação para a Ciência e Tecnologia
+NGS - National Geographic Society</para>
+          </funding>
+            <studyAreaDescription>
+                <descriptor name="generic" citableClassificationSystem="false">
+                    <descriptorValue>North and West Africa</descriptorValue>
+                </descriptor>
+            </studyAreaDescription>
+      </project>
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:56Z</dateStamp>
+      <citation>Brito J C (2019). Vertebrate observation dataset of North and West Africa (CIBIO-Biodeserts). CIBIO (Research Center in Biodiversity and Genetic Resources) Portugal. Occurrence dataset https://doi.org/10.15468/4ptmwb accessed via GBIF.org on 2021-03-03.</citation>
+              <bibliography>
+      <citation>Boratynski Z, Brito JC, Mappes T  (2012). The origin of two cryptic species of African desert jerboas (Dipodidae: Jaculus). Biological Journal of the Linnean Society, 105: 435-445</citation>
+      <citation>Boratynski Z, Campos JC, Gonçalves DV, Granjon L, Martínez-Freiría F, Sow AS, Velo-Antón G, Brito JC (2013). The Sudano-Sahelian Dalton&apos;s Mouse, Praomys daltoni, in Mauritania, Eastern Assaba mountains. Go-South Bulletin, 10: 17-20</citation>
+      <citation>Boratyński Z, Brito JC, Campos JC, Karala M, Koskela E, Mappes T (2014). Large spatial scale of the phenotype-environment color matching in two cryptic species of African desert jerboas (Dipodidae: Jaculus). PLoS One, 9(4): e94342</citation>
+      <citation>Brito JC  (2003). Observations of amphibians and reptiles from North and West Africa – Morocco, Mauritania and Senegal. Boletín de la Asociación Herpetológica Española, 14(1-2): 2-6</citation>
+      <citation>Brito JC, Rebelo H, Crochet P-A, Geniez P  (2008). Data on the distribution of amphibians and reptiles from North and West Africa, with emphasis on Acanthodactylus lizards and the Sahara Desert. Herpetological Bulletin, 105: 19-27</citation>
+      <citation>Brito JC, Feriche M, Herrera T, Kaliontzopoulou A, Martínez-Freiría F, Nesbitt D, Omolo D, Ontiveros D, Quiñoz L, Pleguezuelos JM, Santos X, Sillero N  (2008). En los límites de su distribución: anfibios y reptiles paleárticos en el noroeste de Túnez. Boletín de la Asociación Herpetológica Española, 19: 75-82</citation>
+      <citation>Brito JC, Acosta AL, Álvares F, Cuzin F  (2009). Biogeography and conservation of taxa from remote regions: An application of ecological-niche based models and GIS to North-African canids. Biological Conservation, 142: 3020-3029</citation>
+      <citation>Brito JC, Álvares F, Martínez-Freiría F, Sierra P, Sillero N, Tarroso P  (2010). Data on the distribution of mammals from Mauritania, West Africa. Mammalia, 74: 449-455</citation>
+      <citation>Brito JC, Martínez-Freiría F, Sierra P, Sillero N, Tarroso P  (2011). Crocodiles in the Sahara desert: an update of distribution, habitats and population status for conservation planning in Mauritania. PLoS One, 6(2): e14734</citation>
+      <citation>Brito JC, Fahd S, Geniez P, Martínez-Freiría F, Pleguezuelos JM, Trape J-F  (2011). Biogeography and conservation of viperids from North-West Africa: an application of ecological niche-based models and GIS. Journal of Arid Environments, 75: 1029-1037</citation>
+      <citation>Brito JC, Campos JC, Gonçalves D, Martínez-Freiría F, Sillero N, Boratyński Z, Sow AS  (2012). Status of Nile crocodiles in the lower Senegal River basin. Crocodile Specialist Group Newsletter, 30: 7-10</citation>
+      <citation>Campos JC, Martínez-Freiría F, Sousa F, Santarém F, Brito JC (2016). Update of distribution, habitats, population size, and threat factors for the West African Crocodile in Mauritania. Amphibia-Reptilia, 37: 325-330</citation>
+      <citation>Fonseca MM, Brito JC, Rebelo H, Kalboussi M, Larbes S, Carretero MA, Harris DJ  (2008). Genetic variation among spiny-footed lizards in the Acanthodactylus pardalis group from North Africa. African Zoology, 43: 8-15</citation>
+      <citation>Fonseca MM, Brito JC, Paulo OS, Carretero MA, Harris DJ  (2009). Systematic and phylogeographical assessment of the Acanthodactylus erythrurus group (Reptilia: Lacertidae) based on phylogenetic analyses of mitochondrial and nuclear DNA. Molecular Phylogenetics and Evolution, 51: 131-142</citation>
+      <citation>Froufe E, Brito JC, Harris DJ  (2009). Phylogeography of North African Amietophrynus xeros estimated from mitochondrial DNA sequences. African Zoology, 44(2): 208-215</citation>
+      <citation>Froufe E, Gonçalves DV, Brito JC, Harris DJ (2013). Nuclear and mitochondrial markers reveal the existence of several geographically concordant lineages within a Sahelian gecko species, Ptyodactylus ragazzii. Amphibia-Reptilia, 34: 85-93</citation>
+      <citation>Gonçalves DV, Brito JC, Crochet P-A, Geniez P, Padial JM, Harris DJ (2012). Phylogeny of North African Agama lizards (Reptilia: Agamidae) and the role of the Sahara desert in vertebrate speciation. Molecular Phylogenetics and Evolution, 64: 582–591</citation>
+      <citation>Gonçalves DV, Álvares F, Brito JC (2013). Data on the distribution of herpetofauna of southern Niger with comments on Termit &amp; Tin Toumma National Nature Reserve. Boletín de la Asociación Herpetológica Española, 24(1): 74-79</citation>
+      <citation>Gonçalves DV, Martínez-Freiría F, Crochet P-A, Geniez P, Carranza S, Brito JC (2018). The role of climatic cycles and trans-Saharan migration corridors in species diversification: biogeography of Psammophis schokari group in North Africa. Molecular Phylogenetics and Evolution, 118: 64-74</citation>
+      <citation>Gonçalves DV, Pereira P, Velo-Antón G, Harris DJ, Carranza S, Brito JC (2018). Assessing the role of aridity-induced vicariance and ecological divergence in species diversification in North-West Africa using Agama lizards. Biological Journal of the Linnean Society, 124: 363-380</citation>
+      <citation>Gonçalves DV, Brito JC (2019). Second Sahelian amphibian endemism suggested by phylogeography of Groove-crowned Bullfrog (Hoplobatrachus occipitalis) in western Sahel, and hints of polyploid species formation. Journal of Zoological Systematics and Evolutionary Research in press, https://doi.org/10.1111/jzs.12321</citation>
+      <citation>Harris DJ, Vasconcelos R, Brito JC  (2007). Genetic variation within African spiny-tailed lizards (Agamidae: Uromastyx) estimated using mitochondrial DNA sequences. Amphibia-Reptilia, 28: 1-6</citation>
+      <citation>Harris DJ, Carretero MA, Brito JC, Kaliontzopoulou A, Pinho C, Perera A, Vasconcelos R, Barata M, Barbosa D, Carvalho S, Fonseca MM, Pérez-Lanuza G, Rato C (2008). Data on the distribution of the terrestrial herpetofauna of Morocco: records from 2001-2006. Herpetological Bulletin, 103: 19-28</citation>
+      <citation>Howard-Mccombe J, Banfield L, Kitchener AC, Al Qahtani H, Toosy A, Qarqas M, Craig M, Abramov A, Veron G, Brito JC, Azizi S, Breton B, Silwa A, Witzenberger K, Hochkirch A, Senn H (2019). A mitochondrial phylogeny of the sand cat (Felis margarita Loche, 1858). Journal of Mammalian Evolution, https://doi.org/10.1007/s10914-019-09473-w</citation>
+      <citation>Kapli P, Lymberakis P, Crochet P-A, Geniez P, Brito JC, Almutairi M, Ahmadzadeh F, Schmitz A, Wilms T, Pouyani NR, Poulakakis N (2015). Historical biogeography of the lacertid lizard Mesalina in North Africa and the Middle East. Journal of Biogeography, 42: 267-279</citation>
+      <citation>Kide NG, Dunz A, Agnèse J-F, Dilyte J, Pariselle A, Carneiro C, Correira E, Saoud Y, Yarba LO, Kone Y, Brito JC, Schliewen UK, Durand J-D (2016). Cichlids of the Banc d&apos;Arguin National Park, Mauritania - Insight into the diversity of the Copotodon genus. Journal of Fish Biology, 88: 1369-1393</citation>
+      <citation>Koepfli K-P, Pollinger J, Godinho R, Robinson J, Lea A, Hendricks S, Schweizer RM, Thalmann O, Silva P, Fan Z, Yurchenko AA, Dobrynin P, Makunin A, Cahill JA, Shapiro B, Álvares F, Brito JC, Geffen E, Leonard JA, Helgen KM, Johnson WE, O’Brien SJ, Van Valkenburgh B, Wayne RK (2015). Genome-wide evidence reveals that African and Eurasian Golden Jackals are distinct species. Current Biology, 25: 2158-2165</citation>
+      <citation>Kopp GH, Ferreira da Silva MJ, Fischer J, Brito JC, Regnaut S, Roos C, Zinner D (2014). The influence of social systems on patterns of mitochondrial DNA variation in Baboons. International Journal of Primatology, 35: 210-225</citation>
+      <citation>Lado S, Alves PC, Islam MZ, Brito JC, Melo-Ferreira J (2019). The evolutionary history of the Cape hare (Lepus capensis sensu lato): insights for systematics and biogeography. Heredity, in press, https://doi.org/10.1038/s41437-019-0229-8</citation>
+      <citation>Leite JV, Álvares F, Velo-Antón G, Brito JC, Godinho R (2015). Differentiation of North African foxes and population genetic dynamics in the desert - insights into the evolutionary history of two sister taxa, Vulpes rueppellii and V. vulpes. Organisms Diversity and Evolution, 15: 731-745</citation>
+      <citation>Lima A, Pinho C, Larbes S, Carretero MA, Brito JC, Harris DJ  (2009). Relationships of Podarcis wall lizards from Algeria based on mtDNA data. Amphibia-Reptilia, 30: 483-492</citation>
+      <citation>Lopes SC, Velo-Antón G, Pereira P, Lopes S, Godinho R, Crochet P-A, Brito JC (2015). Development and characterization of polymorphic microsatellite loci for spiny-footed lizards, Acanthodactylus scutellatus group (Reptilia, Lacertidae) from arid regions. BMC Research Notes, 8: 794</citation>
+      <citation>Metallinou M, Arnold EN, Crochet P-A, Geniez P, Brito JC, Lymberakis P, Baha El Din S, Sindaco R, Robinson M, Carranza S  (2012). Conquering the Sahara and Arabian deserts: Systematics and biogeography of Stenodactylus geckos (Reptilia: Gekkonidae). BMC Evolutionary Biology, 12: 258</citation>
+      <citation>Metallinou M, Červenka J, Crochet P.-A., Kratochvíl L, Wilms T, Geniez P, Shobrak MY, Brito JC, Carranza S (2015). Species on the rocks: Systematics and biogeography of the rock-dwelling Ptyodactylus geckos (Squamata: Phyllodactylidae) in North Africa and Arabia. Molecular Phylogenetics and Evolution, 85: 208-220</citation>
+      <citation>Padial JM, Crochet P-A, Geniez P, Brito JC (2013). Amphibian conservation in Mauritania. Chapter 24 in Part 2. Mauritania, Morocco, Algeria, Tunisia, Libya, Egypt and Israel in Vol. 11. Conservation and Decline of Amphibians: Eastern Hemisphere of the series Amphibian Biology. Basic and Applied Herpetology, 27: 11-22</citation>
+      <citation>Rato C, Brito JC, Carretero MA, Larbes S, Shacham B, Harris DJ  (2007). Phylogeography and genetic diversity of Psammophis schokari (Serpentes) in North Africa based on mitochondrial DNA sequences. African Zoology, 42: 112-117</citation>
+      <citation>Silva TL, Godinho R, Castro D, Abáigar T, Brito JC, Alves PC (2015). Genetic identification of endangered North African ungulates using noninvasive sampling. Molecular Ecology Resources, 15: 652-661</citation>
+      <citation>Silva TL, Vale CG, Godinho R, Fellous A, Hingrat Y, Alves PC, Abáigar T, Brito JC (2017). Integrating genetic and ecological data for clarifying taxonomy and identifying ecotypes and evolutionary significant units in endangered North African Gazelles. Biological Journal of the Linnean Society, 122: 286-300</citation>
+      <citation>Sow AS, Martínez-Freiría F, Crochet P-A, Geniez P, Ineich I, Dieng H, Fahd S, Brito JC (2014). Atlas of the distribution of reptiles in the Parc National du Banc d’Arguin, Mauritania. Basic and Applied Herpetology, 28: 99-111</citation>
+      <citation>Sow AS, Martínez-Freiría F, Dieng H, Fahd S, Brito JC (2014). Biogeographical analysis of the Atlantic Sahara reptiles: environmental correlates of species distribution and vulnerability to climate change. Journal of Arid Environments, 109: 65-73</citation>
+      <citation>Sow AS, Gonçalves DV, Sousa FV, Martínez-Freiría F, Santarém F, Velo-Antón G, Dieng H, Campos JC, Diagne SK, Boratyński Z, Brito JC (2017). Atlas of the distribution of amphibians and reptiles in the Diawling National Park, Mauritania. Basic and Applied Herpetology, 31: 101-116</citation>
+      <citation>Tamar K, Carranza S, Sindaco R, Moravec J, Trape JF, Meiri S (2016). Out of Africa: Phylogeny and biogeography of the widespread genus Acanthodactylus (Reptilia: Lacertidae). Molecular Phylogenetics and Evolution, 103: 6-18</citation>
+      <citation>Tamar K, Geniez P, Brito JC, Crochet P-A (2017). Systematic revision of Acanthodactylus busacki (Squamata: Lacertidae) with a description of a new species from Morocco. Zootaxa, 4276(3): 357-386</citation>
+      <citation>Trape S, Mediannikov O, Trape J-F (2012). When colour patterns reflect phylogeography: New species of Dasypeltis (Serpentes: Colubridae: Boigini) from West Africa. Comptes Rendus Biologies, 335: 488-501</citation>
+      <citation>Vale CG, Tarroso P, Campos JC, Gonçalves DV, Brito JC (2012). Distribution, suitable areas and conservation status of the Boulenger’ agama (Agama boulengeri, Lataste 1886). Amphibia-Reptilia, 33: 526-532</citation>
+      <citation>Vale CG, Álvares F, Brito JC  (2012). Distribution, suitable areas and conservation status of the Felou gundi (Felovia vae Lataste 1886). Mammalia, 76: 201-207</citation>
+      <citation>Vale CG, Tarroso P, Brito JC (2014). Predicting species distribution at range margins: testing the effects of study area extent and resolution, and threshold selection in the Sahara-Sahel transition zone. Diversity and Distributions, 20: 20-33</citation>
+      <citation>Vale CG, Pimm SL, Brito JC (2015). Overlooked mountain rock pools in deserts are critical local hotspots of biodiversity. PLoS One, 10(2): e0118367</citation>
+      <citation>Vale CG, Ferreira da Silva MJ, Campos JC, Torres J, Brito JC (2015). Applying species distribution modelling to the conservation of an ecologically plastic species (Papio papio) across biogeographic regions in West Africa. Journal for Nature Conservation, 27: 26-36</citation>
+      <citation>Vale CG, Campos JC, Silva TL, Gonçalves DV, Sow AS, Martínez-Freiría F, Boratyński Z, Brito JC (2016). Biogeography and conservation of mammals from the West Sahara-Sahel: an application of ecological niche-based models and GIS. Hystrix-Italian Journal of Mammology, doi:10.4404/hystrix-27.1-11659</citation>
+      <citation>Vasconcelos R, Rocha S, Brito JC, Carranza S, Harris DJ  (2009). First report of introduced African Rainbow Lizard Agama agama (Linnaeus, 1758) in the Cape Verde Islands. Herpetozoa, 21(3-4): 183-186</citation>
+      <citation>Vasconcelos R, Froufe E, Brito JC, Carranza S, Harris DJ  (2010). Phylogeography of Amietophrynus regularis based on mitochondrial DNA sequences: inferences regarding the Cape Verde population and biogeographical patterns. African Zoology, 45: 291-298</citation>
+      <citation>Velo-Antón G, Godinho R, Campos JC, Brito JC (2014). Should I stay or should I go? Dispersal and population structure in small, isolated desert populations of West African crocodiles. PLoS One, 9(4): e94626</citation>
+      <citation>Velo-Antón G, Martínez-Freiría F, Pereira P, Crochet P-A, Brito JC (2018). Living on the edge: ecological and genetic connectivity of the Spiny-footed lizard, Acanthodactylus aureus, confirms the Atlantic Sahara desert as biogeographic corridor and centre of lineage diversification. Journal of Biogeography, 45: 1031-1042</citation>
+      <citation>Velo-Antón G, Boratyński Z, Ferreira CM, Lima VO, Alves PC, Brito JC (2019). Intra-specific genetic diversity and distribution of North African hedgehogs (Mammalia: Erinaceidae). Biological Journal of the Linnean Society, 127: 156-163</citation>
+              </bibliography>
+              <resourceLogoUrl>http://ipt.gbif.pt/ipt/logo.do?r=biodeserts</resourceLogoUrl>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

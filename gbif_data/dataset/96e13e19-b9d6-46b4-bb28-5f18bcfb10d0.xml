@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="96e13e19-b9d6-46b4-bb28-5f18bcfb10d0"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/gtgz2j</alternateIdentifier>
+        <alternateIdentifier>http://ipt.vertnet.org:8080/ipt/resource?r=cmnh_mammals</alternateIdentifier>
+    <title>CMNH Mammals</title>
+    <creator>
+    <individualName>
+<givenName>Courtney</givenName>          <surName>Brennan</surName>
+    </individualName>
+<organizationName>Cleveland Museum of Natural History</organizationName><positionName>Zoology Collections Manager</positionName>    <address>
+<deliveryPoint>1 Wade Oval Drive</deliveryPoint><city>Cleveland</city><administrativeArea>Ohio</administrativeArea><postalCode>44106</postalCode><country>UNITED_STATES</country>    </address>
+<electronicMailAddress>CBrennan@cmnh.org</electronicMailAddress><onlineUrl>https://www.cmnh.org/</onlineUrl>    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>Courtney</givenName>          <surName>Brennan</surName>
+    </individualName>
+<organizationName>Cleveland Museum of Natural History</organizationName><positionName>Zoology Collections Manager</positionName>    <address>
+<deliveryPoint>1 Wade Oval Drive</deliveryPoint><city>Cleveland</city><administrativeArea>Ohio</administrativeArea><postalCode>44106</postalCode><country>UNITED_STATES</country>    </address>
+<electronicMailAddress>CBrennan@cmnh.org</electronicMailAddress><onlineUrl>https://www.cmnh.org/</onlineUrl>    </metadataProvider>
+    <associatedParty>
+    <individualName>
+<givenName>David</givenName>          <surName>Bloom</surName>
+    </individualName>
+<organizationName>VertNet</organizationName><positionName>VertNet Coordinator</positionName><electronicMailAddress>dbloom@vertnet.org</electronicMailAddress><onlineUrl>http://www.vertnet.org</onlineUrl>    <role>PROGRAMMER</role>
+    </associatedParty>
+    <associatedParty>
+    <individualName>
+<givenName>John</givenName>          <surName>Wieczorek</surName>
+    </individualName>
+<organizationName>VertNet</organizationName><positionName>Information Architect</positionName><electronicMailAddress>tuco@berkeley.edu</electronicMailAddress><onlineUrl>http://www.vertnet.org</onlineUrl>    <role>PROGRAMMER</role>
+    </associatedParty>
+      <pubDate>
+      2020-08-17
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>The CMNH mammal collection is the largest of the vertebrate zoology collections. It consists of approximately 19,000 specimens, with the focus on study skins with skulls from the Americas. It also includes an osteology section from the Americas and Africa, many including both skull and post-cranial material.</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Occurrence</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Specimen</keyword>
+              <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+      <additionalInfo>
+          <para>http://vertnet.org/resources/norms.html</para>
+      </additionalInfo>
+      <intellectualRights>
+        <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para>
+      </intellectualRights>
+      <distribution scope="document">
+          <online>
+              <url function="information">https://www.cmnh.org/vert-zoo/collection-database</url>
+          </online>
+      </distribution>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>Global with a focus on the Americas and Africa.</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>-180</westBoundingCoordinate>
+                      <eastBoundingCoordinate>180</eastBoundingCoordinate>
+                      <northBoundingCoordinate>90</northBoundingCoordinate>
+                      <southBoundingCoordinate>-90</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+              <taxonomicCoverage>
+                    <taxonomicClassification>
+                          <taxonRankName>Class</taxonRankName>
+                        <taxonRankValue>Mammalia</taxonRankValue>
+                    </taxonomicClassification>
+              </taxonomicCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>Courtney</givenName>          <surName>Brennan</surName>
+    </individualName>
+<organizationName>Cleveland Museum of Natural History</organizationName><positionName>Zoology Collections Manager</positionName>    <address>
+<deliveryPoint>1 Wade Oval Drive</deliveryPoint><city>Cleveland</city><administrativeArea>Ohio</administrativeArea><postalCode>44106</postalCode><country>UNITED_STATES</country>    </address>
+<electronicMailAddress>CBrennan@cmnh.org</electronicMailAddress><onlineUrl>https://www.cmnh.org/</onlineUrl>      </contact>
+      <methods>
+            <methodStep>
+                <description>
+                    <para></para>
+                </description>
+            </methodStep>
+      </methods>
+
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:54Z</dateStamp>
+      <citation>Brennan C (2020). CMNH Mammals. Cleveland Museum of Natural History. Occurrence dataset https://doi.org/10.15468/gtgz2j accessed via GBIF.org on 2021-03-03.</citation>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>

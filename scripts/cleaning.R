@@ -1,23 +1,31 @@
 source(here::here("scripts", "libraries.r"))
 source(here("scripts", "update_data.r"))
 
-google_api <- rstudioapi::askForSecret("Google API Key")
 register_google(google_api)
+
+
+# Studies -----------------------------------------------------------------
+
 
 studies <- read_rds(here("data_raw", "studies.rds")) %>%
   mutate(unique_id = as_factor(unique_id))
+
+write_rds(studies, here("data_clean", "studies.rds"))
+
+# Rodent data -------------------------------------------------------------
 
 rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
   mutate(country = as_factor(country),
          record_id = 1:nrow(.))
 
-retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_night_unit", "record_id")
+retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_nights", "trap_night_unit", "record_id")
 
 rodent_data %<>%
-  separate(col = longitude_DMS_W, into = c("long_degrees", "long_minutes", "long_seconds"), "_") %>%
+  separate(col = longitude_DMS_W, into = c("long_degrees", "long_minutes", "long_seconds"), "_", remove = F) %>%
   separate(col = latitude_DMS_N, into = c("lat_degrees", "lat_minutes", "lat_seconds"), "_") %>%
   mutate(across(all_of(c("long_degrees", "long_minutes", "long_seconds","lat_degrees", "lat_minutes", "lat_seconds")), as.double),
-         long_hemi = ifelse(long_degrees<0, "E", "W"),
+         long_hemi = ifelse(long_degrees<0, "E", #assign -ve numbers to E
+                            ifelse(substring(longitude_DMS_W, 1, 1) == "-", "E", "W")), #as 0 cannot be -ve we can check the sign on the text entry
          lat_hemi = ifelse(lat_degrees<0, "S", "N"),
          gps_dms = ifelse(is.na(lat_degrees|long_degrees), F, T),
          long_dms = ifelse(gps_dms == T,
@@ -31,10 +39,12 @@ rodent_data %<>%
                                  ifelse(is.na(lat_seconds), 0, lat_seconds),
                                  sep = ""), NA),
          long_dms = gsub("-", "", long_dms),
-         lat_dms = gsub("-", "", lat_dms))
+         lat_dms = gsub("-", "", lat_dms)) %>%
+  dplyr::select(-longitude_DMS_W)
 
 dms <- rodent_data %>%
   drop_na(long_dms, lat_dms)
+
 dms <- dms %>%
   mutate(lon_dd = parzer::parse_lon(long_dms),
          lat_dd = parzer::parse_lat(lat_dms)) %>%
@@ -66,6 +76,8 @@ rodent_gps <- bind_rows(dms, dd) %>%
   dplyr::select(all_of(retain_columns)) %>%
   bind_rows(utm_q, utm_p)
 
+st_crs(rodent_gps) = 4326
+
 no_gps <- rodent_data %>%
   filter(!record_id %in% rodent_gps$record_id) %>%
   mutate(long_dms = as.double(long_dms),
@@ -79,3 +91,12 @@ all_rodent <- bind_rows(rodent_gps, no_gps) %>%
 write_rds(rodent_gps, here("data_clean", "rodent_spatial.rds"))
 write_rds(no_gps, here("data_clean", "rodent_missing_spatial.rds"))
 write_rds(all_rodent, here("data_clean", "rodent_df.rds"))
+
+# Pathogen ----------------------------------------------------------------
+
+pathogen_data <- read_rds(here("data_raw", "pathogen.rds")) %>%
+  mutate(unique_id = as_factor(unique_id))
+
+# can copy process for managing locations from rodent data
+
+write_rds(pathogen_data, here("data_clean", "pathogen.rds"))

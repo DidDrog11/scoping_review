@@ -1,13 +1,25 @@
-library("tidyverse")
-library("magrittr")
-library("bib2df")
-library("here")
-library("googledrive")
-library("readxl")
-library("countrycode")
-library("ggimage")
-library("sf")
-library("OpenStreetMap")
-library("tmap")
-library("maptools")
-library("raster")
+if (!require("pacman")) install.packages("pacman")
+pkgs =
+  c("here",
+    "tidyverse",
+    "magrittr",
+    "bib2df",
+    "googledrive",
+    "readxl",
+    "countrycode",
+    "ggimage",
+    "sf",
+    "OpenStreetMap",
+    "tmap",
+    "maptools",
+    "raster",
+    "mapview",
+    "ggmap"
+  )
+pacman::p_load(pkgs, character.only = T)
+
+if(!exists("google_api")) {
+google_api <- rstudioapi::askForSecret("Google API Key")
+}
+
+source(here::here("scripts", "functions.R"))

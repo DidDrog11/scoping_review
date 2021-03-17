@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="8e912d78-6259-44e3-8f58-debb3081a15f"  system="http://gbif.org" scope="system"
+  xml:lang="en">
+
+<dataset>
+      <alternateIdentifier>10.15468/fbbbfl</alternateIdentifier>
+        <alternateIdentifier>8e912d78-6259-44e3-8f58-debb3081a15f</alternateIdentifier>
+        <alternateIdentifier>http://ipt-benin.gbif.fr/resource?r=threatened_species_01</alternateIdentifier>
+    <title>Census of the threatened species of Benin.</title>
+    <creator>
+    <individualName>
+<givenName>Paterne</givenName>          <surName>Kiki</surName>
+    </individualName>
+<organizationName>University of Abomey-Calavi. Faculty of Agricultural Sciences</organizationName><positionName>Research assistant</positionName>    <address>
+<deliveryPoint>BP 393 Cotonou</deliveryPoint><postalCode>229</postalCode><country>BENIN</country>    </address>
+<electronicMailAddress>kikipaternep@gmail.com</electronicMailAddress>    </creator>
+    <metadataProvider>
+    <individualName>
+<givenName>Jean</givenName>          <surName>Ganglo</surName>
+    </individualName>
+<organizationName>University of Abomey-Calavi. Faculty of Agricultural Sciences</organizationName><positionName>Professor</positionName>    <address>
+<deliveryPoint>BPP 393 Cotonou</deliveryPoint><postalCode>229</postalCode><country>BENIN</country>    </address>
+<electronicMailAddress>ganglocj@gmail.com</electronicMailAddress>    </metadataProvider>
+      <pubDate>
+      2017-02-06
+      </pubDate>
+    <language>ENGLISH</language>
+    <abstract>
+        <para>Data entered from the documents on the Nature Conservation in West Africa: Red List for Benin. The following threat categories are recognized: EN&amp;#61;En danger, CR&amp;#61;En danger critique d&amp;#39;extinction, DD&amp;#61;Données insuffisantes, VU&amp;#61;Vulnérable, EW&amp;#61;Eteint à l&amp;#39;état sauvage, EX&amp;#61;Eteint, NT&amp;#61;Quasi menacé, LC&amp;#61;Préoccupation mineure, Not evaluated&amp;#61;Non évalué, Expected&amp;#61;Attendu</para>
+    </abstract>
+        <keywordSet>
+              <keyword>Occurrence</keyword>
+              <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+              <keyword>Dogo-Kétou</keyword>
+              <keyword>Pobè</keyword>
+              <keyword>Observation</keyword>
+              <keyword>Wari-Maro</keyword>
+              <keyword>Trois Rivières</keyword>
+              <keyword>Drabo-Gbo</keyword>
+              <keyword>Lama</keyword>
+              <keyword>Goungoun</keyword>
+              <keyword>Natitingou</keyword>
+              <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+      <intellectualRights>
+        <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para>
+      </intellectualRights>
+      <coverage>
+            <geographicCoverage>
+                  <geographicDescription>Data accross Benin</geographicDescription>
+                  <boundingCoordinates>
+                      <westBoundingCoordinate>1.45</westBoundingCoordinate>
+                      <eastBoundingCoordinate>2.74</eastBoundingCoordinate>
+                      <northBoundingCoordinate>11.5</northBoundingCoordinate>
+                      <southBoundingCoordinate>6.37</southBoundingCoordinate>
+                  </boundingCoordinates>
+            </geographicCoverage>
+          <temporalCoverage>
+            <rangeOfDates>
+              <beginDate>
+                <calendarDate>      2000-03-01
+</calendarDate>
+              </beginDate>
+              <endDate>
+                <calendarDate>      2009-07-30
+</calendarDate>
+              </endDate>
+            </rangeOfDates>
+          </temporalCoverage>
+      </coverage>
+      <maintenance>
+          <description>
+              <para></para>
+          </description>
+          <maintenanceUpdateFrequency>continually</maintenanceUpdateFrequency>
+      </maintenance>
+      <contact>
+    <individualName>
+<givenName>Armand</givenName>          <surName>Kingbo</surName>
+    </individualName>
+<organizationName>University of Abomey-Calavi. Faculty of Agricultural Sciences</organizationName><positionName>Research assistant</positionName>    <address>
+<deliveryPoint>BP 393 Cotonou</deliveryPoint><city>Calavi</city><postalCode>229</postalCode><country>BENIN</country>    </address>
+<electronicMailAddress>armandkingbo@gmail.com</electronicMailAddress>      </contact>
+      <methods>
+            <methodStep>
+                <description>
+                    <para></para>
+                </description>
+            </methodStep>
+      </methods>
+
+      <project id="BID-AF2015-0066-REG">
+          <title>Capacity building and biodiversity data mobilization for conservation, sustainable use, and decision making in Africa and Madagascar</title>
+          <personnel>
+    <individualName>
+<givenName>Jean Cossi</givenName>          <surName>GANGLO</surName>
+    </individualName>
+    <role>PRINCIPAL_INVESTIGATOR</role>
+          </personnel>
+          <abstract>
+              <para>This project to mobilize biodiversity data and identify conservation priorities will be implemented by a consortium of eight African countries – Senegal, Côte-d’Ivoire, Mali, Guinea, DRC, Niger, Madagascar, and Benin.
+Training workshops organized by the University of Kansas will help build the data publishing capacity of project partners. The consortium will identify priority invasive alien species and threatened species for data mobilization, and publish relevant data from collections in France, Netherlands and Belgium. More than 200,000 records of biodiversity data will be made available through GBIF.org and national portals.
+Based on published data, the consortium will develop distribution maps of priority species, suggest actions to monitor and control the spread of invasive alien species and provide recommendations for the conservation of threatened species.</para>
+          </abstract>
+          <funding>
+              <para>The funding of this project is generously provided by European Union in the framework of Biodiversity Information for Development program managed by GBIF Secretariat</para>
+          </funding>
+            <studyAreaDescription>
+                <descriptor name="generic" citableClassificationSystem="false">
+                    <descriptorValue>The data digitized and published in the framework of this project are gathered throughout the country members on the targeted species</descriptorValue>
+                </descriptor>
+            </studyAreaDescription>
+            <designDescription>
+                <description>
+                    <para>Despite its utmost importance to the survival of humanity, biodiversity is subject to many threats. As a significant step toward overcoming these threats, we submit this project in the framework of a consortium of eight African countries - Senegal, Côte-d’Ivoire, Mali, Guinea, DRC, Niger, Madagascar, and Benin - to achieve the following goals: 
+1) Establish and strengthen international collaborations to mobilize biodiversity data; to achieve that goal, we will identify priority invasive alien species and threatened species to be considered in the consortium. We will organize workshops at regional level under the umbrella of the University of Kansas (USA), our Non-ACP partner, to capacitate project partners. We will digitize and publish data of consortium countries deposited in France, Netherlands, and Belgium. 
+2) Increase available biodiversity data, within and beyond the grant period, by capacitating and providing financial assistance to in-country partners to encourage them mobilize and publish their data through GBIF and national portals. 
+3) Apply biodiversity data in response to conservation priorities by achieving the following: elaborate distribution maps of threatened species and invasive alien species; identify the main threats to species and suggest efficient actions to protect and conserve them; identify and suggest efficient actions to monitor and eradicate invasive alien species; evaluate the efficiency of protected areas with respect to biodiversity conservation and make adequate suggestions; finally, from our results, elaborate and broadcast communication and outreach via diverse media so as to demonstrate to policy- and decision-makers the value chain: data → knowledge → applications.</para>
+                </description>
+            </designDescription>
+      </project>
+</dataset>
+
+<additionalMetadata>
+    <metadata>
+      <gbif>
+        <dateStamp>2021-03-03T11:32:55Z</dateStamp>
+      <citation>Kiki P, Ganglo J (2017). Census of the threatened species of Benin.. Version 1.5. GBIF Benin. Occurrence dataset https://doi.org/10.15468/fbbbfl accessed via GBIF.org on 2021-03-03.</citation>
+              <bibliography>
+      <citation>Neuenschwander, P., Sinsin B., &amp; Goergen, G., (eds). 2011. Protection de la Nature en Afrique de l&apos;Ouest: une Liste Rouge pour le Bénin. Nature Conservation in West Africa: Red List for Benin. International Institute of Tropical Agriculture. Ibadan, Nigeria. 365 pages.						
+
+Lamarque F., 2004. Les grands mamifères du Complexe WAP. Benin, Burkina Faso, Niger.
+
+Akoègninou A., Van der Burg W.J., Van der Maesen L.J.G., Flore Analytique du Bénin. Herbier National du Bénin. 1034 pages</citation>
+              </bibliography>
+        </gbif>
+    </metadata>
+</additionalMetadata>
+
+</eml:eml>
