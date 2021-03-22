@@ -6,7 +6,6 @@ register_google(google_api)
 
 # Studies -----------------------------------------------------------------
 
-
 studies <- read_rds(here("data_raw", "studies.rds")) %>%
   mutate(unique_id = as_factor(unique_id))
 

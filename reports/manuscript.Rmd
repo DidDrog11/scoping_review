@@ -102,11 +102,15 @@ The brand or description of the rodent trap was obtained from each study that re
 
 GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Locations were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [] based on study site name/region and through maps presented in the manuscript.
 
+### Genus and species definitions
+
+Designations of species change over time as new evidence emerges. As included studies span 45 years disambiguation of historical species names was performed using Taxize...
+
 ## Results
 
-A total of 2,200 records were identified, with 101 studies included in narrative synthesis (see Figure 1).
+A total of 2,200 records were identified, with 101 studies included in narrative synthesis (see Figure \@ref(fig:prisma)).
 
-``` {r figure_1, echo = F, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given."}
+``` {r prisma, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given.", echo = F}
 knitr::include_graphics(here::here("figures", "figure_1.png"))
 ```
 
@@ -114,22 +118,40 @@ The earliest studies identified were from 1974 with the majority (62%) published
 
   + Aims
   + Published/field
-  + Trap design
-  + Trap technique
-  + Trap nights/effort
+
+### Trap types
+
+Of the included studies 15 did not state the type of trap used with three studies reporting supplementary hand trapping of rodents alongside trap use. For the remaining studies three used more than four types of rodent traps, seven used three types, 31 used two types the remaining 45 studies used a single trap type. The most commonly used trap was the Sherman trap (67%) [] which is available in several sizes, locally made wire mesh traps were used in 29 studies (34%), less commonly used trap types included the Museum special, Tomahawk, Victor, Snaptraps and Firobind traps.
+
+### Trap setup
+
+Thirty-three studies did not describe the setup of traps. Twenty five studies placed transect lines of traps through study sites with thirteen studies placing traps along a line but not clearly describing a transect across a defined site. Sixteen studies purposefully sample houses, with four further studies purposefully placing traps in targeted locationes. Nine studies placed traps in a grid across single or multiple habitat types. Three studies described a stratified or randomised approach to placing traps. Trap setup was typically reported for ecology studies (80%) with transect lines the most commonly used approach. Trap setup was reported in 53% of zoonoses risk studies with purposeful placement of traps in houses the most common approach (20%).
+
+### Trapping effort
+
+Trapping effort was variably reported in included studies. Thirty studies did not report trapping effort. Thirty-six studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures. Thirty-five studies reported incomplete data on trapping effort (i.e. number of study nights or total number of trap-nights). Trapping effort was more completely reported from ecology studies (53% complete information and 20% no information) compared to zoonoses risk studies (15% complete information and 41% no information).
+
+### Location of studies
 
 The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
 
-Most studies (94, 95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 trapping activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (26, 20%) than any other country. Ghana (16, 12%) and Guinea (15, 12%) were the next most frequently trapped countries, followed by Nigeria (11, 9%), Benin, Mali and Niger (all 9, 7%), Sierra Leone (8, 6%), Mauritania and the Ivory Coast (both 5, 4%), Burkina Faso and Liberia (both 3, 2%), Guinea-Bissau had a single recorded trapping activity. 
+Most studies (95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 trapping activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (20%) than any other country. Ghana (12%) and Guinea (12%) were the next most frequently trapped countries, followed by Nigeria (9%), Benin, Mali and Niger (7%), Sierra Leone (6%), Mauritania and the Ivory Coast (4%), Burkina Faso and Liberia (2%), Guinea-Bissau had a single recorded trapping activity. 
 
-The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites. Trap sites were mapped to level one country administrative regions and density of sites per million square kilometers was calculated (see Figure 2). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore) and Eastern Sierra Leone were most intensively studied.
+The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites. Trap sites were mapped to level one country administrative regions and density of sites per million square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore) and Eastern Sierra Leone were most intensively studied.
 
-``` {r figure_2, echo = F, fig.cap = "Density of trap sites per thousand km^2^", layout = "l-page"}
+``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
 knitr::include_graphics(here::here("figures", "static_site_density.png"))
 ```
 
   + Habitat classification
-  + Species classification
+  
+### Species identification
+
+Nine included studies did not describe the method used to identify trapped rodents. Most studies (52%) relied solely on morphometric identification against taxonomic keys or museum voucher specimens. Eight studies described molecular identification of rodents with 30% using a combination of morphological and molecular techniques. In more recently published studies (since 2010) 54% used molecular techniques to assist with speciation, compared with less than 16% in studies published before 2010.
+
+### Reported species and species abundance
+
+
   + Species trapped
   + Pathogens
 
