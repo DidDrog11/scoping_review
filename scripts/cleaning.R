@@ -18,7 +18,7 @@ rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
   mutate(country = as_factor(country),
          record_id = 1:nrow(.))
 
-retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_nights", "trap_night_unit", "record_id")
+retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_nights", "trap_night_unit", "record_id")
 
 rodent_data %<>%
   separate(col = longitude_DMS_W, into = c("long_degrees", "long_minutes", "long_seconds"), "_", remove = F) %>%
@@ -39,7 +39,8 @@ rodent_data %<>%
                                  ifelse(is.na(lat_seconds), 0, lat_seconds),
                                  sep = ""), NA),
          long_dms = gsub("-", "", long_dms),
-         lat_dms = gsub("-", "", lat_dms)) %>%
+         lat_dms = gsub("-", "", lat_dms),
+         iso3c = countrycode(as.character(country), "country.name", "iso3c")) %>%
   dplyr::select(-longitude_DMS_W)
 
 dms <- rodent_data %>%
@@ -48,13 +49,13 @@ dms <- rodent_data %>%
 dms <- dms %>%
   mutate(lon_dd = parzer::parse_lon(long_dms),
          lat_dd = parzer::parse_lat(lat_dms)) %>%
-  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WHS84")
+  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WGS84")
 
 dd <- rodent_data %>%
   drop_na(longitude_D_E,latitude_D_N) %>%
   mutate(lon_dd = longitude_D_E,
          lat_dd = latitude_D_N) %>%
-  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WHS84")
+  st_as_sf(coords = c("lon_dd", "lat_dd"), crs = "+proj=longlat +datum=WGS84")
 
 utm <- rodent_data %>%
   drop_na(UTM_coordinates) %>%

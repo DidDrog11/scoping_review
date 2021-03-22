@@ -49,12 +49,15 @@ We specifically aim to address the following research questions :
 ### Eligibility criteria
 
   + Studies were included if:
-    + Reported rodent trapping activity (as opposed to hand captures)
+    + Trapping of small mammals including at least one species of Rodentia.
+    + Descriped trap used, length of trapping activity or location of trapping activity.
     + Included trapping activity from at least one West African country: Benin, Burkina-Faso, Cape Verde, Gambia, Ghana, Guinea, Guinea-Bissau, Cote d'Ivoire, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone and Togo
-    + Trapping activity occurred within a stated area (e.g. national park, village, house)
     + Recorded as outcome genus or species of trapped individual
     + Were available in English
     + Published in a peer-reviewed journal, a pre-print manuscript or a report by a an identifiable organisation/consultancy
+  + Studies were excluded if:
+    + Data were duplicated from a previously included study (i.e. secondary data analysis)
+    + No full text were available
 
 ### Search strategy
 
@@ -80,17 +83,54 @@ One reviewer screened titles, abstracts and full texts against the inclusion cri
 
 Data were extracted by one reviewer. A second reviewer verified a subset (10%) of included studies. A data extraction form was maintained on a Google sheets document. Data extracted included i) study identifiers; ii) study aims; iii) trapping methodology; iv) geolocation data; v) method of speciation; vi) trapping locations and dates; vii) trapped species; viii) number of trap-nights and ix) microorganisms of interest.
 
+### Study aims
+
+Where explicity stated the study aims were extracted. For those with no recorded aims the specific aims were inferred from the background or conclusions of manuscript or report. The aims of the studies were broadly categorised as pertaining to rodent ecology research or studies on risk of zoonoses. Within these subdivisions the aim were further subdivided into the following categories:
+  
+  + Rodent ecology
+    + Cat 1
+    + Cat 2
+  + Zoonoses risk
+    + Cat 1
+    + Cat 2
+
+### Trapping methodology
+
+The brand or description of the rodent trap was obtained from each study that reported this. For those using multiple devices all types were recorded.
+
+### Geolocation of trapping activity
+
+GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Locations were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [] based on study site name/region and through maps presented in the manuscript.
 
 ## Results
 
-A total of 2,200 records were identified, with 102 studies included in narrative synthesis (see Figure 1).
+A total of 2,200 records were identified, with 101 studies included in narrative synthesis (see Figure 1).
 
 ``` {r figure_1, echo = F, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given."}
 knitr::include_graphics(here::here("figures", "figure_1.png"))
 ```
 
-The earliest studies identified were from 1974 with the majority (62%) published since 2010. The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
+The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder studies on the risk of zoonoses (46%). 
 
-Most studies (97, 95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (26, 20%) than any other country. Ghana (16, 12%) and Guinea (15, 12%) were the next most frequently trapped countries, followed by Nigeria (11, 9%), Benin, Mali and Niger (all 9, 7%), Sierra Leone (8, 6%), Mauritania (5, 4%), Burkina Faso and Liberia (both 3, 2%), Guinea-Bissau had a single recorded trapping activity. 
+  + Aims
+  + Published/field
+  + Trap design
+  + Trap technique
+  + Trap nights/effort
 
-The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites.  
+The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
+
+Most studies (94, 95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 trapping activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (26, 20%) than any other country. Ghana (16, 12%) and Guinea (15, 12%) were the next most frequently trapped countries, followed by Nigeria (11, 9%), Benin, Mali and Niger (all 9, 7%), Sierra Leone (8, 6%), Mauritania and the Ivory Coast (both 5, 4%), Burkina Faso and Liberia (both 3, 2%), Guinea-Bissau had a single recorded trapping activity. 
+
+The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites. Trap sites were mapped to level one country administrative regions and density of sites per million square kilometers was calculated (see Figure 2). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore) and Eastern Sierra Leone were most intensively studied.
+
+``` {r figure_2, echo = F, fig.cap = "Density of trap sites per thousand km^2^", layout = "l-page"}
+knitr::include_graphics(here::here("figures", "static_site_density.png"))
+```
+
+  + Habitat classification
+  + Species classification
+  + Species trapped
+  + Pathogens
+
+  
