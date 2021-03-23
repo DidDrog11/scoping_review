@@ -15,7 +15,8 @@ pkgs =
     "raster",
     "mapview",
     "ggmap",
-    "taxize"
+    "taxize",
+    "distill"
   )
 pacman::p_load(pkgs, character.only = T)
 

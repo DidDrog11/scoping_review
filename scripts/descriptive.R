@@ -84,3 +84,18 @@ table(studies$speciation)
 studies %>%
   filter(year_publication < 2010) %>%
   count(speciation)
+
+# Rodents -----------------------------------------------------------------
+rodents <- tibble(rodent_data) %>%
+  dplyr::select(-geometry)
+
+genera <- rodents %>%
+  group_by(genus_gbif, genus) %>%
+  tally()
+
+
+
+speciation <- tibble(rodent_data) %>%
+  filter(species != "-") %>%
+  group_by(genus) %>%
+  distinct(classification, species_gbif)

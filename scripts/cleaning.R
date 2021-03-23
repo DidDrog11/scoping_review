@@ -14,7 +14,8 @@ rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
   mutate(country = as_factor(country),
          record_id = 1:nrow(.))
 
-retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_nights", "trap_night_unit", "record_id")
+retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use",
+                    "genus", "species", "classification", "genus_gbif", "species_gbif",  "number", "trap_nights", "trap_night_unit", "record_id")
 
 # Cleaning coordinates
 rodent_data %<>%
@@ -51,6 +52,11 @@ genus <- tibble(rodent_data %>%
 
 genus$gbif_id <- get_gbifid(snakecase::to_sentence_case(genus$genus), ask = T)
 
+genera <- classification(snakecase::to_sentence_case(genus$genus), db = "gbif")
+genera <- as_tibble(do.call(rbind,c(genera, make.row.names = T)), rownames = "genera") %>%
+  mutate(genera = str_sub(genera, 1, -3)) %>%
+  pivot_wider(id_cols = genera, names_from = rank, values_from = name)
+
 species <- tibble(rodent_data %>%
                   filter(species != "-") %>%
                   distinct(classification)) %>%
@@ -60,7 +66,7 @@ species$gbif_id <- get_gbifid(species$classification, ask = T)
 
 rodent_data %<>%
   full_join(., genus %>%
-              rename("genus_gbid" = gbif_id), by = "genus") %>%
+              rename("genus_gbif" = gbif_id), by = "genus") %>%
   full_join(., species %>%
               rename("species_gbif" = gbif_id), by = "classification")
 
