@@ -2,7 +2,6 @@ source(here::here("scripts", "libraries.r"))
 studies <- read_rds(here("data_clean", "studies.rds"))
 rodent_data <- read_rds(here("data_clean", "rodent_df.rds"))
 
-
 # Publication year --------------------------------------------------------
 ggplot(studies) +
   geom_bar(aes(x = year_publication)) +
@@ -12,18 +11,27 @@ ggplot(studies) +
        title = "Studies reporting rodent trapping in West African countries",
        caption = paste("N =", length(unique(studies$unique_id)), sep = " "))
 
-
 # Study aim ---------------------------------------------------------------
 table(studies$aim)
 ecology_studies <- studies %>% filter(aim == "Ecology")
 zoonoses_studies <- studies %>% filter(aim == "Zoonoses risk")
-
 
 # Trap type and setup -----------------------------------------------------
 trap_type <- studies %>%
   separate(col = trap_types, into = c("trap_1", "trap_2", "trap_3", "trap_4"), sep = ", ", remove = T) %>%
   pivot_longer(cols = c("trap_1", "trap_2", "trap_3", "trap_4"), values_to = "trap_type") %>%
   drop_na(trap_type)
+
+trap_type %>% filter(!trap_type %in% c("hand", "not_stated")) %>% group_by(unique_id) %>% summarise(n = n()) %>% count(n)
+
+trap_technique <- studies %>%
+  separate(col = trapping_method, into = c("method_1", "method_2", "method_3"), sep = ", ", remove = T) %>%
+  pivot_longer(cols = c("method_1", "method_2", "method_3"), values_to = "trap_method") %>%
+  drop_na(trap_method)
+
+table(trap_technique$trap_method)
+
+table(studies$trapping_effort)
 
 # Study location ----------------------------------------------------------
 countries <- studies %>%
@@ -69,3 +77,10 @@ a <- sites %>%
   summarise(n = n())
 table(a$n)
 
+# Species identification --------------------------------------------------
+
+table(studies$speciation)
+
+studies %>%
+  filter(year_publication < 2010) %>%
+  count(speciation)
