@@ -1,11 +1,7 @@
 source(here::here("scripts", "libraries.r"))
 source(here("scripts", "update_data.r"))
 
-register_google(google_api)
-
-
 # Studies -----------------------------------------------------------------
-
 
 studies <- read_rds(here("data_raw", "studies.rds")) %>%
   mutate(unique_id = as_factor(unique_id))
@@ -20,6 +16,7 @@ rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
 
 retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use", "genus", "species", "number", "trap_nights", "trap_night_unit", "record_id")
 
+# Cleaning coordinates
 rodent_data %<>%
   separate(col = longitude_DMS_W, into = c("long_degrees", "long_minutes", "long_seconds"), "_", remove = F) %>%
   separate(col = latitude_DMS_N, into = c("lat_degrees", "lat_minutes", "lat_seconds"), "_") %>%
@@ -43,6 +40,31 @@ rodent_data %<>%
          iso3c = countrycode(as.character(country), "country.name", "iso3c")) %>%
   dplyr::select(-longitude_DMS_W)
 
+# Cleaning species names and matching to GBIF
+rodent_data %<>%
+  mutate(genus = ifelse(genus == "nannomys" & species != "-", "mus", genus), # in GBIF nonnomys are classified as mus
+         classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "))
+
+genus <- tibble(rodent_data %>%
+                  distinct(genus)) %>%
+  arrange(genus)
+
+genus$gbif_id <- get_gbifid(snakecase::to_sentence_case(genus$genus), ask = T)
+
+species <- tibble(rodent_data %>%
+                  filter(species != "-") %>%
+                  distinct(classification)) %>%
+  arrange(classification)
+
+species$gbif_id <- get_gbifid(species$classification, ask = T)
+
+rodent_data %<>%
+  full_join(., genus %>%
+              rename("genus_gbid" = gbif_id), by = "genus") %>%
+  full_join(., species %>%
+              rename("species_gbif" = gbif_id), by = "classification")
+
+# Converting coordinate types into consistent decimal degrees
 dms <- rodent_data %>%
   drop_na(long_dms, lat_dms)
 

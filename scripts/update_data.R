@@ -1,5 +1,7 @@
 source(here::here("scripts", "libraries.R"))
 
+register_google(google_api)
+
 drive_download("https://docs.google.com/spreadsheets/d/1rQYjHhk6uk1PoKZZVsgFlmuqWGicU2tTisk9ddfAwTM/edit#gid=0", path = here("data_download", "included_studies.xlsx"), overwrite = T)
 
 studies <- read_xlsx(here("data_download", "included_studies.xlsx"), sheet = "study")
