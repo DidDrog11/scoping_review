@@ -151,6 +151,8 @@ Nine included studies did not describe the method used to identify trapped roden
 
 ### Reported species and species abundance
 
+From the included studies in 13 West African countries 131 distinct species were trapped. The majority were from the order Rodentia (102) with Muridae (83) being the largest family of rodents, followed by Gliridae (6), Nesomyidae (4), Sciuridae (3), Ctenodactylidae (2) and Anomaluridae, Dipodidae, Hystricidae and Thryonomidae (all 1). The next most represented orders were the Soricomorpha (25), Erinaceomorpha (3) and a single Afrosoricida. 
+
 
   + Species trapped
   + Pathogens

@@ -86,16 +86,33 @@ studies %>%
   count(speciation)
 
 # Rodents -----------------------------------------------------------------
-rodents <- tibble(rodent_data) %>%
-  dplyr::select(-geometry)
+wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
+                  "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
+                  "NER", "NGA", "SEN", "SLE", "TGO")
 
-genera <- rodents %>%
+genus_data <- read_rds(here("data_clean", "trapped_genera.rds"))
+species_data <- read_rds(here("data_clean", "species_data.rds"))
+
+genus_data %>%
+  count(order)
+
+speciation <- species_data %>%
+  filter(!is.na(species_gbif) & iso3c %in% wa_countries) %>%
+  mutate(species_gbif = as.character(species_gbif)) %>%
+  distinct(species_gbif, .keep_all = T) %>%
+  dplyr::select(classification, species_gbif, genus) %>%
+  mutate(genus = snakecase::to_sentence_case(genus)) %>%
+  arrange(classification) %>%
+  left_join(., genus_data %>%
+              distinct(genus, .keep_all = T), by = "genus")
+
+count_genus <- species_data %>%
   group_by(genus_gbif, genus) %>%
-  tally()
+  filter(genus != "rodentia") %>%
+  summarise(number = sum(number)) %>%
+  mutate(percent = round(number/sum(.$number)*100, 2)) %>%
+  arrange(-percent)
 
-
-
-speciation <- tibble(rodent_data) %>%
-  filter(species != "-") %>%
-  group_by(genus) %>%
-  distinct(classification, species_gbif)
+count_species <- species_data %>%
+  group_by(species_gbif) %>%
+  summarise(number = sum(number))
