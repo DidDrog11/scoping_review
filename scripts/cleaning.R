@@ -43,7 +43,9 @@ rodent_data %<>%
 
 # Cleaning species names and matching to GBIF
 rodent_data %<>%
-  mutate(genus = ifelse(genus == "nannomys" & species != "-", "mus", genus), # in GBIF nonnomys are classified as mus
+  mutate(genus = ifelse(genus == "nannomys" & species != "-", "mus",
+                        ifelse(genus == "myomys", "praomys", genus)), # in GBIF nonnomys are classified as mus and myomys are a synonym of praomys
+         species = ifelse(genus == "mus" & species == "domesticus", "musculus", species), # coalescing mus musculus and mus musculus domesticus
          classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "))
 
 genus <- tibble(rodent_data %>%

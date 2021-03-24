@@ -53,3 +53,23 @@ SLE_1 <- getData(name = "GADM", country ="SLE", level = 1, path = here("data_dow
 level_one <- ls(pattern = "_1")
 countries_level_1 <- do.call("list",mget(level_one))
 write_rds(countries_level_1, here("data_download", "admin_spatial", "level_1_admin.rds"))
+
+# Level 2 -------------------------------------------------
+
+BEN_2 <- getData(name = "GADM", country ="BEN", level = 2, path = here("data_download", "admin_spatial"))
+BFA_2 <- getData(name = "GADM", country ="BFA", level = 2, path = here("data_download", "admin_spatial"))
+CIV_2 <- getData(name = "GADM", country ="CIV", level = 2, path = here("data_download", "admin_spatial"))
+GHA_2 <- getData(name = "GADM", country ="GHA", level = 2, path = here("data_download", "admin_spatial"))
+GIN_2 <- getData(name = "GADM", country ="GIN", level = 2, path = here("data_download", "admin_spatial"))
+GNB_2 <- getData(name = "GADM", country ="GNB", level = 2, path = here("data_download", "admin_spatial"))
+LBR_2 <- getData(name = "GADM", country ="LBR", level = 2, path = here("data_download", "admin_spatial"))
+MLI_2 <- getData(name = "GADM", country ="MLI", level = 2, path = here("data_download", "admin_spatial"))
+MRT_2 <- getData(name = "GADM", country ="MRT", level = 2, path = here("data_download", "admin_spatial"))
+NER_2 <- getData(name = "GADM", country ="NER", level = 2, path = here("data_download", "admin_spatial"))
+NGA_2 <- getData(name = "GADM", country ="NGA", level = 2, path = here("data_download", "admin_spatial"))
+SEN_2 <- getData(name = "GADM", country ="SEN", level = 2, path = here("data_download", "admin_spatial"))
+SLE_2 <- getData(name = "GADM", country ="SLE", level = 2, path = here("data_download", "admin_spatial"))
+
+level_two <- ls(pattern = "_2")
+countries_level_2 <- do.call("list",mget(level_two))
+write_rds(countries_level_2, here("data_download", "admin_spatial", "level_2_admin.rds"))

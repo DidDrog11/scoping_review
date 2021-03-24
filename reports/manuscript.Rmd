@@ -114,10 +114,22 @@ A total of 2,200 records were identified, with 101 studies included in narrative
 knitr::include_graphics(here::here("figures", "figure_1.png"))
 ```
 
-The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder studies on the risk of zoonoses (46%). 
+The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder studies on zoonotic diseases (46%). 
 
   + Aims
   + Published/field
+
+### Location of studies
+
+The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
+
+Most studies (95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 trapping activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (20%) than any other country. Ghana (12%) and Guinea (12%) were the next most frequently trapped countries, followed by Nigeria (9%), Benin, Mali and Niger (7%), Sierra Leone (6%), Mauritania and the Ivory Coast (4%), Burkina Faso and Liberia (2%), Guinea-Bissau had a single recorded trapping activity. 
+
+The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites. Trap sites were mapped to level one country administrative regions and density of sites per million square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore) and Eastern Sierra Leone were most intensively studied. Mapping to level two administrative regions is displayed in Supplementary figure \@ref(fig:supfig1).
+
+``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
+knitr::include_graphics(here::here("figures", "static_site_density.png"))
+```
 
 ### Trap types
 
@@ -131,17 +143,7 @@ Thirty-three studies did not describe the setup of traps. Twenty five studies pl
 
 Trapping effort was variably reported in included studies. Thirty studies did not report trapping effort. Thirty-six studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures. Thirty-five studies reported incomplete data on trapping effort (i.e. number of study nights or total number of trap-nights). Trapping effort was more completely reported from ecology studies (53% complete information and 20% no information) compared to zoonoses risk studies (15% complete information and 41% no information).
 
-### Location of studies
-
-The included studies trapped in 16 countries, however, three countries were outside of the scope of this study (Cameroon, Chad and Morocco). At least a single trap site was recorded from 13 West African countries, with no rodent trapping reported from Gambia, Cape Verde or Togo. 
-
-Most studies (95%) were conducted in a single country, three studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. This lead to 124 trapping activities being reported across the 13 West African countries. More trapping activity was reported from Senegal (20%) than any other country. Ghana (12%) and Guinea (12%) were the next most frequently trapped countries, followed by Nigeria (9%), Benin, Mali and Niger (7%), Sierra Leone (6%), Mauritania and the Ivory Coast (4%), Burkina Faso and Liberia (2%), Guinea-Bissau had a single recorded trapping activity. 
-
-The trapping activity from the included studies was spread across 1,171 study sites. Twenty-four (24%) studies reported trapping only occurring at a single study site, 34 (33%) studies trapped at between two and five study sites the remaining 44 studies trapped at between six and 93 study sites. Trap sites were mapped to level one country administrative regions and density of sites per million square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore) and Eastern Sierra Leone were most intensively studied.
-
-``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
-knitr::include_graphics(here::here("figures", "static_site_density.png"))
-```
+  + Calculating where possible for site/study effort
 
   + Habitat classification
   
@@ -151,10 +153,28 @@ Nine included studies did not describe the method used to identify trapped roden
 
 ### Reported species and species abundance
 
-From the included studies in 13 West African countries 131 distinct species were trapped. The majority were from the order Rodentia (102) with Muridae (83) being the largest family of rodents, followed by Gliridae (6), Nesomyidae (4), Sciuridae (3), Ctenodactylidae (2) and Anomaluridae, Dipodidae, Hystricidae and Thryonomidae (all 1). The next most represented orders were the Soricomorpha (25), Erinaceomorpha (3) and a single Afrosoricida. 
+Across all West African study sites there were 59,343 trapped small mammals (592 were trapped outside of West Africa), 2,830 (4.8%) trapped individuals were identified to order level (Rodentia), 5,329 (9%) were identified to genus level, the remaining 51,184 (86%) were identified to species level. Of the 131 distinct identified species trapped (see Supplementary table 1) the majority were from the order Rodentia (102) with Muridae (83) being the largest family of rodents, followed by Gliridae (6), Nesomyidae (4), Sciuridae (3), Ctenodactylidae (2) and Anomaluridae, Dipodidae, Hystricidae and Thryonomidae (all 1). The remaining 29 species came from the orders of the Soricomorpha (25), Erinaceomorpha (3) and a single Afrosoricida. 
 
+More individuals were trapped in studies conducted to investigate the risk of zoonoses (35,892, 60%) than from ecology studies (23,451 40%). Animals trapped as part of ecological research were more often identified to species level (93%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (22,665, 39.7%), *Rattus sp.* (7,718, 13.5%), *Mus sp.* (7,317, 12.8%), *Praomys sp.* (4,887, 8.6%) and *Arvicanthis sp.* (4,408, 7.72%). At the species level *Mastomys natalensis* (10,419, 20.2%) and *Mastomys erythroleucus* (7,184, 13.9%) were the most commonly trapped rodents, *Rattus rattus* (6,229, 12.1%), *Mus musculus* (6,030, 11.8%), *Arvicanthis niloticus* (4,101, 8%) and *Mastomys huberti* (3,106, 6%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
 
-  + Species trapped
+``` {r dist, fig.cap = "Presence and absence of the 6 most commonly trapped species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
+knitr::include_graphics(here::here("figures", "top_6.png"))
+```
+
   + Pathogens
 
-  
+## Supplementary material 
+
+#### Supplementary figure 1
+
+``` {r supfig1, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
+knitr::include_graphics(here::here("figures", "static_site_density_2.png"))
+```
+
+#### Supplementary table 1
+
+The number and percentage of trapped rodents identified to species level
+
+``` {r sup_table, echo = F}
+DT::datatable(readRDS(here::here("tables", "sup_table1.rds")))
+```

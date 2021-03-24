@@ -18,6 +18,11 @@ list2env(level_1, envir = .GlobalEnv)
 level_1_all <- do.call(rbind.SpatialPolygonsDataFrame, level_1) %>%
   st_as_sf()
 
+level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+list2env(level_2, envir = .GlobalEnv)
+level_2_all <- do.call(rbind.SpatialPolygonsDataFrame, level_2) %>%
+  st_as_sf()
+
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
 bbox_rodent <- st_bbox(rodent_spatial)
 
@@ -96,12 +101,34 @@ level_1_sites <- level_1_all %>%
          site_density = ifelse(is.na(site_density), NA, site_density))
 
 site_density <- tm_shape(level_1_sites) +  tm_polygons(col = "site_density", style = "fixed", breaks = c(0, 0.001, 0.005, 0.01, 0.05, 1, 6),
-                                                       palette = "-viridis", colorNA = NULL, border.alpha = 0.4, border.col = "grey", lwd = 1,
+                                                       palette = "-viridis", colorNA = NULL, border.alpha = 1, border.col = "grey", lwd = 0.1,
                                                        title = parse(text = paste("Density~of~trap~sites~per~1000~km^2"))) +
   tm_shape(level_0 %>%
              filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1)
 
 tmap_save(site_density, filename = here("figures", "static_site_density.png"))
+
+sites_2 <- st_intersection(x = level_2_all, y = rodent_spatial)
+n_sites_region <- sites_2 %>%
+  group_by(NAME_2) %>%
+  count() %>%
+  tibble()
+
+level_2_sites <- level_2_all %>%
+  left_join(., n_sites_region %>%
+              dplyr::select(-geometry),
+            by = "NAME_2") %>%
+  mutate(area_m2 = st_area(.),
+         site_density = n/(as.numeric(area_m2)/1000000),
+         site_density = ifelse(is.na(site_density), NA, site_density))
+
+site_density_level2 <- tm_shape(level_2_sites) +  tm_polygons(col = "site_density", style = "fixed", breaks = c(0, 0.001, 0.005, 0.01, 0.05, 1, 6),
+                                                       palette = "-viridis", colorNA = NULL, border.alpha = 1, border.col = "grey", lwd = 0.1,
+                                                       title = parse(text = paste("Density~of~trap~sites~per~1000~km^2"))) +
+  tm_shape(level_0 %>%
+             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1)
+
+tmap_save(site_density_level2, filename = here("figures", "static_site_density_2.png"))
 
 high_density <- level_1_sites %>%
   arrange(-site_density) %>%

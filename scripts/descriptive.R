@@ -106,6 +106,42 @@ speciation <- species_data %>%
   left_join(., genus_data %>%
               distinct(genus, .keep_all = T), by = "genus")
 
+species_data %>%
+  left_join(., studies %>%
+              dplyr::select(unique_id, aim),
+            by = "unique_id") %>%
+  filter(iso3c %in% wa_countries) %>%
+  group_by(aim) %>%
+  summarise(n = sum(number))
+
+species_data %>%
+  left_join(., studies %>%
+              dplyr::select(unique_id, aim),
+            by = "unique_id") %>%
+  filter(iso3c %in% wa_countries & genus == "rodentia") %>%
+  group_by(aim, unique_id) %>%
+  summarise(n = sum(number))
+
+species_data %>%
+  left_join(., studies %>%
+              dplyr::select(unique_id, aim),
+            by = "unique_id") %>%
+  filter(iso3c %in% wa_countries & species %in% c("-", "sp.1", "sp.2") & genus != "rodentia") %>%
+  group_by(aim) %>%
+  summarise(n = sum(number))
+
+species_data %>%
+  left_join(., studies %>%
+                         dplyr::select(unique_id, aim),
+                       by = "unique_id") %>%
+  filter(iso3c %in% wa_countries & !is.na(species_gbif)) %>%
+  group_by(aim) %>%
+  summarise(n = sum(number))
+
+sup_table <- species_data %>%
+  group_by(classification) %>%
+  summarise(number = sum(number))
+
 count_genus <- species_data %>%
   group_by(genus_gbif, genus) %>%
   filter(genus != "rodentia") %>%
@@ -114,5 +150,14 @@ count_genus <- species_data %>%
   arrange(-percent)
 
 count_species <- species_data %>%
-  group_by(species_gbif) %>%
-  summarise(number = sum(number))
+  group_by(species_gbif, classification) %>%
+  drop_na(species_gbif) %>%
+  summarise(number = sum(number)) %>%
+  mutate(percent = round(number/sum(.$number)*100, 2)) %>%
+  arrange(-percent) %>%
+  rename(`GBIF ID` = "species_gbif",
+         "Classification" = "classification",
+         "Number of individuals" = "number",
+         "Percent (%)" = "percent") %>%
+  mutate(Classification = snakecase::to_sentence_case(Classification))
+write_rds(count_species, here("tables", "sup_table1.rds"))
