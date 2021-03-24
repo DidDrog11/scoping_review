@@ -55,7 +55,9 @@ genus$gbif_id <- get_gbifid(snakecase::to_sentence_case(genus$genus), ask = T)
 genera <- classification(snakecase::to_sentence_case(genus$genus), db = "gbif")
 genera <- as_tibble(do.call(rbind,c(genera, make.row.names = T)), rownames = "genera") %>%
   mutate(genera = str_sub(genera, 1, -3)) %>%
-  pivot_wider(id_cols = genera, names_from = rank, values_from = name)
+  pivot_wider(id_cols = genera, names_from = rank, values_from = name) %>%
+  dplyr::select(-genera) %>%
+  write_rds(here("data_clean", "trapped_genera.rds"))
 
 species <- tibble(rodent_data %>%
                   filter(species != "-") %>%
@@ -69,6 +71,10 @@ rodent_data %<>%
               rename("genus_gbif" = gbif_id), by = "genus") %>%
   full_join(., species %>%
               rename("species_gbif" = gbif_id), by = "classification")
+
+rodent_data %>%
+  dplyr::select(all_of(retain_columns)) %>%
+  write_rds(here("data_clean", "species_data.rds"))
 
 # Converting coordinate types into consistent decimal degrees
 dms <- rodent_data %>%
