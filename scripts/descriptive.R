@@ -16,6 +16,9 @@ table(studies$aim)
 ecology_studies <- studies %>% filter(aim == "Ecology")
 zoonoses_studies <- studies %>% filter(aim == "Zoonoses risk")
 
+aim_detail_eco <- studies %>% filter(aim == "Ecology") %>% group_by(aim_detail_2) %>% summarise(n = n())
+aim_detail_zoo <- studies %>% filter(aim == "Zoonoses risk") %>% group_by(aim_detail_2) %>% summarise(n = n())
+
 # Trap type and setup -----------------------------------------------------
 trap_type <- studies %>%
   separate(col = trap_types, into = c("trap_1", "trap_2", "trap_3", "trap_4"), sep = ", ", remove = T) %>%
@@ -31,8 +34,36 @@ trap_technique <- studies %>%
 
 table(trap_technique$trap_method)
 
+# Trapping effort ---------------------------------------------------------
+
 table(studies$trapping_effort)
 
+t_effort <- studies %>% filter(trapping_effort == "Yes") %>% distinct(unique_id)
+
+s_effort <- as.data.frame(rodent_data) %>% filter(unique_id %in% t_effort$unique_id) %>%
+  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+  summarise(trap_nights = unique(trap_nights)) %>%
+  group_by(unique_id) %>%
+  summarise(trap_nights = sum(trap_nights))
+
+summary(s_effort$trap_nights)
+
+t_effort <- as.data.frame(rodent_data) %>% filter(unique_id %in% t_effort$unique_id) %>%
+  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+  summarise(trap_nights = unique(trap_nights))
+
+summary(t_effort$trap_nights)
+
+inc_effort <- studies %>% filter(trapping_effort == "Incomplete")
+
+inc_effort <- as.data.frame(rodent_data) %>% filter(unique_id %in% inc_effort$unique_id & !is.na(trap_nights)) %>%
+  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+  summarise(trap_nights = unique(trap_nights)) %>%
+  group_by(unique_id) %>%
+  summarise(trap_nights = unique(trap_nights)) %>%
+  summarise(trap_nights = sum(trap_nights))
+
+summary(inc_effort$trap_nights)
 # Study location ----------------------------------------------------------
 countries <- studies %>%
   full_join(., rodent_data %>%
@@ -90,17 +121,17 @@ wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
                   "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
                   "NER", "NGA", "SEN", "SLE", "TGO")
 
-genus_data <- read_rds(here("data_clean", "trapped_genera.rds"))
+genus_data <- read_rds(here("data_clean", "genus_hierarchy.rds"))
 species_data <- read_rds(here("data_clean", "species_data.rds"))
 
 genus_data %>%
   count(order)
 
 speciation <- species_data %>%
-  filter(!is.na(species_gbif) & iso3c %in% wa_countries) %>%
-  mutate(species_gbif = as.character(species_gbif)) %>%
-  distinct(species_gbif, .keep_all = T) %>%
-  dplyr::select(classification, species_gbif, genus) %>%
+  filter(!is.na(gbif_id) & iso3c %in% wa_countries) %>%
+  mutate(gbif_id = as.character(gbif_id)) %>%
+  distinct(gbif_id, .keep_all = T) %>%
+  dplyr::select(classification, gbif_id, genus) %>%
   mutate(genus = snakecase::to_sentence_case(genus)) %>%
   arrange(classification) %>%
   left_join(., genus_data %>%

@@ -85,26 +85,19 @@ Data were extracted by one reviewer. A second reviewer verified a subset (10%) o
 
 ### Study aims
 
-Where explicity stated the study aims were extracted. For those with no recorded aims the specific aims were inferred from the background or conclusions of manuscript or report. The aims of the studies were broadly categorised as pertaining to rodent ecology research or studies on risk of zoonoses. Within these subdivisions the aim were further subdivided into the following categories:
-  
-  + Rodent ecology
-    + Cat 1
-    + Cat 2
-  + Zoonoses risk
-    + Cat 1
-    + Cat 2
-
-### Trapping methodology
-
-The brand or description of the rodent trap was obtained from each study that reported this. For those using multiple devices all types were recorded.
+Where explicitly stated the study aims were extracted. For those with no recorded aims the specific aims were inferred from the background or conclusions of manuscript or report. The aims of the studies were broadly categorised as pertaining to rodent ecology research or studies on risk of zoonoses and further categorised into detailed aims.
 
 ### Geolocation of trapping activity
 
 GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Locations were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [] based on study site name/region and through maps presented in the manuscript.
 
+### Trapping methodology
+
+The brand or description of the rodent trap was obtained from each study. For those using multiple devices all types were recorded.
+
 ### Genus and species definitions
 
-Designations of species change over time as new evidence emerges. As included studies span 45 years disambiguation of historical species names was performed using Taxize...
+Classification of species is variable over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility []. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
 
 ## Results
 
@@ -116,8 +109,61 @@ knitr::include_graphics(here::here("figures", "figure_1.png"))
 
 The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder studies on zoonotic diseases (46%). 
 
-  + Aims
-  + Published/field
+### Aims of included studies 
+
+The detailed aims of the included studies are broken down by the identifier of ecology or zoonosis research, the number in brackets refers to the number of studies including this as an aim:
+
+  + Ecology (n = 55)
+    + Biodiversity
+      + To investigate biodiversity of rodent populations (33)
+      + To conduct a small mammal survey (19)
+      + To characterise biodiversity of rodent parasites (4)
+      + To understand the effect of nature reserve designation on rodent biodiversity (1)
+    + Rodent population dynamics
+      + To characterise rodent population dynamics (7)
+      + To describe survival and recruitment within a rodent population (1)
+      + To investigate survival and recruitment in an island rodent population (1)
+    + Rodent species assemblages
+      + To understand the impact of land use change on rodent assemblages (5)
+      + To characterise rodent assemblages along an invasion front (4)
+      + To characterise rodent assemblages in different habitats (4)
+      + To characterise commensal rodent assemblages (1)
+      + To investigate the effect of habitat and aridity on rodent assemblages (1)
+      + To understand the effect of habitat on rodent parasite assemblages (1)
+      + To investigate the the impact of wildfires on population assemblages (1)
+      + To understand rodent assemblage structure in urban settings (1)
+      + To characterise seasonal changes in rodent assemblages (1)
+    + Rodent genetics and species classification
+      + To perform genetic based revision of species classification (2)
+      + To investigate the phylogenetics of invasive rodent species (1)
+      + To understand chromosomal variation in a specific rodent species (1)
+      + To characterise morphological variation within a rodent species (1)
+    + Rodent adaptation and behaviour
+      + To understand the effect of a water poor diet on specific rodent species (1)
+      + To investigate the feeding ecology of shrews (1)
+      + To understand the social organisation of commensal rodents (1)
+    + Other
+      + To infer historical rodent habitat range expansion (1)
+      + To characterise the impact of rodent pest control (1)
+  + Zoonoses risk (n = 46)
+    + Zoonotic disease prevalence
+      + To determine the prevalence of zoonoses in animal population (27)
+      + To investigate the prevalence of zoonotic bacteria in rodent ectoparasites (1)
+      + To identify clusters of infected rodents (1)
+      + To investigate regional distribution of zoonosis risk (1)
+    + Zoonotic disease spillover risk
+      + To investigate the potential reservoir of zoonotic pathogen (12)
+      + To assess the risk of zoonotic spillover (11)
+      + To investigate the source of a zoonotic outbreak (2)
+      + To characterise host species biodiversity (2)
+      + To investigate the effect of rodent control on zoonoses risk (1)
+      + To characterise the effect of invasive species on zoonoses risk (1)
+    + Effect of environmental factors on zoonoses
+      + To investigate the effect of environment and climate on arthropod vectors (2)
+    + Other
+      + To investigate the phylogenetics of a zoonotic pathogen (2)
+      + To investigate the evolutionary relationships of pathogen strains (1)
+      + To investigate parasite biodiversity (1)
 
 ### Location of studies
 
@@ -141,11 +187,13 @@ Thirty-three studies did not describe the setup of traps. Twenty five studies pl
 
 ### Trapping effort
 
-Trapping effort was variably reported in included studies. Thirty studies did not report trapping effort. Thirty-six studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures. Thirty-five studies reported incomplete data on trapping effort (i.e. number of study nights or total number of trap-nights). Trapping effort was more completely reported from ecology studies (53% complete information and 20% no information) compared to zoonoses risk studies (15% complete information and 41% no information).
+Trapping effort was variably reported in included studies. Thirty studies did not report trapping effort. Thirty-four studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures (the unit of analysis). Thirty-seven studies reported incomplete data on trapping effort (i.e. number of study nights or total number of trap-nights). Trapping effort was more completely reported from ecology studies (51% complete information and 20% no information) compared to zoonoses risk studies (13% complete information and 41% no information).
 
-  + Calculating where possible for site/study effort
+Among studies that reported complete trap night information the median number of trap nights per study was 4,764 (Interquartile range (IQR) = 1,227-10,477) with a minimum of 240 trap nights and maximum of 45,274 trap nights. At the level of the studies unit of analysis the median number of trap nights was 360 (IQR = 246-793). In studies with incomplete data on trap nights at the unit of analysis there was a median of 7,893 trap nights (IQR = 1,401-10,331) conducted, for 21 studies reporting only on the number of days or nights trapping was performed activities typically lasted between 1-4 nights.
 
-  + Habitat classification
+### Habitat classification
+
+No included studies included a reference to a specific habitat classification scheme. **Describe classifications used**
   
 ### Species identification
 
@@ -161,7 +209,10 @@ More individuals were trapped in studies conducted to investigate the risk of zo
 knitr::include_graphics(here::here("figures", "top_6.png"))
 ```
 
-  + Pathogens
+### Pathogens
+
+
+
 
 ## Supplementary material 
 
