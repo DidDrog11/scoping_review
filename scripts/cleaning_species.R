@@ -7,16 +7,20 @@ rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
 retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use",
                     "genus", "species", "classification", "gbif_id", "genus_gbif", "species_gbif",  "number", "trap_nights", "trap_night_unit", "record_id")
 
-genus_synonym <- tibble(syn = c("myomys", "nannomys"), acc = c("praomys", "mus"))
-species_synonym <- tibble(syn = c("mus domesticus", "aethomys hypoxanthus", "crocidura megalura", "dasymys bentleyae", "erinaceus albiventris", "gerbilliscus gambianus", "tatera guineae", "gerbilliscus guineae", "gerbilliscus kempi", "gerbillus campestris", "gerbillus gambianus", "grammomys rutilans", "graphiurus hueti", "graphiurus parvus", "hemiechinus aethiopicus", "lophuromys flavipunctatus", "massouteria mzabi", "mastomys hildebrandtii", "steatomys caurianus", "tatera gambiana", "tatera guinea", "tatera guineae", "tatera kempi", "tatera robusta", "taterillus gracillis", "thamnomys rutilans"),
-                          acc = c("mus musculus", "oenomys hypoxanthus", "suncus megalura", "dasymys incomtus", "atelerix albiventris", "gerbilliscus gambiana", "gerbilliscus guinea", "gerbilliscus guinea", "gerbilliscus kempii", "dipodillus campestris", "gerbilliscus gambiana", "grammomys poensis", "graphiurus nagtglasii", "graphiurus kelleni", "paraechinus aethiopicus", "lophuromys flavopunctatus", "massoutiera mzabi", "mastomys natalensis", "steatomys caurinus", "gerbilliscus kempii", "gerbilliscus guineae", "gerbilliscus guineae", "gerbilliscus kempii", "gerbilliscus robusta", "taterillus gracilis", "grammomys poensis"))
+genus_synonym <-  as.list(c("praomys", "mus"))
+names(genus_synonym) <- c("myomys", "nannomys")
+
+accepted_names <- as.list(c("mus musculus", "oenomys hypoxanthus", "suncus megalura", "dasymys incomtus", "atelerix albiventris", "gerbilliscus gambiana", "gerbilliscus guinea", "gerbilliscus guinea", "gerbilliscus kempii", "dipodillus campestris", "gerbilliscus gambiana", "grammomys poensis", "graphiurus nagtglasii", "graphiurus kelleni", "paraechinus aethiopicus", "lophuromys flavopunctatus", "massoutiera mzabi", "mastomys natalensis", "steatomys caurinus", "gerbilliscus kempii", "gerbilliscus guineae", "gerbilliscus guineae", "gerbilliscus kempii", "gerbilliscus robusta", "taterillus gracilis", "grammomys poensis"))
+names(accepted_names) <- c("mus domesticus", "aethomys hypoxanthus", "crocidura megalura", "dasymys bentleyae", "erinaceus albiventris", "gerbilliscus gambianus", "tatera guineae", "gerbilliscus guineae", "gerbilliscus kempi", "gerbillus campestris", "gerbillus gambianus", "grammomys rutilans", "graphiurus hueti", "graphiurus parvus", "hemiechinus aethiopicus", "lophuromys flavipunctatus", "massouteria mzabi", "mastomys hildebrandtii", "steatomys caurianus", "tatera gambiana", "tatera guinea", "tatera guineae", "tatera kempi", "tatera robusta", "taterillus gracillis", "thamnomys rutilans")
+
+write_rds(genus_synonym, here("data_clean", "genus_dictionary.rds"))
+write_rds(accepted_names, here("data_clean", "species_dictionary.rds"))
 
 # Cleaning species names and matching to GBIF
-rodent_data$genus <- plyr::mapvalues(rodent_data$genus, from = genus_synonym$syn, to = genus_synonym$acc)
 rodent_data %<>%
-  mutate(classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "))
-rodent_data$classification <- plyr::mapvalues(rodent_data$classification, from = species_synonym$syn, to = species_synonym$acc)
-rodent_data %<>%
+  mutate(genus = recode(genus, !!!genus_synonym),
+         classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "),
+         classification = recode(classification, !!!accepted_names)) %>%
   separate(col = classification, into = c("genus", "species"), sep = " ", remove = F) %>%
   mutate(species = ifelse(species %in% c("sp.", "sp.1", "sp.2"), "", species))
 

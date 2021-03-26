@@ -93,11 +93,15 @@ GPS locations were extracted for the most precise location presented i.e. trap, 
 
 ### Trapping methodology
 
-The brand or description of the rodent trap was obtained from each study. For those using multiple devices all types were recorded.
+The brand or description of the rodent trap was obtained from each study. For those using multiple devices all types were recorded. Type of trapping method. Effort of trapping
+
+### Habitat classification
 
 ### Genus and species definitions
 
 Classification of species is variable over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility []. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
+
+### Pathogen testing
 
 ## Results
 
@@ -111,59 +115,11 @@ The earliest studies identified were from 1974 with the majority (62%) published
 
 ### Aims of included studies 
 
-The detailed aims of the included studies are broken down by the identifier of ecology or zoonosis research, the number in brackets refers to the number of studies including this as an aim:
+The detailed aims of the included studies are shown following division into the themes of ecological or zoonosis research. Biodiversity of rodents was a shared aim between the two themes with 37 ecological studies and 2 zoonoses studies investigating this. The remaining aims were more disparate with ecological studies investigating rodent population dynamics, rodent species assemblages, the genetics of rodents and their behaviours. Most zoonotic disease research focussed on prevalence of pathogens in rodent populations, the risk of spillover to human populations, the identity of pathogen reservoir species with fewer studies investigating the phylogenetics of pathogen strains (see Figure \@ref(fig:aims).
 
-  + Ecology (n = 55)
-    + Biodiversity
-      + To investigate biodiversity of rodent populations (33)
-      + To conduct a small mammal survey (19)
-      + To characterise biodiversity of rodent parasites (4)
-      + To understand the effect of nature reserve designation on rodent biodiversity (1)
-    + Rodent population dynamics
-      + To characterise rodent population dynamics (7)
-      + To describe survival and recruitment within a rodent population (1)
-      + To investigate survival and recruitment in an island rodent population (1)
-    + Rodent species assemblages
-      + To understand the impact of land use change on rodent assemblages (5)
-      + To characterise rodent assemblages along an invasion front (4)
-      + To characterise rodent assemblages in different habitats (4)
-      + To characterise commensal rodent assemblages (1)
-      + To investigate the effect of habitat and aridity on rodent assemblages (1)
-      + To understand the effect of habitat on rodent parasite assemblages (1)
-      + To investigate the the impact of wildfires on population assemblages (1)
-      + To understand rodent assemblage structure in urban settings (1)
-      + To characterise seasonal changes in rodent assemblages (1)
-    + Rodent genetics and species classification
-      + To perform genetic based revision of species classification (2)
-      + To investigate the phylogenetics of invasive rodent species (1)
-      + To understand chromosomal variation in a specific rodent species (1)
-      + To characterise morphological variation within a rodent species (1)
-    + Rodent adaptation and behaviour
-      + To understand the effect of a water poor diet on specific rodent species (1)
-      + To investigate the feeding ecology of shrews (1)
-      + To understand the social organisation of commensal rodents (1)
-    + Other
-      + To infer historical rodent habitat range expansion (1)
-      + To characterise the impact of rodent pest control (1)
-  + Zoonoses risk (n = 46)
-    + Zoonotic disease prevalence
-      + To determine the prevalence of zoonoses in animal population (27)
-      + To investigate the prevalence of zoonotic bacteria in rodent ectoparasites (1)
-      + To identify clusters of infected rodents (1)
-      + To investigate regional distribution of zoonosis risk (1)
-    + Zoonotic disease spillover risk
-      + To investigate the potential reservoir of zoonotic pathogen (12)
-      + To assess the risk of zoonotic spillover (11)
-      + To investigate the source of a zoonotic outbreak (2)
-      + To characterise host species biodiversity (2)
-      + To investigate the effect of rodent control on zoonoses risk (1)
-      + To characterise the effect of invasive species on zoonoses risk (1)
-    + Effect of environmental factors on zoonoses
-      + To investigate the effect of environment and climate on arthropod vectors (2)
-    + Other
-      + To investigate the phylogenetics of a zoonotic pathogen (2)
-      + To investigate the evolutionary relationships of pathogen strains (1)
-      + To investigate parasite biodiversity (1)
+``` {r aims, fig.cap = "The aims of included studies following division into ecological and zoonotic infectious disease themes. Multiple aims were identified from each study, the number on the arrow indicates the number of distinct studies with that aim ", echo = F, layout = "l-page"}
+knitr::include_graphics(here::here("figures", "study_aims.png"))
+```
 
 ### Location of studies
 
@@ -181,19 +137,21 @@ knitr::include_graphics(here::here("figures", "static_site_density.png"))
 
 Of the included studies 15 did not state the type of trap used with three studies reporting supplementary hand trapping of rodents alongside trap use. For the remaining studies three used more than four types of rodent traps, seven used three types, 31 used two types the remaining 45 studies used a single trap type. The most commonly used trap was the Sherman trap (67%) [] which is available in several sizes, locally made wire mesh traps were used in 29 studies (34%), less commonly used trap types included the Museum special, Tomahawk, Victor, Snaptraps and Firobind traps.
 
-### Trap setup
+### Trap setup within the study area
 
-Thirty-three studies did not describe the setup of traps. Twenty five studies placed transect lines of traps through study sites with thirteen studies placing traps along a line but not clearly describing a transect across a defined site. Sixteen studies purposefully sample houses, with four further studies purposefully placing traps in targeted locationes. Nine studies placed traps in a grid across single or multiple habitat types. Three studies described a stratified or randomised approach to placing traps. Trap setup was typically reported for ecology studies (80%) with transect lines the most commonly used approach. Trap setup was reported in 53% of zoonoses risk studies with purposeful placement of traps in houses the most common approach (20%).
+Thirty-three studies did not describe the structure of the trap setup within the defined study area. Twenty five studies placed transect lines of traps through study sites with thirteen studies placing traps along a line but not clearly describing a transect across a defined site. Sixteen studies purposefully sampled houses, with four further studies purposefully placing traps in targeted locations (i.e. near rivers, in fields, by houses). Nine studies placed traps in a structured grid across a single or multiple specified habitat types. Three studies described a stratified or randomised approach to placing traps within a defined area. Trap setup was commonly reported in ecology studies (80%) with transect lines the most commonly used approach. Trap setup was reported in 53% of zoonoses risk studies with purposeful placement of traps in houses the most common approach (20%).
 
 ### Trapping effort
 
-Trapping effort was variably reported in included studies. Thirty studies did not report trapping effort. Thirty-four studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures (the unit of analysis). Thirty-seven studies reported incomplete data on trapping effort (i.e. number of study nights or total number of trap-nights). Trapping effort was more completely reported from ecology studies (51% complete information and 20% no information) compared to zoonoses risk studies (13% complete information and 41% no information).
+Trapping effort was variably reported across included studies. Thirty studies did not report any measures of trapping effort. Thirty-four studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures  (the unit of analysis) and were classified as complete reports. Thirty-seven studies had incomplete reports on trapping effort due to not presenting the number of trap nights at the appropriate unit of analysis (i.e. number of study nights only or total number of trap-nights). Trapping effort was more completely reported from ecology studies (51% complete information and 20% no information) compared to zoonoses risk studies (13% complete information and 41% no information).
 
-Among studies that reported complete trap night information the median number of trap nights per study was 4,764 (Interquartile range (IQR) = 1,227-10,477) with a minimum of 240 trap nights and maximum of 45,274 trap nights. At the level of the studies unit of analysis the median number of trap nights was 360 (IQR = 246-793). In studies with incomplete data on trap nights at the unit of analysis there was a median of 7,893 trap nights (IQR = 1,401-10,331) conducted, for 21 studies reporting only on the number of days or nights trapping was performed activities typically lasted between 1-4 nights.
+Among studies that reported complete trap-night information the median number of trap-nights per study was 4,764 (Interquartile range (IQR) = 1,227-10,477) with a minimum of 240 trap-nights and maximum of 45,274 trap-nights. For studies reporting the number of trap-nights at the unit of analysis (typically study site or habitat type) the median number of trap-nights was 360 (IQR = 246-793). In studies with incomplete reports on trap-nights at the unit of analysis there was a median of 7,893 trap-nights (IQR = 1,401-10,331) conducted, for 21 studies reporting only on the number of days or nights trapping was performed on activities typically lasted between 1-4 nights.
 
 ### Habitat classification
 
-No included studies included a reference to a specific habitat classification scheme. **Describe classifications used**
+No studies classified habitats with reference to a specific habitat classification scheme. Seven studies did not describe the local habitat where traps were placed (3 ecology, 4 zoonoses). The remaining studies used greater than 160 descriptions of the habitat type in which trapping was conducted, further, the resolution of the description ranged from the habitat of the location of the trap through to the study site. The 160 reported habitat types were combined into 32 categories (see Supplementary table 2 for the habitat dictionary) for further analysis. At least one habitat was recorded for 16,168 trap sites (95%), with two or more habitats for a single trap site recorded for 4,195 (26%) sites. As single sites could span multiple habitat types the number of habitat type trap site combinations was 20,369. The most commonly trapped sites were in or around buildings (31%), in areas described as the rodents "natural habitat" (26%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (6%) and within or around villages (5%).
+
+Habitat type was more comprehensively reported from ecology than from zoonoses studies. Thirty-one habitat categories were reported from ecology studies with the most commonly investigated habitats being agriculture (23%), in or around buildings (18%) and within forests (15%). Among studies on zoonoses 15 habitat categories were reported, the most commonly reported classification was described as the rodents "natural habitat" (39%), within or around buildings (38%) and in agricultural settings (7%).
   
 ### Species identification
 
@@ -201,9 +159,13 @@ Nine included studies did not describe the method used to identify trapped roden
 
 ### Reported species and species abundance
 
-Across all West African study sites there were 59,343 trapped small mammals (592 were trapped outside of West Africa), 2,830 (4.8%) trapped individuals were identified to order level (Rodentia), 5,329 (9%) were identified to genus level, the remaining 51,184 (86%) were identified to species level. Of the 131 distinct identified species trapped (see Supplementary table 1) the majority were from the order Rodentia (102) with Muridae (83) being the largest family of rodents, followed by Gliridae (6), Nesomyidae (4), Sciuridae (3), Ctenodactylidae (2) and Anomaluridae, Dipodidae, Hystricidae and Thryonomidae (all 1). The remaining 29 species came from the orders of the Soricomorpha (25), Erinaceomorpha (3) and a single Afrosoricida. 
+Across all West African study sites there were 59,343 trapped small mammals (592 were trapped outside of West African countries), 2,830 (4.8%) trapped individuals were identified to order level (Rodentia), 5,329 (9%) were identified to genus level, the remaining 51,184 (86%) were identified to species level. Of the 124 distinct identified species trapped (see Supplementary table 1) the majority were from the order Rodentia (96) with Muridae (79) being the largest family of rodents, followed by Gliridae and Nesomyidae (both 4), Sciuridae (3), Ctenodactylidae (2) and Anomaluridae, Dipodidae, Hystricidae and Thryonomidae (all 1). The remaining 29 species came from the orders of the Soricomorpha (25), Erinaceomorpha (2) and Afrosoricida (1). 
 
-More individuals were trapped in studies conducted to investigate the risk of zoonoses (35,892, 60%) than from ecology studies (23,451 40%). Animals trapped as part of ecological research were more often identified to species level (93%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (22,665, 39.7%), *Rattus sp.* (7,718, 13.5%), *Mus sp.* (7,317, 12.8%), *Praomys sp.* (4,887, 8.6%) and *Arvicanthis sp.* (4,408, 7.72%). At the species level *Mastomys natalensis* (10,419, 20.2%) and *Mastomys erythroleucus* (7,184, 13.9%) were the most commonly trapped rodents, *Rattus rattus* (6,229, 12.1%), *Mus musculus* (6,030, 11.8%), *Arvicanthis niloticus* (4,101, 8%) and *Mastomys huberti* (3,106, 6%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
+More individuals were trapped in studies conducted to investigate the risk of zoonoses (35,892, 60%) than from ecology studies (23,451 40%). Animals trapped as part of ecological research were more often identified to species level (93%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (22,665, 39.7%), *Rattus sp.* (7,718, 13.5%), *Mus sp.* (7,324, 12.8%), *Praomys sp.* (4,977, 8.7%) and *Arvicanthis sp.* (4,408, 7.72%). At the species level *Mastomys natalensis* (10,351, 20.2%) and *Mastomys erythroleucus* (7,052, 13.8%) were the most commonly trapped rodents, *Rattus rattus* (6,228, 12.2%), *Mus musculus* (6,030, 11.8%), *Arvicanthis niloticus* (4,086, 8%) and *Mastomys huberti* (3,106, 6.1%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
+
+Trap success rates
+
+Diversity indices, accumulation measures
 
 ``` {r dist, fig.cap = "Presence and absence of the 6 most commonly trapped species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
 knitr::include_graphics(here::here("figures", "top_6.png"))
