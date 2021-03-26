@@ -1,8 +1,8 @@
 source(here::here("scripts", "libraries.R"))
 
-genus_synonym <- tibble(syn = c("myomys", "nannomys"), acc = c("praomys", "mus"))
-species_synonym <- tibble(syn = c("mus domesticus", "aethomys hypoxanthus", "crocidura megalura", "dasymys bentleyae", "erinaceus albiventris", "gerbilliscus gambianus", "tatera guineae", "gerbilliscus guineae", "gerbilliscus kempi", "gerbillus campestris", "gerbillus gambianus", "grammomys rutilans", "graphiurus hueti", "graphiurus parvus", "hemiechinus aethiopicus", "lophuromys flavipunctatus", "massouteria mzabi", "mastomys hildebrandtii", "steatomys caurianus", "tatera gambiana", "tatera guinea", "tatera guineae", "tatera kempi", "tatera robusta", "taterillus gracillis", "thamnomys rutilans"),
-                          acc = c("mus musculus", "oenomys hypoxanthus", "suncus megalura", "dasymys incomtus", "atelerix albiventris", "gerbilliscus gambiana", "gerbilliscus guinea", "gerbilliscus guinea", "gerbilliscus kempii", "dipodillus campestris", "gerbilliscus gambiana", "grammomys poensis", "graphiurus nagtglasii", "graphiurus kelleni", "paraechinus aethiopicus", "lophuromys flavopunctatus", "massoutiera mzabi", "mastomys natalensis", "steatomys caurinus", "gerbilliscus kempii", "gerbilliscus guineae", "gerbilliscus guineae", "gerbilliscus kempii", "gerbilliscus robusta", "taterillus gracilis", "grammomys poensis"))
+genus_dictionary <- read_rds(here("data_clean", "genus_dictionary.rds"))
+species_dictionary <- read_rds(here("data_clean", "species_dictionary.rds"))
+
 
 # Pathogen ----------------------------------------------------------------
 
@@ -10,20 +10,53 @@ species_synonym <- tibble(syn = c("mus domesticus", "aethomys hypoxanthus", "cro
 pathogen_data <- read_rds(here("data_raw", "pathogen.rds")) %>%
   mutate(country = as_factor(country),
          record_id = 1:nrow(.),
-         unique_id = as_factor(unique_id))
-pathogen_data$genus <- plyr::mapvalues(pathogen_data$genus, from = genus_synonym$syn, to = genus_synonym$acc)
-pathogen_data %<>%
-  mutate(classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "))
-pathogen_data$classification <- plyr::mapvalues(pathogen_data$classification, from = species_synonym$syn, to = species_synonym$acc)
-pathogen_data %<>%
+         unique_id = as_factor(unique_id),
+         genus = recode(genus, !!!genus_dictionary),
+         classification = paste(genus, ifelse(species == "-", "sp.", species), sep = " "),
+         classification = recode(classification, !!!species_dictionary)) %>%
   separate(col = classification, into = c("genus", "species"), sep = " ", remove = F) %>%
   mutate(species = ifelse(species %in% c("sp.", "sp.1", "sp.2"), "", species))
+
 # Matching to GBIF
 rodent_data <- read_rds(here("data_clean", "species_data.rds")) %>%
   distinct(classification, gbif_id)
+
 pathogen_data <- pathogen_data %>%
   left_join(., rodent_data,
             by = "classification")
+
+# Cleaning habitat
+habitat_dictionary <- read_rds(here("data_clean", "habitat_dictionary.rds"))
+habitat_split <- c("habitat_1", "habitat_2", "habitat_3", "habitat_4", "habitat_5", "habitat_6", "habitat_7")
+
+pathogen_data <- pathogen_data %>%
+  separate(habitat, into = all_of(habitat_split), sep = ", ") %>%
+  mutate(across(.cols = all_of(habitat_split), ~recode(., !!!habitat_dictionary)))
+
+# Cleaning pathogen
+pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
+
+if(!file.exists(here("data_clean", "pathogen_dictionary.rds"))){
+pathogen_name <- as.list(c("anaplasma", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species",
+                           "bartonella_species", "bartonella_species", "borrelia_species", "borrelia_crocidurae", "borrelia_crocidurae", "borrelia_species",
+                           "e_coli_esbl", "ehrlichia", "flavivirus_species", "hantavirus_species", "hantavirus_species", "hydatigera_species", "k_pneumoniae_esbl",
+                           "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus",
+                           "lassa_mammaranevirus", "leishmania_major", "leishmania_species", "leptospirosis_species", "mammarenavirus_species", "mycobacterium_species",
+                           "mycobacterium_species", "mycoplasma_species", "orentia_species", "orthopoxvirus_species", "orthopoxvirus_species", "phlebovirus_species",
+                           "plagiorchis_species", "rickettsia_species", "rift_valley_fever_virus", "schistosoma_mansoni", "schistosoma_species", "toxoplasma_gondii", "trichuris_species",
+                           "trypanosoma_species", "usutu_virus"))
+names(pathogen_name) <- sort(c(unique(pathogen_data$path_1),
+                               unique(pathogen_data$path_2),
+                               unique(pathogen_data$path_3),
+                               unique(pathogen_data$path_4),
+                               unique(pathogen_data$path_5),
+                               unique(pathogen_data$path_6)))
+write_rds(pathogen_name, here("data_clean", "pathogen_dictionary.rds"))
+}
+pathogen_name <- read_rds(here("data_clean", "pathogen_dictionary.rds"))
+
+pathogen_data <- pathogen_data %>%
+  mutate(across(.cols = all_of(pathogen_tested), ~recode(., !!!pathogen_name)))
 
 # Cleaning location data
 pathogen_data %<>%
@@ -87,6 +120,12 @@ path_no_gps <- pathogen_data %>%
   mutate(long_dms = as.character(long_dms),
          lat_dms = as.character(lat_dms))
 
-path_all <- bind_rows(pathogen_gps, path_no_gps)
+path_all <- bind_rows(pathogen_gps, path_no_gps) %>%
+  dplyr::select(unique_id, year_trapping, month, country, iso3c, region, town_village, all_of(habitat_split), classification, gbif_id,
+                all_of(pathogen_tested), path_1_tested, path_2_tested, path_3_tested, path_4_tested, path_5_tested, path_6_tested,
+                pcr_path_1_positive, pcr_path_2_positive, pcr_path_3_positive, pcr_path_4_positive, pcr_path_5_positive, pcr_path_6_positive,
+                ab_ag_path_1_positive, ab_ag_path_2_positive, ab_ag_path_3_positive, ab_ag_path_4_positive, ab_ag_path_5_positive,
+                culture_path_1_positive, culture_path_2_positive, culture_path_3_positive, histo_path_1_positive, histo_path_2_positive,
+                histo_path_3_positive, record_id)
 
 write_rds(path_all, here("data_clean", "pathogen.rds"))
