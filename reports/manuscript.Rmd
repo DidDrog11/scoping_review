@@ -163,6 +163,10 @@ Across all West African study sites there were 59,343 trapped small mammals (592
 
 More individuals were trapped in studies conducted to investigate the risk of zoonoses (35,892, 60%) than from ecology studies (23,451 40%). Animals trapped as part of ecological research were more often identified to species level (93%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (22,665, 39.7%), *Rattus sp.* (7,718, 13.5%), *Mus sp.* (7,324, 12.8%), *Praomys sp.* (4,977, 8.7%) and *Arvicanthis sp.* (4,408, 7.72%). At the species level *Mastomys natalensis* (10,351, 20.2%) and *Mastomys erythroleucus* (7,052, 13.8%) were the most commonly trapped rodents, *Rattus rattus* (6,228, 12.2%), *Mus musculus* (6,030, 11.8%), *Arvicanthis niloticus* (4,086, 8%) and *Mastomys huberti* (3,106, 6.1%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
 
+Trap success rates
+
+Diversity indices, accumulation measures
+
 ``` {r dist, fig.cap = "Presence and absence of the 6 most commonly trapped species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
 knitr::include_graphics(here::here("figures", "top_6.png"))
 ```
