@@ -89,7 +89,7 @@ Where explicitly stated the study aims were extracted. For those with no recorde
 
 ### Geolocation of trapping activity
 
-GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Locations were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [] based on study site name/region and through maps presented in the manuscript.
+GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Locations were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [ref.] based on study site name/region and through maps presented in the manuscript.
 
 ### Trapping methodology
 
@@ -99,19 +99,18 @@ The brand or description of the rodent trap was obtained from each study. For th
 
 ### Genus and species definitions
 
-Classification of species is variable over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility []. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
+Classification of species is variable over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility [ref.]. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
 
 ### Pathogen testing
 
 ## Results
 
-A total of 2,200 records were identified, with 101 studies included in narrative synthesis (see Figure \@ref(fig:prisma)).
+A total of 2,200 records were identified, with 101 studies included in narrative synthesis (see Figure \@ref(fig:prisma)). The characteristics of the included studies are shown in Table 1. The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder of studies on zoonotic diseases (46%). 
+
 
 ``` {r prisma, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given.", echo = F}
 knitr::include_graphics(here::here("figures", "figure_1.png"))
 ```
-
-The earliest studies identified were from 1974 with the majority (62%) published since 2010. Most of the included studies were classified as rodent ecology research (54%) with the remainder studies on zoonotic diseases (46%). 
 
 ### Aims of included studies 
 
@@ -135,7 +134,7 @@ knitr::include_graphics(here::here("figures", "static_site_density.png"))
 
 ### Trap types
 
-Of the included studies 15 did not state the type of trap used with three studies reporting supplementary hand trapping of rodents alongside trap use. For the remaining studies three used more than four types of rodent traps, seven used three types, 31 used two types the remaining 45 studies used a single trap type. The most commonly used trap was the Sherman trap (67%) [] which is available in several sizes, locally made wire mesh traps were used in 29 studies (34%), less commonly used trap types included the Museum special, Tomahawk, Victor, Snaptraps and Firobind traps.
+Of the included studies 15 did not state the type of trap used with three studies reporting supplementary hand trapping of rodents alongside trap use. For the remaining studies three used more than four types of rodent traps, seven used three types, 31 used two types the remaining 45 studies used a single trap type. The most commonly used trap was the Sherman trap (67%) [ref.] which is available in several sizes, locally made wire mesh traps were used in 29 studies (34%), less commonly used trap types included the Museum special, Tomahawk, Victor, Snaptraps and Firobind traps.
 
 ### Trap setup within the study area
 
@@ -149,9 +148,9 @@ Among studies that reported complete trap-night information the median number of
 
 ### Habitat classification
 
-No studies classified habitats with reference to a specific habitat classification scheme. Seven studies did not describe the local habitat where traps were placed (3 ecology, 4 zoonoses). The remaining studies used greater than 160 descriptions of the habitat type in which trapping was conducted, further, the resolution of the description ranged from the habitat of the location of the trap through to the study site. The 160 reported habitat types were combined into 32 categories (see Supplementary table 2 for the habitat dictionary) for further analysis. At least one habitat was recorded for 16,168 trap sites (95%), with two or more habitats for a single trap site recorded for 4,195 (26%) sites. As single sites could span multiple habitat types the number of habitat type trap site combinations was 20,369. The most commonly trapped sites were in or around buildings (31%), in areas described as the rodents "natural habitat" (26%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (6%) and within or around villages (5%).
+No studies classified habitats with reference to a specific habitat classification scheme. Seven studies did not describe the local habitat where traps were placed (3 ecology, 4 zoonoses). The remaining studies used greater than 160 descriptions of the habitat type in which trapping was conducted, further, the resolution of the description ranged from the habitat of the location of the trap through to the study site. The 160 reported habitat types were combined into 32 categories (see Supplementary table 2 for the habitat dictionary) for further analysis. At least one habitat was recorded for 16,168 trap sites (95%), with two or more habitats for a single trap site recorded for 4,195 (26%) sites. Single trap sites could span multiple habitat types resulting in 20,369 habitat or trap sites. The most commonly trapped sites were in or around buildings (31%), in areas described as the rodents "natural habitat" (26%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (6%) and within or around villages (5%).
 
-Habitat type was more comprehensively reported from ecology than from zoonoses studies. Thirty-one habitat categories were reported from ecology studies with the most commonly investigated habitats being agriculture (23%), in or around buildings (18%) and within forests (15%). Among studies on zoonoses 15 habitat categories were reported, the most commonly reported classification was described as the rodents "natural habitat" (39%), within or around buildings (38%) and in agricultural settings (7%).
+Habitat type was more comprehensively reported from ecology studies, 31 habitat categories were reported from ecology studies with the most commonly investigated habitats being agriculture (23%), in or around buildings (18%) and within forests (15%). Among studies on zoonoses 15 habitat categories were reported, the most commonly reported classification was described as the rodents "natural habitat" (39%), within or around buildings (38%) and in agricultural settings (7%).
   
 ### Species identification
 
@@ -165,6 +164,8 @@ More individuals were trapped in studies conducted to investigate the risk of zo
 
 Trap success rates
 
+### Rodent biodiversity
+
 Diversity indices, accumulation measures
 
 ``` {r dist, fig.cap = "Presence and absence of the 6 most commonly trapped species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
@@ -173,8 +174,19 @@ knitr::include_graphics(here::here("figures", "top_6.png"))
 
 ### Pathogens
 
+Fifty-one studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data. Six of the studies were solely investigated pathogens of rodents. The remaining 45 studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. 
 
+Twenty-six studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Ten studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Seven studies conducted histological or direct visualisation assays of samples for 10 parasitic or bacterial species. Two studies performed direct viral culture of *Lassa mammarenavirus* to detect the presence of the virus in rodent specimens. 
 
+The rodent pathogens investigated were *Hydatigera species* (previously *Taenia species*) and *Trichuris species* both of which are gastro-intestinal helminths and *Leishmania major* which is an intracellular pathogen causing disease in both rodents and humans.
+
+Forty-two of the 45 studies reported prevalence of zoonotic pathogens at a level of detail beyond a study wide summary. These studies typically tested for a single pathogen (35), with two studies testing for two and three pathogens and three studies testing for five or more. The most frequently tested for pathogens were *Lassa mammarenavirus* (11) or members of the *Arenaviridae* family (7), the spirochete bacteria *Borrelia* was investigated in six studies, *Bartonella* and *Toxoplasma gondii* were investigated in three each, the remaining 28 pathogens were reported in two or fewer studies.
+
+Ten of the studies reporting data on pathogen prevalence had incomplete data on the geolocation from which some of the animals tested were from. Six of these studies had no data on geolocation of the trapped rodents. 
+
+``` {r paths, fig.cap = "Presence and absence of the 4 most commonly tested for species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
+knitr::include_graphics(here::here("figures", "top_4.png"))
+```
 
 ## Supplementary material 
 

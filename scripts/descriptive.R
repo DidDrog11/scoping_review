@@ -13,6 +13,8 @@ rodent_data %<>%
   left_join(.,
             habitat_data ,
             by = "record_id")
+
+pathogen <- read_rds(here("data_clean", "pathogen.rds"))
 # Publication year --------------------------------------------------------
 ggplot(studies) +
   geom_bar(aes(x = year_publication)) +
@@ -205,5 +207,87 @@ count_genus <- species_data %>%
   arrange(-percent)
 
 # Pathogen ----------------------------------------------------------------
+pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
+pcr_test <- c("pcr_path_1_positive", "pcr_path_2_positive", "pcr_path_3_positive", "pcr_path_4_positive", "pcr_path_5_positive", "pcr_path_6_positive")
+ab_ag_test <- c("ab_ag_path_1_positive", "ab_ag_path_2_positive", "ab_ag_path_3_positive", "ab_ag_path_4_positive", "ab_ag_path_5_positive")
+culture_test <- c("culture_path_1_positive", "culture_path_1_positive", "culture_path_1_positive")
+direct_visualisation <- c("histo_path_1_positive", "histo_path_2_positive", "histo_path_3_positive", "histo_path_4_positive", "histo_path_5_positive", "histo_path_6_positive")
 
+group_pathogens <- as.list(c("borrelia_species", "amr_bacteria", "amr_bacteria", "arenaviridae_species", "leishmania_species", "mammarenavirus_species", "schistosoma_species"))
+names(group_pathogens) <- c("borrelia_crocidurae", "e_coli_esbl", "k_pneumoniae_esbl", "lassa_mammarenavirus", "leishmania_major", "mammarenavirus_species",
+                             "schistosoma_mansoni")
 
+pathogen_data <- tibble(pathogen) %>%
+  dplyr::select(-geometry) %>% # speed up processing by removing sf structure
+  left_join(., studies %>%
+              dplyr::select(unique_id, pathogen),
+            by = "unique_id")
+
+table(studies$pathogen)
+
+pathogen_data %>%
+  filter(pathogen == "Rodent pathogen") %>%
+  distinct(unique_id, across(all_of(pathogen_tested))) # rodent pathogens
+
+pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested))) %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na() %>%
+  distinct(unique_id, pathogen) %>%
+  mutate(pathogen_group = recode(pathogen, !!!group_pathogens)) %>%
+  count(pathogen_group) %>%
+  ggplot(aes(x = n, y = reorder(pathogen_group, n))) +
+  geom_bar(stat = "identity") # plot listing all tested pathogens
+
+pcr <- pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(pcr_test))) %>%
+  drop_na(pcr_path_1_positive)
+
+pcr %>%
+  distinct(unique_id) # studies using PCR
+
+pcr %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na(pathogen) %>%
+  distinct(pathogen) # pathogens tested for using PCR
+
+ab_ag_test <- pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(ab_ag_test))) %>%
+  drop_na(ab_ag_path_1_positive)
+
+ab_ag_test %>%
+  distinct(unique_id)
+
+ab_ag_test %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na(pathogen) %>%
+  distinct(pathogen) # pathogens tested for using ab/ag
+
+culture <- pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(culture_test))) %>%
+  drop_na(culture_path_1_positive)
+
+culture %>%
+  distinct(unique_id)
+
+culture %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na(pathogen) %>%
+  distinct(pathogen) # pathogens tested for using culture
+
+histopath <- pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(direct_visualisation))) %>%
+  drop_na(histo_path_1_positive)
+
+histopath %>%
+  distinct(unique_id)
+
+histopath %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na(pathogen) %>%
+  distinct(pathogen) # pathogens tested for using direct visualisation

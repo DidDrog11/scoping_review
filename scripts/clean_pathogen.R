@@ -37,26 +37,29 @@ pathogen_data <- pathogen_data %>%
 pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
 
 if(!file.exists(here("data_clean", "pathogen_dictionary.rds"))){
-pathogen_name <- as.list(c("anaplasma", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species",
-                           "bartonella_species", "bartonella_species", "borrelia_species", "borrelia_crocidurae", "borrelia_crocidurae", "borrelia_species",
-                           "e_coli_esbl", "ehrlichia", "flavivirus_species", "hantavirus_species", "hantavirus_species", "hydatigera_species", "k_pneumoniae_esbl",
-                           "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus", "lassa_mammaranevirus",
-                           "lassa_mammaranevirus", "leishmania_major", "leishmania_species", "leptospirosis_species", "mammarenavirus_species", "mycobacterium_species",
-                           "mycobacterium_species", "mycoplasma_species", "orentia_species", "orthopoxvirus_species", "orthopoxvirus_species", "phlebovirus_species",
-                           "plagiorchis_species", "rickettsia_species", "rift_valley_fever_virus", "schistosoma_mansoni", "schistosoma_species", "toxoplasma_gondii", "trichuris_species",
-                           "trypanosoma_species", "usutu_virus"))
-names(pathogen_name) <- sort(c(unique(pathogen_data$path_1),
+pathogen_name <- as.list(c("anaplasma", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "arenaviridae_species", "babesia_species", "bartonella_species",
+                           "bartonella_species", "borrelia_species", "borrelia_species", "borrelia_crocidurae", "borrelia_species", "e_coli_esbl", "ehrlichia_species", "eimeria_species",
+                           "flavivirus_species", "hantavirus_species", "hydatigera_species", "k_pneumoniae_esbl", "lassa_mammarenavirus", "lassa_mammarenavirus", "lassa_mammarenavirus",
+                           "lassa_mammarenavirus", "lassa_mammarenavirus", "lassa_mammarenavirus", "lassa_mammarenavirus", "leishmania_major", "leishmania_species",
+                           "leptospirosis_species", "mammarenavirus_species", "mycobacterium_species", "mycobacterium_species", "mycoplasma_species", "orentia_species",
+                           "orthopoxvirus_species", "orthopoxvirus_species", "phlebovirus_species", "plagiorchis_species", "plasmodium_species", "rickettsia_species",
+                           "rift_valley_fever_virus", "schistosoma_mansoni", "strongyloides_species", "schistosoma_species", "toxoplasma_gondii",
+                           "trichuris_species", "trypanasoma_lewisi", "trypanosoma_species", "usutu_virus"))
+names(pathogen_name) <- unique(sort(c(unique(pathogen_data$path_1),
                                unique(pathogen_data$path_2),
                                unique(pathogen_data$path_3),
                                unique(pathogen_data$path_4),
                                unique(pathogen_data$path_5),
-                               unique(pathogen_data$path_6)))
+                               unique(pathogen_data$path_6))))
 write_rds(pathogen_name, here("data_clean", "pathogen_dictionary.rds"))
 }
 pathogen_name <- read_rds(here("data_clean", "pathogen_dictionary.rds"))
 
 pathogen_data <- pathogen_data %>%
-  mutate(across(.cols = all_of(pathogen_tested), ~recode(., !!!pathogen_name)))
+  mutate(across(
+    all_of(pathogen_tested),
+    ~recode(., !!!pathogen_name)
+    ))
 
 # Cleaning location data
 pathogen_data %<>%
@@ -126,6 +129,6 @@ path_all <- bind_rows(pathogen_gps, path_no_gps) %>%
                 pcr_path_1_positive, pcr_path_2_positive, pcr_path_3_positive, pcr_path_4_positive, pcr_path_5_positive, pcr_path_6_positive,
                 ab_ag_path_1_positive, ab_ag_path_2_positive, ab_ag_path_3_positive, ab_ag_path_4_positive, ab_ag_path_5_positive,
                 culture_path_1_positive, culture_path_2_positive, culture_path_3_positive, histo_path_1_positive, histo_path_2_positive,
-                histo_path_3_positive, record_id)
+                histo_path_3_positive, histo_path_4_positive, histo_path_5_positive, histo_path_6_positive, record_id)
 
 write_rds(path_all, here("data_clean", "pathogen.rds"))
