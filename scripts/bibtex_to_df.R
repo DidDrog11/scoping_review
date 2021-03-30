@@ -16,3 +16,11 @@ included_studies <- bib2df(here("citations", "included_studies.bib"))%>%
                             ifelse(!is.na(ISSN), ISSN,
                                    ifelse(!is.na(ISBN), ISBN,
                                           ifelse(!is.na(PMID), PMID, NA))))) #load citations from the studies that were found to be suitable for inclusion in the review
+
+expanded_search <- bib2df(here("citations", "v4_search.bib"))
+
+search_4 <- expanded_search %>%
+  mutate(unique_id = ifelse(!is.na(DOI), DOI,
+                            ifelse(!is.na(ISSN), ISSN,
+                                   ifelse(!is.na(ISBN), ISBN,
+                                          ifelse(!is.na(BIBTEXKEY), BIBTEXKEY, NA)))))

@@ -7,7 +7,9 @@ author:
     last_name: "Simons"
     url: https://www.dsimons.org
     orcid_id: 0000-0001-9655-1656
-output: distill::distill_article
+output: 
+  distill::distill_article
+always_allow_html: yes
 bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 ---
 
