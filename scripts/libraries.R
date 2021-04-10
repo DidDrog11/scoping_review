@@ -16,7 +16,10 @@ pkgs =
     "mapview",
     "ggmap",
     "taxize",
-    "distill"
+    "distill",
+    "leaflet",
+    "RColorBrewer",
+    "lubridate"
   )
 pacman::p_load(pkgs, character.only = T)
 

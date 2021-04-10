@@ -65,6 +65,18 @@ a <- countries %>%
   summarise(n = n())
 table(a$n) # calculate the number of countries trapped in by each study
 
+# number of trap sites
+rodent_data %>%
+  dplyr::select(unique_id, country, region, town_village, all_of(habitat_split)) %>%
+  distinct()
+
+a <- rodent_data %>%
+  dplyr::select(unique_id, country, region, town_village, all_of(habitat_split)) %>%
+  distinct() %>%
+  group_by(unique_id) %>%
+  summarise(n = n())
+table(a$n)
+
 # Trap type and setup -----------------------------------------------------
 trap_type <- studies %>%
   separate(col = trap_types, into = c("trap_1", "trap_2", "trap_3", "trap_4"), sep = ", ", remove = T) %>%
@@ -78,11 +90,15 @@ trap_technique <- studies %>%
   pivot_longer(cols = c("method_1", "method_2", "method_3"), values_to = "trap_method") %>%
   drop_na(trap_method)
 
+a <- trap_technique %>% filter(aim == "Zoonoses risk")
+table(a$trap_method)
 table(trap_technique$trap_method)
 
 # Trapping effort ---------------------------------------------------------
 
 table(studies$trapping_effort)
+table(ecology_studies$trapping_effort)
+table(zoonoses_studies$trapping_effort)
 
 t_effort <- studies %>% filter(trapping_effort == "Yes") %>% distinct(unique_id)
 
@@ -92,7 +108,7 @@ s_effort <- rodent_data %>% filter(unique_id %in% t_effort$unique_id) %>%
   group_by(unique_id) %>%
   summarise(trap_nights = sum(trap_nights))
 
-summary(s_effort$trap_nights)
+summary(s_effort$trap_nights) # summary for studies with complete reporting
 
 t_effort <- rodent_data %>% filter(unique_id %in% t_effort$unique_id) %>%
   group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat_1) %>%
@@ -141,7 +157,7 @@ eco_habitat_freq <- habitat_types %>%
 table(studies$speciation)
 
 studies %>%
-  filter(year_publication < 2010) %>%
+  filter(year_publication >= 2010) %>%
   count(speciation)
 
 # Rodents -----------------------------------------------------------------

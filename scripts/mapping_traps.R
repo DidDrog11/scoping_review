@@ -6,7 +6,7 @@ all_countries <- c("BEN", "BFA", "CIV", "CMR", "CPV", "DZA", "ESH", "GHA",
 wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
                   "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
                   "NER", "NGA", "SEN", "SLE", "TGO")
-no_data_countries <- c("GMB", "TGO", "CPV")
+no_data_countries <- c("GMB", "TGO")
 
 level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
 list2env(level_0, envir = .GlobalEnv)
@@ -22,6 +22,8 @@ level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
 list2env(level_2, envir = .GlobalEnv)
 level_2_all <- do.call(rbind.SpatialPolygonsDataFrame, level_2) %>%
   st_as_sf()
+
+studies <- read_rds(here("data_clean", "studies.rds"))
 
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
 bbox_rodent <- st_bbox(rodent_spatial)
@@ -75,8 +77,8 @@ afrmap <- tm_shape(afr) + tm_polygons() +
 print(afrmap, vp = grid::viewport(0.13, 0.88, width = 0.23, height = 0.23))
 }
 
-# Plot as mapview ---------------------------------------------------------
-tmap_mode("view")
+# Plot as leaflet ---------------------------------------------------------
+tmap_mode("plot")
 
 tm_shape(rodent_spatial) +
   tm_dots(col = "iso3c")
@@ -84,7 +86,32 @@ tm_shape(rodent_spatial) +
 mapview(rodent_spatial,
         zcol = "iso3c")
 
-tmap_mode("plot")
+trap_map <- rodent_spatial %>%
+  left_join(., studies %>%
+              dplyr::select(unique_id, first_author, year_publication, link),
+            by = "unique_id") %>%
+  distinct(unique_id, geometry, .keep_all = T)
+
+factcont <- colorNumeric("viridis", trap_map$year_publication, alpha = T, reverse = T)
+
+leaflet(trap_map) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = ~factcont(year_publication),
+                   stroke = F,
+                   fillOpacity = 0.5,
+                   radius = 4,
+                   label = paste(trap_map$first_author, trap_map$year_publication, sep = ", "),
+                   popup = paste0("<a href='",
+                                  trap_map$link,
+                                  "', target ='_blank'>",
+                                  "Article link")) %>%
+  addLegend("topright",
+            title = "Year published",
+            pal = factcont,
+            opacity = 0.9,
+            values = ~year_publication,
+            labFormat = labelFormat(big.mark = ""))
+
 # Map as discrete ---------------------------------------------------------
 sites <- st_intersection(x = level_1_all, y = rodent_spatial)
 n_sites_region <- sites %>%

@@ -23,7 +23,20 @@ rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
   filter(iso3c %in% wa_countries)
 studies <- read_rds(here("data_clean", "studies.rds"))
 
-top_6_species <- c(2438911, 2438912, 2439270, 7429082, 9733997, 4264823)
+count_species <- species_data %>%
+  filter(iso3c %in% wa_countries) %>%
+  group_by(species_gbif, classification) %>%
+  drop_na(species_gbif) %>%
+  summarise(number = sum(number)) %>%
+  mutate(percent = round(number/sum(.$number)*100, 2)) %>%
+  arrange(-percent) %>%
+  rename(`GBIF ID` = "species_gbif",
+         "Classification" = "classification",
+         "Number of individuals" = "number",
+         "Percent (%)" = "percent") %>%
+  mutate(Classification = snakecase::to_sentence_case(Classification)) # the number of individuals trapped identified to species level
+
+top_6_species <- head(count_species$`GBIF ID`, 6)
 
 top_6_spatial <- rodent_spatial %>%
   filter(species_gbif %in% top_6_species) %>%
@@ -43,3 +56,15 @@ top_6_plot <- tm_shape(level_0 %>%
   tm_facets(by = "classification")
 
 tmap_save(top_6_plot, here("figures", "top_6.png"))
+
+density(top_6_spatial)
+bw.diggle()
+
+library("maptools")
+p.sf.utm <- st_transform(top_6_spatial, 32619) # project from geographic to UTM
+p.sp  <- as(p.sf.utm, "Spatial")  # Create Spatial* object
+p.ppp <- as(p.sp, "ppp")
+class(p.ppp)
+
+as.ppp(test)
+
