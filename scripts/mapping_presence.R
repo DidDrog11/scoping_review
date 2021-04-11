@@ -3,6 +3,9 @@ source(here::here("scripts", "libraries.r"))
 wa_mainland <- c("BEN", "BFA", "CIV", "ESH", "GHA",
                   "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
                   "NER", "NGA", "SEN", "SLE", "TGO")
+wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
+                  "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
+                  "NER", "NGA", "SEN", "SLE", "TGO")
 
 level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
 list2env(level_0, envir = .GlobalEnv)
@@ -19,6 +22,7 @@ list2env(level_2, envir = .GlobalEnv)
 level_2_all <- do.call(rbind.SpatialPolygonsDataFrame, level_2) %>%
   st_as_sf()
 
+species_data <- read_rds(here("data_clean", "species_data.rds"))
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
   filter(iso3c %in% wa_countries)
 studies <- read_rds(here("data_clean", "studies.rds"))
@@ -57,14 +61,25 @@ top_6_plot <- tm_shape(level_0 %>%
 
 tmap_save(top_6_plot, here("figures", "top_6.png"))
 
-density(top_6_spatial)
-bw.diggle()
-
-library("maptools")
-p.sf.utm <- st_transform(top_6_spatial, 32619) # project from geographic to UTM
-p.sp  <- as(p.sf.utm, "Spatial")  # Create Spatial* object
-p.ppp <- as(p.sp, "ppp")
-class(p.ppp)
-
-as.ppp(test)
-
+# library("maptools")
+# library("spatstat")
+# t6_sf_utm <- st_transform(top_6_spatial %>%
+#                             filter(classification == "Mastomys natalensis" & pres_abs == "Present"),
+#                           32619) # project from geographic to UTM
+# t6_sp  <- as(t6_sf_utm, "Spatial")  # Create Spatial* object
+# t6_ppp <- as(t6_sp, "ppp")
+# t6_ppp$marks <- NULL
+#
+# wa_sp <- level_0 %>%
+#   filter(GID_0 %in% wa_mainland) %>%
+#   st_union() %>%
+#   st_cast("POLYGON") %>%
+#   st_transform(32619)
+#
+# wa_ppp <- as(as_Spatial(wa_sp), "owin")
+#
+# Window(t6_ppp) <- wa_ppp
+#
+# K1 <- density(t6_ppp) # Using the default bandwidth
+# plot(K1, main=NULL, las=1)
+# contour(K1, add=TRUE)

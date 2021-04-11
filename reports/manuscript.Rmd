@@ -176,27 +176,21 @@ knitr::include_graphics(here::here("figures", "top_6.png"))
 
 ### Pathogens
 
-Fifty-one studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data. Six of the studies were solely investigated pathogens of rodents. The remaining 45 studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. 
+X studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data. X of the studies were solely investigated pathogens of rodents. The remaining X studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. 
 
-Twenty-six studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Ten studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Seven studies conducted histological or direct visualisation assays of samples for 10 parasitic or bacterial species. Two studies performed direct viral culture of *Lassa mammarenavirus* to detect the presence of the virus in rodent specimens. 
+X studies used Polymerase Chain Reaction (PCR) to detect the presence of X different species or families of microorganisms. X studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. X studies conducted histological or direct visualisation assays of samples for X parasitic or bacterial species. X studies performed direct viral culture of *Lassa mammarenavirus* to detect the presence of the virus in rodent specimens. 
 
 The rodent pathogens investigated were *Hydatigera species* (previously *Taenia species*) and *Trichuris species* both of which are gastro-intestinal helminths and *Leishmania major* which is an intracellular pathogen causing disease in both rodents and humans.
 
-Forty-two of the 45 studies reported prevalence of zoonotic pathogens at a level of detail beyond a study wide summary. These studies typically tested for a single pathogen (35), with two studies testing for two and three pathogens and three studies testing for five or more. The most frequently tested for pathogens were *Lassa mammarenavirus* (11) or members of the *Arenaviridae* family (7), the spirochete bacteria *Borrelia* was investigated in six studies, *Bartonella* and *Toxoplasma gondii* were investigated in three each, the remaining 28 pathogens were reported in two or fewer studies.
+X of the X studies reported prevalence of zoonotic pathogens at a level of detail beyond a study wide summary. These studies typically tested for a single pathogen (X), with X studies testing for two and three pathogens and X studies testing for five or more. The most frequently tested for pathogens were *Lassa mammarenavirus* (X) or members of the *Arenaviridae* family (X), the spirochete bacteria *Borrelia* was investigated in X studies, *Bartonella* and *Toxoplasma gondii* were investigated in X each, the remaining X pathogens were reported in two or fewer studies.
 
-Ten of the studies reporting data on pathogen prevalence had incomplete data on the geolocation from which some of the animals tested were from. Six of these studies had no data on geolocation of the trapped rodents. 
+X of the studies reporting data on pathogen prevalence had incomplete data on the geolocation from which some of the animals tested were from. X of these studies had no data on geolocation of the trapped rodents. 
 
 ``` {r paths, fig.cap = "Presence and absence of the 4 most commonly tested for species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
 knitr::include_graphics(here::here("figures", "top_4.png"))
 ```
 
 ## Supplementary material 
-
-#### Supplementary figure 1
-
-``` {r supfig1, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
-knitr::include_graphics(here::here("figures", "static_site_density_2.png"))
-```
 
 #### Supplementary table 1
 
