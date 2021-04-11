@@ -9,6 +9,9 @@ author:
     orcid_id: 0000-0001-9655-1656
 output: 
   distill::distill_article
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
+  })
 always_allow_html: yes
 bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 ---
