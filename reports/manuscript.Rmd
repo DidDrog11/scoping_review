@@ -36,12 +36,11 @@ To date there has been no comprehensive overview of rodent trapping studies cond
 
 We specifically aim to address the following research questions:
 
-  +	RQ1: In which West African countries or regions have rodent trapping studies been performed?
-  + RQ2: What are the stated aims of these rodent trapping studies?
-  + RQ3: Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
-  + RQ4: How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
-  +	RQ5: Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
-  +	RQ6: Is there an association of land use change, human population change or the implementation of regulatory strategies with rodent species distributions?
+  +	1. In which West African countries or regions have rodent trapping studies been performed?
+  + 2. What are the stated aims of these rodent trapping studies?
+  + 3. Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
+  + 4. How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
+  +	5. Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
 
 ## Methods
 
@@ -173,7 +172,9 @@ Across all West African study sites there were 73,164 trapped small mammals (592
 
 A similar number of rodents were trapped for ecology studies (36,367) as for studies investigating the risk of zoonoses (36,205). Animals trapped as part of ecological research were more often identified to species level (90%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (27,072, 38.5%), *Rattus sp.* (10,191, 14.5%), *Mus sp.* (8,624, 12.3%), *Arvicanthis sp.* (5,821, 8.3%) and *Praomys sp.* (5,409, 7.7%). At the species level *Mastomys natalensis* (11,221, 17.9%) and *Rattus rattus* (8,578, 13.7%) were the most commonly trapped rodents, *Mastomys erythroleucus* (8,578, 13.7%), *Mus musculus* (6,245, 8.8%), *Arvicanthis niloticus* (5,497, 8.8%) and *Mastomys huberti* (4,699, 7.5%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
 
-Trap success rates
+Trap success rates at study level
+
+The most commonly trapped species (*Mastomys natalensis*) is of particular importance in West Africa due to it being the reservoir host of Lassa fever. *Rattus sp.* and *Mus sp.* are also known to harbour zoonotic pathogens while *Arvicanthis sp.* and *Praomys sp.* are less commonly associated with zoonoses.
 
 ### Rodent biodiversity
 
@@ -198,6 +199,22 @@ X of the studies reporting data on pathogen prevalence had incomplete data on th
 ``` {r paths, fig.cap = "Presence and absence of the 4 most commonly tested for species in included studies, no adjustment made for trapping effort", echo = F, layout = "l-page"}
 knitr::include_graphics(here::here("figures", "top_4.png"))
 ```
+
+### Pathogens and their rodent hosts
+
+X rodent species were investigated for the presence of a zoonotic pathogen. X individual rodents were tested for at least one of the above pathogens.
+
+The rodents most commonly found to be hosts of zoonoses were...
+
+The species with the greatest number of detected pathogens within the studied areas were...
+
+*Lassa mammarenavirus* was detected in X individuals either through PCR (demonstrating acute infection) or antibody studies (suggesting previous infection or the acquisition of maternal antibodies). These individuals were from X species (X *Mastomys natalensis*, Y *Praomys* ...). 
+
+*Borrelia sp.* were detected in X individuals ...
+
+X species of those tested were not found to be infected by any zoonotic pathogen investigated for.
+
+### 
 
 ## Supplementary material 
 
