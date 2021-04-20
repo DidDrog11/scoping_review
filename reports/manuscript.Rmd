@@ -214,7 +214,19 @@ The species with the greatest number of detected pathogens within the studied ar
 
 X species of those tested were not found to be infected by any zoonotic pathogen investigated for.
 
-### 
+## Discussion
+
+This scoping review aimed to consolidate and summarise research conducted on rodents and their potential zoonoses in West Africa. A comprehensive search identified X studies performed in Y West African countries. Around half of these studies were conducted to understand the ecology of rodents with the others being conducted to understand the risk of zoonotic pathogens to human populations in West Africa.
+
+Rodent trappping has been performed in most West African countries since the first recorded study from 197x, however, the distribution of effort between the countries and regions within those countries has been highly skewed. More than 50% of trapping activity has occurred in Senegal, Nigeria, Ghana and Guinea. Capital cities and their surrounding regions were more commonly studied than more sparsely populated areas. 
+
+The studies conducted to assess rodent ecology typically focussed on investigating rodent biodiveristy or conducting small mammal surveys of national parks or areas of specific scientific interest. Other studies investigated rodnt population dynamics using mark and release methods to measure rodent recruitment (birth rates) and survival. 
+
+
+  + 2. What are the stated aims of these rodent trapping studies?
+  + 3. Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
+  + 4. How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
+  +	5. Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
 
 ## Supplementary material 
 
