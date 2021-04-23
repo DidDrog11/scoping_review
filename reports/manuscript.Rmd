@@ -8,7 +8,8 @@ author:
     url: https://www.dsimons.org
     orcid_id: 0000-0001-9655-1656
 output: 
-  distill::distill_article
+  distill::distill_article:
+  toc: true
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
   })
