@@ -139,7 +139,7 @@ Most studies (93%) were conducted in a single country, five studies were conduct
 The trapping activity from the included studies was spread across 1,193 study sites. Thirty-one (25%) studies reported trapping only occurring at a single study site, 45 (37%) studies trapped at between two and five study sites the remaining 48 studies trapped at between six and 93 study sites. Trap sites were mapped to level two country administrative regions and density of sites per million square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were most intensively studied.
 
 ``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout = "l-page"}
-knitr::include_graphics(here::here("figures", "static_site_density.png"))
+knitr::include_graphics(here::here("figures", "static_site_density_2.png"))
 ```
 
 ### Trap types
