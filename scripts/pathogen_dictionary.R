@@ -18,7 +18,7 @@ eimeria <- c("eimeria_spp")
 names(eimeria) <- "eimeria_species"
 flavivirus <- c("flavivirus")
 names(flavivirus) <- "flavivirus_species"
-hantavirus <- c("hantavirus")
+hantavirus <- c("hantavirus", "hantavirus_spp")
 names(hantavirus) <- "hantavirus_species"
 hydatid <- "hydatigera_species"
 names(hydatid) <- "hydatigera_species"

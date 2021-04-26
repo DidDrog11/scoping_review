@@ -92,7 +92,6 @@ trap_technique <- studies %>%
 
 a <- trap_technique %>% filter(aim == "Zoonoses risk")
 table(a$trap_method)
-table(trap_technique$trap_method)
 
 # Trapping effort ---------------------------------------------------------
 
@@ -114,7 +113,7 @@ t_effort <- rodent_data %>% filter(unique_id %in% t_effort$unique_id) %>%
   group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat_1) %>%
   summarise(trap_nights = unique(trap_nights))
 
-summary(t_effort$trap_nights)
+summary(t_effort$trap_nights) # trap nights for studies with complete recording
 
 inc_effort <- studies %>% filter(trapping_effort == "Incomplete")
 
@@ -125,7 +124,7 @@ inc_effort <- rodent_data %>% filter(unique_id %in% inc_effort$unique_id & !is.n
   summarise(trap_nights = unique(trap_nights)) %>%
   summarise(trap_nights = sum(trap_nights))
 
-summary(inc_effort$trap_nights)
+summary(inc_effort$trap_nights) # trap nights for studies with incomplete recording
 
 # Habitat classification --------------------------------------------------
 habitat_types <- rodent_data %>%
@@ -197,7 +196,7 @@ speciation %>%
   count() %>%
   arrange(order, -n)
 
-write_rds(count_species, here("tables", "sup_table1.rds"))
+write_rds(count_species, here("tables", "sup_table3.rds"))
 
 species_data %>%
   left_join(., studies %>%
@@ -222,6 +221,69 @@ count_genus <- species_data %>%
   mutate(percent = round(number/sum(.$number)*100, 2)) %>%
   arrange(-percent)
 
+# Trap success ------------------------------------------------------------
+
+single_site <- species_data %>%
+  filter(unique_id %in% c(t_effort$unique_id, inc_effort$unique_id)) %>%
+  drop_na(trap_nights) %>%
+  distinct(unique_id, year_trapping, month_trapping, town_village, habitat, .keep_all = T) %>%
+  filter(trap_night_unit %in% c("habitat", "study_site", "trap_site", "study_habitat", NA))
+
+single_site_n <- single_site %>%
+  summarise(trap_nights = sum(trap_nights))
+
+single_site_c <- species_data %>%
+  filter(unique_id %in% single_site$unique_id) %>%
+  summarise(captures = sum(number))
+
+single_site_c/single_site_n*100
+
+study_site <- species_data %>%
+  filter(unique_id %in% c(t_effort$unique_id, inc_effort$unique_id)) %>%
+  drop_na(trap_nights) %>%
+  distinct(unique_id, year_trapping, month_trapping, town_village, .keep_all = T) %>%
+  filter(trap_night_unit %in% c("village", "site", "visit", "trap_session"))
+
+study_site_n <- study_site %>%
+  summarise(trap_nights = sum(trap_nights))
+
+study_site_c <- species_data %>%
+  filter(unique_id %in% study_site$unique_id) %>%
+  summarise(captures = sum(number))
+
+study_site_c/study_site_n*100
+
+study <- species_data %>%
+  filter(unique_id %in% c(t_effort$unique_id, inc_effort$unique_id)) %>%
+  drop_na(trap_nights) %>%
+  distinct(unique_id, .keep_all = T) %>%
+  filter(trap_night_unit %in% c("study"))
+
+study_n <- study %>%
+  summarise(trap_nights = sum(trap_nights))
+
+study_c <- species_data %>%
+  filter(unique_id %in% study$unique_id) %>%
+  summarise(captures = sum(number))
+
+study_c/study_n*100
+
+bind_rows(single_site, study_site, study) %>%
+  distinct(unique_id)
+trap_nights <- sum(single_site_n, study_site_n, study_n)
+captures <- sum(single_site_c, study_site_c, study_c)
+captures/trap_nights*100
+
+
+# Rodent biodiversity -----------------------------------------------------
+
+table(studies$diversity_measurement)
+studies %>%
+  filter(diversity_measurement == "Yes") %$%
+  table(species_accumulation)
+
+table(studies$species_accumulation)
+
 # Pathogen ----------------------------------------------------------------
 pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
 pcr_test <- c("pcr_path_1_positive", "pcr_path_2_positive", "pcr_path_3_positive", "pcr_path_4_positive", "pcr_path_5_positive", "pcr_path_6_positive")
@@ -244,17 +306,6 @@ table(studies$pathogen)
 pathogen_data %>%
   filter(pathogen == "Rodent pathogen") %>%
   distinct(unique_id, across(all_of(pathogen_tested))) # rodent pathogens
-
-pathogen_data %>%
-  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
-  distinct(unique_id, across(all_of(pathogen_tested))) %>%
-  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
-  drop_na() %>%
-  distinct(unique_id, pathogen) %>%
-  mutate(pathogen_group = recode(pathogen, !!!group_pathogens)) %>%
-  count(pathogen_group) %>%
-  ggplot(aes(x = n, y = reorder(pathogen_group, n))) +
-  geom_bar(stat = "identity") # plot listing all tested pathogens
 
 pcr <- pathogen_data %>%
   filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
@@ -307,3 +358,17 @@ histopath %>%
   pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
   drop_na(pathogen) %>%
   distinct(pathogen) # pathogens tested for using direct visualisation
+
+pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested))) %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na() %$%
+  table(name)
+
+pathogen_data %>%
+  filter(pathogen %in% c("Yes", "Yes, second paper")) %>%
+  distinct(unique_id, across(all_of(pathogen_tested))) %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  drop_na() %$%
+  table(pathogen)
