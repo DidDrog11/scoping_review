@@ -431,20 +431,20 @@ pal <- c("Arvicanthis niloticus" = "#bdbdbd",
          "Gerbilliscus gambiana" = "#bdbdbd",
          "Gerbillus tarabuli" = "#bdbdbd",
          "Lophuromys sikapusi" = "#bdbdbd",
-         "Mastomys erythroleucus" = "#edf8e9",
-         "Mastomys huberti" = "#bae4b3",
-         "Mastomys natalensis" = "#74c476",
-         "Mastomys sp" = "#238b45",
-         "Mus mattheyi" = "#f2f0f7",
-         "Mus minutoides" = "#cbc9e2",
-         "Mus minutoides/mattheyi" = "#9e9ac8",
-         "Mus musculus" = "#6a51a3",
-         "Praomys daltoni" = "#fc9272",
-         "Praomys rostratus" = "#de2d26",
-         "Rattus norvegicus" = "#9ecae1",
-         "Rattus rattus" = "#3182bd")
+         "Mastomys erythroleucus" = "#238b45",
+         "Mastomys huberti" = "#74c476",
+         "Mastomys natalensis" = "#bae4b3",
+         "Mastomys sp" = "#edf8e9",
+         "Mus mattheyi" = "#6a51a3",
+         "Mus minutoides" = "#9e9ac8",
+         "Mus minutoides/mattheyi" = "#cbc9e2",
+         "Mus musculus" = "#f2f0f7",
+         "Praomys daltoni" = "#de2d26",
+         "Praomys rostratus" = "#fc9272",
+         "Rattus norvegicus" = "#3182bd",
+         "Rattus rattus" = "#9ecae1")
 
-tested %>%
+rodent_testing <- tested %>%
   arrange(-n_pathogen_tested) %>%
   filter(classification %in%  commonly_tested) %>%
   mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
@@ -464,9 +464,9 @@ tested %>%
        y = "Number of individuals tested",
        fill = "Species")
 
-ggsave(filename = "rodent_testing.png", path = here("figures"), plot = last_plot(), device = "png", dpi = 300)
+ggsave(filename = "rodent_testing.png", plot = rodent_testing, path = here("figures"), height = 21, width = 19, units = "cm")
 
-long_pathogen %>%
+positive_assays <- long_pathogen %>%
   filter(str_detect(assay, regex("positive"))) %>%
   group_by(classification, pathogen_tested) %>%
   summarise(n_pathogen_positive = sum(number)) %T>%
@@ -758,4 +758,102 @@ histo_path_positive %>%
          genus = str_split(classification, " ", simplify = T)[1]) %>%
   filter(pathogen_tested == "Borrelia species")
 
+# Toxo
 
+pcr_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(pathogen_tested == "Toxoplasma gondii")
+
+ab_ag_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  filter(classification %in%  commonly_tested) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(pathogen_tested == "Toxoplasma gondii")
+
+histo_path_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  filter(classification %in%  commonly_tested) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(pathogen_tested == "Toxoplasma gondii")
+
+# Uninfected
+uninfected_pcr <- pcr_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(n_pathogen_positive == 0)
+
+uninfected_ab <- ab_ag_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  filter(classification %in%  commonly_tested) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(n_pathogen_positive == 0)
+
+uninfected_hist <- histo_path_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  filter(classification %in%  commonly_tested) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(n_pathogen_positive == 0)
+
+uninfected_culture <- culture_positive %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_positive = sum(number))  %>%
+  arrange(-n_pathogen_positive) %>%
+  mutate(pathogen_tested = recode(pathogen_tested, !!!pathogen_groups),
+         classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"),
+         genus = str_split(classification, " ", simplify = T)[1]) %>%
+  filter(n_pathogen_positive == 0)
+
+positive_assays <- positive_assays %>%
+  filter(n_pathogen_positive == 0) %>%
+  mutate(classification = snakecase::to_sentence_case(classification),
+         classification = recode(classification,
+                                 "Mus minutoides mattheyi" = "Mus minutoides/mattheyi"))
+
+negative_assays <- bind_rows(uninfected_pcr, uninfected_ab, uninfected_hist, uninfected_culture) %>%
+  ungroup() %>%
+  distinct(classification) %>%
+  filter(classification %in% positive_assays$classification & !str_detect(classification, regex("sp"))) %>%
+  add_case(classification = "Mastomys kollmannspergeri") %>%
+  mutate(genus = str_split(classification, " ", simplify = T)[,1]) %>%
+  left_join(., genus_data %>%
+              distinct(genus, .keep_all = T),
+            by = "genus")
