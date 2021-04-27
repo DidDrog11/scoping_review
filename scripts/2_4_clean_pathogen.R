@@ -85,6 +85,7 @@ dd_path <- pathogen_data %>%
 
 utm_path <- pathogen_data %>%
   drop_na(UTM_coordinates) %>%
+  mutate(UTM_coordinates = str_replace_all(UTM_coordinates, " ", "_")) %>%
   separate(col = UTM_coordinates, into = c("zone", "easting", "northing"), "_")
 
 utm_q_path <- utm_path %>%
@@ -115,4 +116,46 @@ path_all <- bind_rows(pathogen_gps, path_no_gps) %>%
                 culture_path_1_positive, culture_path_2_positive, culture_path_3_positive, histo_path_1_positive, histo_path_2_positive,
                 histo_path_3_positive, histo_path_4_positive, histo_path_5_positive, histo_path_6_positive, record_id)
 
+pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
+pcr_test <- c("pcr_path_1_positive", "pcr_path_2_positive", "pcr_path_3_positive", "pcr_path_4_positive", "pcr_path_5_positive", "pcr_path_6_positive")
+ab_ag_test <- c("ab_ag_path_1_positive", "ab_ag_path_2_positive", "ab_ag_path_3_positive", "ab_ag_path_4_positive", "ab_ag_path_5_positive")
+culture_test <- c("culture_path_1_positive", "culture_path_1_positive", "culture_path_1_positive")
+direct_visualisation <- c("histo_path_1_positive", "histo_path_2_positive", "histo_path_3_positive", "histo_path_4_positive", "histo_path_5_positive", "histo_path_6_positive")
+
+wide_pathogen <- path_all %>%
+  tibble() %>%
+  pivot_longer(cols = all_of(pathogen_tested), values_to = "pathogen") %>%
+  mutate(name = pathogen) %>%
+  drop_na(pathogen) %>%
+  mutate(row = row_number()) %>%
+  pivot_wider(values_from = c(path_1_tested, path_2_tested, path_3_tested, path_4_tested, path_5_tested, path_6_tested,
+                              pcr_path_1_positive, pcr_path_2_positive, pcr_path_3_positive, pcr_path_4_positive, pcr_path_5_positive, pcr_path_6_positive,
+                              ab_ag_path_1_positive, ab_ag_path_2_positive, ab_ag_path_3_positive, ab_ag_path_4_positive, ab_ag_path_5_positive,
+                              culture_path_1_positive, culture_path_2_positive, culture_path_3_positive, histo_path_1_positive, histo_path_2_positive,
+                              histo_path_3_positive, histo_path_4_positive, histo_path_5_positive, histo_path_6_positive),
+              names_from = pathogen) %>%
+  janitor::remove_empty("cols") %>%
+  dplyr::select(-row)
+
+long_pathogen <- path_all %>%
+  tibble() %>%
+  pivot_longer(cols = c(path_1_tested, path_2_tested, path_3_tested, path_4_tested, path_5_tested, path_6_tested,
+                        pcr_path_1_positive, pcr_path_2_positive, pcr_path_3_positive, pcr_path_4_positive, pcr_path_5_positive, pcr_path_6_positive,
+                        ab_ag_path_1_positive, ab_ag_path_2_positive, ab_ag_path_3_positive, ab_ag_path_4_positive, ab_ag_path_5_positive,
+                        culture_path_1_positive, culture_path_2_positive, culture_path_3_positive, histo_path_1_positive, histo_path_2_positive,
+                        histo_path_3_positive, histo_path_4_positive, histo_path_5_positive, histo_path_6_positive)) %>%
+  drop_na(value) %>%
+  rename("assay" = name,
+         "number" = value) %>%
+  mutate(pathogen_tested = case_when(str_detect(assay, regex("path_1")) ~ path_1,
+                                     str_detect(assay, regex("path_2")) ~ path_2,
+                                     str_detect(assay, regex("path_3")) ~ path_3,
+                                     str_detect(assay, regex("path_4")) ~ path_4,
+                                     str_detect(assay, regex("path_5")) ~ path_5,
+                                     str_detect(assay, regex("path_6")) ~ path_6,
+                                     TRUE ~ "error")) %>%
+  dplyr::select(-all_of(pathogen_tested))
+
 write_rds(path_all, here("data_clean", "pathogen.rds"))
+write_rds(wide_pathogen, here("data_clean", "wide_pathogen.rds"))
+write_rds(long_pathogen, here("data_clean", "long_pathogen.rds"))

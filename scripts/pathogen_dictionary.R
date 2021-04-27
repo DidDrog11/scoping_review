@@ -7,7 +7,7 @@ names(babesia) <- "babesia_species"
 bartonella <- c("bartonella", "bartonella_spp")
 names(bartonella) <- rep("bartonella_species", length(bartonella))
 borrelia <- c("borrelia", "borrelia_crocidurae", "borrelia_spp", "borrellia_spp")
-names(borrelia) <- rep("borrelia", length(borrelia))
+names(borrelia) <- rep("borrelia_species", length(borrelia))
 coxiella <- c("coxiella_burnetii")
 names(coxiella) <- "coxiella_burnetii"
 e_coli <- c("e_coli_esbl")
@@ -19,7 +19,7 @@ names(eimeria) <- "eimeria_species"
 flavivirus <- c("flavivirus")
 names(flavivirus) <- "flavivirus_species"
 hantavirus <- c("hantavirus", "hantavirus_spp")
-names(hantavirus) <- "hantavirus_species"
+names(hantavirus) <- rep("hantavirus_species", length(hantavirus))
 hydatid <- "hydatigera_species"
 names(hydatid) <- "hydatigera_species"
 k_pneumoniae <- "k_pneumoniae_esbl"
@@ -34,13 +34,13 @@ names(leptospirosis) <- "leptospirosis_species"
 mammarenavirus <- "mammarenavirus"
 names(mammarenavirus) <- "mammarenavirus_species"
 mycobacteria <- c("mycobacteria_spp", "mycobacterium_spp")
-names(mycobacteria) <- "mycobacterium_species"
+names(mycobacteria) <- rep("mycobacterium_species", length(mycobacteria))
 mycoplasma <- "mycoplasma_spp"
 names(mycoplasma) <- "mycoplasma_species"
 orentia <- "orentia"
 names(orentia) <- "orentia_species"
 orthopoxvirus <- c("orthopoxvirus", "orthopoxvirus_spp")
-names(orthopoxvirus) <- "orthopoxvirus_species"
+names(orthopoxvirus) <- rep("orthopoxvirus_species", length(orthopoxvirus))
 phlebovirus <- "phleboviruses"
 names(phlebovirus) <- "phlebovirus_species"
 plagiorchis <- "plagiorchis_species"

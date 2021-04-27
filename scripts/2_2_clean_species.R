@@ -10,8 +10,17 @@ retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "
 genus_synonym <-  as.list(c("praomys", "mus"))
 names(genus_synonym) <- c("myomys", "nannomys")
 
-accepted_names <- as.list(c("mus musculus", "oenomys hypoxanthus", "suncus megalura", "dasymys incomtus", "atelerix albiventris", "gerbilliscus gambiana", "gerbilliscus guinea", "gerbilliscus guinea", "gerbilliscus kempii", "dipodillus campestris", "gerbilliscus gambiana", "grammomys poensis", "graphiurus nagtglasii", "graphiurus kelleni", "paraechinus aethiopicus", "lophuromys flavopunctatus", "massoutiera mzabi", "mastomys natalensis", "steatomys caurinus", "gerbilliscus kempii", "gerbilliscus guineae", "gerbilliscus guineae", "gerbilliscus kempii", "gerbilliscus robusta", "taterillus gracilis", "grammomys poensis"))
-names(accepted_names) <- c("mus domesticus", "aethomys hypoxanthus", "crocidura megalura", "dasymys bentleyae", "erinaceus albiventris", "gerbilliscus gambianus", "tatera guineae", "gerbilliscus guineae", "gerbilliscus kempi", "gerbillus campestris", "gerbillus gambianus", "grammomys rutilans", "graphiurus hueti", "graphiurus parvus", "hemiechinus aethiopicus", "lophuromys flavipunctatus", "massouteria mzabi", "mastomys hildebrandtii", "steatomys caurianus", "tatera gambiana", "tatera guinea", "tatera guineae", "tatera kempi", "tatera robusta", "taterillus gracillis", "thamnomys rutilans")
+accepted_names <- as.list(c("mus musculus", "oenomys hypoxanthus", "suncus megalura", "dasymys incomtus", "atelerix albiventris", "gerbilliscus gambiana",
+                            "gerbilliscus guinea", "gerbilliscus guinea", "gerbilliscus kempii", "dipodillus campestris", "gerbilliscus gambiana",
+                            "grammomys poensis", "graphiurus nagtglasii", "graphiurus kelleni", "paraechinus aethiopicus", "lophuromys flavopunctatus",
+                            "massoutiera mzabi", "mastomys natalensis", "steatomys caurinus", "gerbilliscus kempii", "gerbilliscus guineae",
+                            "gerbilliscus guineae", "gerbilliscus kempii", "gerbilliscus robusta", "taterillus gracilis", "grammomys poensis",
+                            "crocidura olivieri"))
+names(accepted_names) <- c("mus domesticus", "aethomys hypoxanthus", "crocidura megalura", "dasymys bentleyae", "erinaceus albiventris", "gerbilliscus gambianus",
+                           "tatera guineae", "gerbilliscus guineae", "gerbilliscus kempi", "gerbillus campestris", "gerbillus gambianus", "grammomys rutilans",
+                           "graphiurus hueti", "graphiurus parvus", "hemiechinus aethiopicus", "lophuromys flavipunctatus", "massouteria mzabi",
+                           "mastomys hildebrandtii", "steatomys caurianus", "tatera gambiana", "tatera guinea", "tatera guineae", "tatera kempi",
+                           "tatera robusta", "taterillus gracillis", "thamnomys rutilans", "crocidura occidentalis")
 
 write_rds(genus_synonym, here("data_clean", "genus_dictionary.rds"))
 write_rds(accepted_names, here("data_clean", "species_dictionary.rds"))
