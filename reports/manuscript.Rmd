@@ -9,7 +9,9 @@ author:
     orcid_id: 0000-0001-9655-1656
 output: 
   distill::distill_article:
-  toc: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
   })

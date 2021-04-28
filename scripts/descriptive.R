@@ -86,6 +86,15 @@ rodent_data %>%
   summarise(n = n()) %$%
   table(n)
 
+
+# Study methodology -------------------------------------------------------
+
+studies %>%
+  filter(trap_types != "not_stated" & geolocation_level %in% c("study_site", "trap_site") & trapping_effort == "Yes") %>%
+  nrow()
+
+table(studies$pathogen)
+
 # Trap type and setup -----------------------------------------------------
 trap_type <- studies %>%
   separate(col = trap_types, into = c("trap_1", "trap_2", "trap_3", "trap_4"), sep = ", ", remove = T) %>%
@@ -398,6 +407,13 @@ long_pathogen %>%
   assign(x = "tested", value = ., pos = 1) %>%
   summarise(n_pathogen_tested = n()) %T>%
   arrange(-n_pathogen_tested) # The number of distinct pathogens tested for by rodent species
+
+long_pathogen %>%
+  filter(str_detect(assay, regex("tested"))) %>%
+  group_by(pathogen_tested) %>%
+  summarise(n_pathogen_tested = sum(number)) %>%
+  arrange(-n_pathogen_tested) %>% # The pathogens tested for
+  print(n = 32)
 
 long_pathogen %>%
   filter(str_detect(assay, regex("path_1_tested"))) %>%
