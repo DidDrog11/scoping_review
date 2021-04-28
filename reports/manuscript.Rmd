@@ -25,14 +25,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Background
 
+Rodents represent around 40% of all mammalian species, they are important components of small mammal assemblages globally. In sub-Saharan Africa particularly they are significant contributors to agricultural crop loss in addition to being hosts for a number of zoonotic pathogens of importance to local human populations. Trapping of individual rodents, identification to species and assays for the presence of potential zoonotic pathogens provides a source of data for understanding the potential ecological and human health impact of changing small mammal populations.
+
 ### Aims
+
+This scoping review aimed to synthesise the research conducted in West Africa specifically to; a) identify the aims of rodent research and summarise methodological approaches b) identify the locations, habitats and rodent species that have been studied, c) identify what potential pathogens are tested for and which host species they are found in.
 
 ### Methods
 
+This was conducted as a scoping review of all rodent trapping studies identified through a systematic search of online databases for studies conducted within the United Nations West Africa subregion.
+
 ### Results
+
+4,282 records were identified from the initial search with 124 studies published between 1974 and 2021 included in narrative synthesis. The majority of studies investigated rodent ecology (56%) with the remainder investigating potential zoonotic diseases. Study methodology was comprehensively reported from 28 (23%) studies. Studies were conducted in 14 of 16 West African countries. Specific trapping habitats were not reported using standardised approaches. The included studies reported a combined 73,164 trapped small mammals, predominantly from the order Rodentia. These individuals were identified to 147 species with *Mastomys natalensis*, *Rattus rattus* and *Mastomys erythroleucus* the most commonly trapped species. 55 studies investigated potential zoonotic pathogens, 7 further studies investigated rodent pathogens. Thirty-two microorganisms were tested for including viruses, bacteria and parasites. *Mastomys natalensis* was found to be most commonly infected by *Lassa mammarenavirus* and *Bartonella sp*, *Arvicanthis niloticus* was most commonly infected with *Borrelia sp*, *Mus musculus* was most commonly infected with *Toxoplasma gondii*.
 
 ### Conclusions
 
+This scoping review identified 124 studies, conducted in 14 countries at 1,193 study sites trapping 73,164 small rodents. Current research efforts to describe the rodent populations of West Africa has provided some information about the distribution of species across this heterogenous region and the distribution of potential pathogens within individual species. We make some recommendations for this area of research to support data sharing and re-use to better understand dynamic changes within these complex systems as a result of alterations to local habitats or climate.
 
 ## Introduction
 
@@ -211,7 +220,7 @@ Twenty-six studies reported a numeric measure of rodent species diversity or ric
 
 ### Pathogens
 
-Sixty-two studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data of the more comprehensively reported study [@fichet-calvet_spatial_2005]. Seven studies solely investigated pathogens of rodents, the remaining fifty-five studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. 
+Sixty-two studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data of the more comprehensively reported study [@fichet-calvet_spatial_2005]. Seven studies solely investigated pathogens of rodents, the remaining fifty-five studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. Thirty-two microorganisms were tested for, 8 of these at the species level, with the remaining 24 at levels higher than species.
 
 Thirty-two studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Eleven studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Eight studies conducted histological or direct visualisation assays of samples for 11 parasitic or bacterial species. Three studies performed direct culture of *Lassa mammarenavirus* or *Leishmania species* to detect the presence of the pathogen in rodent specimens. PCR was the most commonly used diagnostic assay being performed on 21,953 rodent samples, antibody or antigen based serological assays were performed on 11,430 samples, histological or direct visualisation was used on 11,229 samples with direct culture being used for 643 samples.
 
@@ -230,18 +239,18 @@ knitr::include_graphics(here::here("figures", "top_4.png"))
 
 Ninety-seven rodent species were investigated for the presence of a zoonotic pathogen, 32,014 individual rodents were tested for at least one of the above pathogens, with 42,940 assays being performed. The rodent species most commonly assayed for zoonotic pathogens were also the most commonly trapped, *Rattus rattus* (n = 2,977) were assessed for 24 pathogens, *Mus musculus* (n = 3,402) for 23, *Mastomys natalensis* (n = 7,189) and *Mastomys erythroleucus* (n = 3,013) for 19 and *Arvicanthis niloticus* (n = 3,840) for 18. All remaining species were investigated for 10 or fewer pathogens.
 
-``` {r rodents-tested, fig.cap = "The number of individuals tested from the 19 monst commonly tested species, note that the x acis differs by genus", echo = F, layout="l-page"}
+``` {r rodents-tested, fig.cap = "The number of individuals tested from the 19 monst commonly tested species, note that the x axis differs by genus", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "rodent_testing.png"))
 ```
 
 
 *Lassa mammarenavirus* was detected in 414 *Mastomys natalensis*, 9 *Mastomys erythroleucus*, 5 *Hylomyscus pamfi* and 3 *Mus baoulei* through PCR (demonstrating acute infection), in serological assays, evidence of prior infection or acquisition of maternal antibodies was found in 465 *Mastomys natalensis* and 361 *Mastomys sp.* individuals alongside 6 *Mus musculus* and 4 *Rattus rattus*. From direct viral culture 19 *Mastomys natalensis*, 2 *Rattus rattus* and 1 *Mus minutoides* were found to be infected with *Lassa mammarenavirus*. *Bartonella sp.* were detected in 113 *Mastomys natalensis*, 50 *Mastomys erythroleucus*, 39 *Rattus norvegicus*, 16 *Rattus rattus* and 13 individuals of 7 further species through PCR. 
 
-*Borrelia sp.* were identified via PCR in 110 individuals, 37 *Mastomys erythroleucus*, 12 *Mus musculus*, 11 *Masyomus huberti* and *Praomys daltoni*, the remaining 39 positive results were from 9 further species. In serological assays 47 *Mastomys natalensis*, 12 *Mastomys erythroleucus* and 8 *Praomys daltoni* were found to be positive, the remaining 11 positive individuals came from three further species. Most *Borrelia sp.* infections were identified through histology or direct visualisation with, 243 *Arvicanthis niloticus*, 102 *Mastomys natalensis*, and 78 *Mastomys huberti* along with a further 64 individuals from 8 species infected.
+*Borrelia sp.* were identified via PCR in 110 individuals, 37 *Mastomys erythroleucus*, 12 *Mus musculus*, 11 *Mastomys huberti* and *Praomys daltoni*, the remaining 39 positive results were from 9 further species. In serological assays 47 *Mastomys natalensis*, 12 *Mastomys erythroleucus* and 8 *Praomys daltoni* were found to be positive, the remaining 11 positive individuals came from three further species. Most *Borrelia sp.* infections were identified through histology or direct visualisation with, 243 *Arvicanthis niloticus*, 102 *Mastomys natalensis*, and 78 *Mastomys huberti* along with a further 64 individuals from 8 species infected.
 
 Finally *Toxoplasma gondii* was detected via PCR in 89 *Mus musculus*, 13 *Cricetomys gambianus*, 5 *Crocidura olivieri* and 3 *Rattus rattus*. From serological assays evidence of infection was found in 25 *Mus musculus*, 46 *Mastomys erythroleucus*, 4 *Rattus rattus*, and *Mastomys natalensis*, using histology and direct visualisation 1 *Mus musculus* and 1 *Rattus rattus* were also found to be infected.
 
-``` {r rodents-positive, fig.cap = "The proportion of individuals testing positive for the assessed pathogens from the 19 monst commonly tested species, note that the x acis differs by assay", echo = F, layout="l-page"}
+``` {r rodents-positive, fig.cap = "The proportion of individuals testing positive for the assessed pathogens from the 19 most commonly tested species, note that the x axis differs by assay", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "all_assays.png"))
 ```
 
