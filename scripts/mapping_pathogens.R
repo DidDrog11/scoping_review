@@ -254,3 +254,29 @@ all_path_fig <- tm_shape(level_0 %>%
 
 tmap_save(all_path_fig, here("figures", "top_4.png"))
 
+species <- all_path_map %>%
+  tibble() %>%
+  group_by(classification.x) %>%
+  summarise(n = n()) %>%
+  arrange(-n) %>%
+  head(n = 10)
+
+species_path <- all_path_map %>%
+  filter(classification.x %in% c("mastomys natalensis", "mastomys erythroleucus", "crocidura sp.",
+                                 "rattus rattus", "mus musculus", "praomys daltoni",
+                                 "arvicanthis niloticus", "mus minutoides", "taterillus sp.",
+                                 "mastomys huberti")) %>%
+  filter(pos_neg == "Positive")
+
+
+species_path_fig <- tm_shape(level_0 %>%
+           filter(GID_0 %in% wa_mainland)) +
+  tm_polygons(alpha = 0.5) +
+  tm_shape(species_path) +
+  tm_dots(col = "pos_neg", size = 0.05, palette = "black",
+          jitter = 0.08, alpha = 1, legend.show = F) +
+  tm_facets(by = c("pathogen", "classification.x"), free.coords = F) +
+  tm_layout() +
+  tm_add_legend(title = "Positive")
+
+tmap_save(species_path_fig, here("figures", "top_10_species.png"))

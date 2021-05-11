@@ -21,13 +21,14 @@ bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source(here::here("scripts", "manuscript_library.r"))
 ```
 
 ## Abstract
 
 ### Background
 
-Rodents represent around 40% of all mammalian species, they are important components of small mammal assemblages globally. In sub-Saharan Africa particularly they are significant contributors to agricultural crop loss in addition to being hosts for a number of zoonotic pathogens of importance to local human populations. Trapping of individual rodents, identification to species and assays for the presence of potential zoonotic pathogens provides a source of data for understanding the potential ecological and human health impact of changing small mammal populations.
+Rodents represent an estimated 40% of mammalian species and are important components of small mammal assemblages globally. In sub-Saharan Africa they are significant contributors to agricultural crop loss alongside being hosts for a number of zoonotic pathogens of importance to local human populations. Trapping of individual rodents, identification to species and assays for the presence of potential zoonotic pathogens produces important data for understanding the potential ecological and human health impact of changing small mammal populations.
 
 ### Aims
 
@@ -35,46 +36,43 @@ This scoping review aimed to synthesise the research conducted in West Africa sp
 
 ### Methods
 
-This was conducted as a scoping review of all rodent trapping studies identified through a systematic search of online databases for studies conducted within the United Nations West Africa subregion.
+A scoping review of all rodent trapping studies identified through a systematic search of online databases for studies conducted within the United Nations West Africa sub-region was performed.
 
 ### Results
 
-4,282 records were identified from the initial search with 124 studies published between 1974 and 2021 included in narrative synthesis. The majority of studies investigated rodent ecology (56%) with the remainder investigating potential zoonotic diseases. Study methodology was comprehensively reported from 28 (23%) studies. Studies were conducted in 14 of 16 West African countries. Specific trapping habitats were not reported using standardised approaches. The included studies reported a combined 73,164 trapped small mammals, predominantly from the order Rodentia. These individuals were identified to 147 species with *Mastomys natalensis*, *Rattus rattus* and *Mastomys erythroleucus* the most commonly trapped species. 55 studies investigated potential zoonotic pathogens, 7 further studies investigated rodent pathogens. Thirty-two microorganisms were tested for including viruses, bacteria and parasites. *Mastomys natalensis* was found to be most commonly infected by *Lassa mammarenavirus* and *Bartonella sp*, *Arvicanthis niloticus* was most commonly infected with *Borrelia sp*, *Mus musculus* was most commonly infected with *Toxoplasma gondii*.
+4,282 records were identified from the initial search with 124 studies published between 1974 and 2021 included in narrative synthesis. Studies were conducted in 14 West African countries. The majority of studies investigated rodent ecology (56%) with the remainder investigating potential zoonotic diseases. Study methodology was comprehensively reported from 28 (23%) studies. Specific trapping habitats were not reported using standardised approaches. The included studies reported 73,164 trapped small mammals, predominantly from the order Rodentia. These individuals were identified to 147 species with *Mastomys natalensis*, *Rattus rattus* and *Mastomys erythroleucus* the most common. 55 studies investigated potential zoonotic pathogens, 7 further studies investigated rodent pathogens. Thirty-two microorganisms were tested for including viruses, bacteria and parasites. *Mastomys natalensis* was found to be most commonly infected by *Lassa mammarenavirus* and *Bartonella sp*, *Arvicanthis niloticus* was most commonly infected with *Borrelia sp* and *Mus musculus* was most commonly infected with *Toxoplasma gondii*.
 
 ### Conclusions
 
-This scoping review identified 124 studies, conducted in 14 countries at 1,193 study sites trapping 73,164 small rodents. Current research efforts to describe the rodent populations of West Africa has provided some information about the distribution of species across this heterogenous region and the distribution of potential pathogens within individual species. We make some recommendations for this area of research to support data sharing and re-use to better understand dynamic changes within these complex systems as a result of alterations to local habitats or climate.
+This scoping review identified 124 studies, conducted in 14 countries at 1,193 study sites trapping 73,164 small rodents. Current research to describe the rodent populations of West Africa have provided some information about the distribution of species across this heterogenous region and the distribution of potential pathogens within individual species. We make recommendations for subsequent research to enable wider data sharing and re-use to to support meta-analysis of obtained data to address questions on rodent ecology and zoonotic disease risk.
 
 ## Introduction
 
 
 Rodents (Rodentia) are abundant and diverse, representing around 40% of all mammalian species [@american_society_of_mammologists_asm_2021]. Rodents typically demonstrate ‘fast’ life history strategies characterised by early maturation, short generation times, low juvenile and adult survival and high fecundity [@dobson_fast_2007]. Between-species heterogeneity exists, with commensal species and those that are reservoirs of zoonoses having traits consistent with faster life histories (Han et al., 2015). Rodent species compete with humans for food produced in agricultural systems [@fiedler_rodent_1988], 5-10% of rodent species are classed as major crop pests. Commensal species thrive in human adapted landscapes nesting in houses and scavenging human food storage and preparation areas. In sub-Saharan Africa, *Mastomys spp.* and *Arvicanthis spp.* are two species causing significant burden as agricultural pests [@stenseth_mice_2003]. Crop loss within Afro-Malagasy small-holder farming communities is high, with 15% of pre-harvest crop being lost to rodent pest activity [@swanepoel_systematic_2017].
 
-Beyond crop loss a further threat to local communities is the transmission of infectious diseases from rodents to humans. Zoonotic diseases (i.e. animal pathogens or microorganisms residing in animals that impact human health) are transmitted via two pathways – a direct and an indirect pathway. The direct transmission pathway involves transmission of pathogens through a rodent biting or scratching a human, or through contamination of food or water sources. The indirect pathway involves rodents acting as amplifying hosts for ectoparasites that themselves are vectors of zoonoses [@meerburg_rodent-borne_2009]. Rodent-borne pathogens vary in their scale from those with global distribution, such as the bacteria *Borrelia burgdorferi* (causing Lyme disease) and *Leptospira spp.* (casing Leptospirosis) and parasites such as *Toxoplasma gondii* (causing Toxoplasmosis) and *Leishmania spp.* (causing visceral and cutaneous Leishmaniasis). However, the majority of rodent-borne pathogens have more limited geographic distributions, viral diseases such as Hantavirus pulmonary syndrome (caused by Hantaviridae) are typically concentrated in the Americas and Lassa fever (caused by Arenaviridae) is limited to West Africa [@mills_ecologic_1998].
+Alongside crop loss a further risk to local communities is the transmission of infectious diseases from rodents to humans. Zoonotic diseases (i.e. animal pathogens or microorganisms residing in animals that impact human health) are transmitted via two pathways – a direct and an indirect pathway. The direct transmission pathway involves transmission of pathogens through a rodent biting or scratching a human, or through contamination of food or water sources. The indirect pathway involves rodents acting as amplifying hosts for ectoparasites that themselves are vectors of zoonoses [@meerburg_rodent-borne_2009]. Rodent-borne pathogens vary in their scale from those with global distribution, such as the bacteria *Borrelia burgdorferi* (causing Lyme disease) and *Leptospira spp.* (casing Leptospirosis) and parasites such as *Toxoplasma gondii* (causing Toxoplasmosis) and *Leishmania spp.* (causing visceral and cutaneous Leishmaniasis). However, the majority of rodent-borne pathogens have more limited geographic distributions, viral diseases such as Hantavirus pulmonary syndrome (caused by Hantaviridae) are typically concentrated in the Americas and Lassa fever (caused by Arenaviridae) is limited to West Africa [@mills_ecologic_1998].
 
 These economic and public health burdens have led to the monitoring of rodent distributions being performed across multiple scientific disciplines, including (but not limited to) conservation science, development studies and infectious disease epidemiology. The distribution of rodent populations can be effectively monitored through rodent trapping, with traps deployed in habitats expected to contain rodent species of interest.
 
 Further, there is increasing interest in the understanding the associations between environmental, human activity and rodent populations with land use change. A recent review of studies included in the PREDICTS database [@hudson_predicts_2014] identified that land use change from primary (i.e. intact forests) to managed and urban systems is associated with a change in rodent assemblages towards species that are more likely to be hosts of zoonoses [@gibb_zoonotic_2020]. *Mastomys natalensis* populations (an important pest and zoonotic reservoir species) in Tanzania, East Africa are sensitive to seasonal meteorological cycles, in years with below average rainfall and short rainy seasons population density is observed to be lower [@makundi_reproduction_2007] with reduced pest activity. Future climate change projections include longer and wetter West African monsoon seasons which could lead to increased zoonotic disease host rodent populations [@akinsanola_projection_2019]. As West Africa contains several known rodent zoonotic reservoirs (e.g. *Mastomys natalensis* and *Arvicanthus niloticus*) and several potential reservoirs of zoonotic diseases (e.g. *Lemniscomys striatus*), this scoping review will be limited to considering the evidence produced from West Africa.
 
-To date there has been no comprehensive overview of rodent trapping studies conducted in West Africa. The aim of this scoping review is therefore to synthesise the knowledge on rodent distributions throughout West Africa obtained from trapping studies.
+To date there has been no comprehensive overview of rodent trapping studies conducted in West Africa. The aim of this scoping review is therefore to systematically map the research conducted in this area, to identify currently used methods, gaps in current knowledge and to synthesise the knowledge on rodent distributions throughout West Africa obtained from included trapping studies.
 
 We specifically aim to address the following research questions:
 
-  +	1. In which West African countries or regions have rodent trapping studies been performed?
-  + 2. What are the stated aims of these rodent trapping studies?
-  + 3. Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
-  + 4. How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
-  +	5. Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
+  1. In which West African countries or regions have rodent trapping studies been performed?
+  2. What are the stated aims of these rodent trapping studies?
+  3. Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
+  4. How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
+  5. Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
 
 ## Methods
 
 
 ### Study design
 
-A scoping review approach was chosen to support a more descriptive and exploratory approach than using a systematic review. 
-
-  + Scoping review
-  + Protocol pre-registered on the [Openscience Framework](...)
+A scoping review approach was used to identify and map the available information on rodent assemblages, abundance and diversity across West Africa. This approach is recommended when examining how research is conducted within a topic area [@munn_systematic_2018]. The review followed the recommended appreach from the PRISMA extension for Scoping Review guidance [@tricco_prisma_2018]. The protocol for this review was not pre-registered. 
 
 ### Eligibility criteria
 
@@ -83,15 +81,15 @@ A scoping review approach was chosen to support a more descriptive and explorato
     + Described trap used, length of trapping activity or location of trapping activity.
     + Included trapping activity from at least one West African country: Benin, Burkina-Faso, Cape Verde, Gambia, Ghana, Guinea, Guinea-Bissau, Cote d'Ivoire, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone and Togo
     + Recorded as outcome genus or species of trapped individual
-    + Were available in English
     + Published in a peer-reviewed journal, a pre-print manuscript or a report by a an identifiable organisation/consultancy
   + Studies were excluded if:
     + Data were duplicated from a previously included study (i.e. secondary data analysis)
     + No full text were available
+    + Not available in English
 
 ### Search strategy
 
-The following terms were searched for in OVID Medline, Web of Science (Core collection and Zoological Record), JSTOR, BioOne, African Journals Online, Global Health and the pre-print servers BioRxiv and EcoEvoRxiv:
+The following terms as keywords were searched for in OVID Medline, Web of Science (Core collection and Zoological Record), JSTOR, BioOne, African Journals Online, Global Health and the pre-print servers BioRxiv and EcoEvoRxiv:
 
   1. Rodent
   2. West Africa
@@ -103,29 +101,29 @@ Other resources including the UN Official Documents System, Open Grey, AGRIS FAO
   2. Rodent Trap*
   3. West Africa
 
-Additional articles were identified through references within included articles and reports known to the study team. Searches were completed on 2021-03-01.
+Additional articles were identified through references within included articles and reports known to the study team. No time constraints were placed on searches. Searches were completed on 2021-03-01. The exploded search terms and links to the respective web portals are provided in supplementary material.
 
 ### Selection of studies
 
-One reviewer screened titles, abstracts and full texts against the inclusion criteria. A random subset of each of these (10%) were reviewed by a second reviewer.
+One reviewer screened titles, abstracts and full texts against the inclusion and exclusion criteria. A random subset of each of these (10%) were reviewed by a second reviewer.
 
 ### Data extraction
 
-Data were extracted by one reviewer. A second reviewer verified a subset (10%) of included studies. A data extraction form was maintained on a Google sheets document. Data extracted included i) study identifiers; ii) study aims; iii) trapping methodology; iv) geolocation data; v) method of speciation; vi) trapping locations and dates; vii) trapped species; viii) number of trap-nights and ix) microorganisms of interest.
+Data from eligible studies were extracted using a standardised data abstraction tool designed for this study on a subset of eligible studies and subsequently refined. Data were extracted by a single reviewer. A second reviewer verified a random subset (10%) of included studies. A data extraction form was maintained on a Google sheets document. Data extracted included i) study identifiers; ii) study aims; iii) trapping methodology; iv) geolocation data; v) method of speciation; vi) trapping locations and dates; vii) trapped species; viii) number of trap-nights and ix) microorganisms of interest. The data extraction forms and data dictionaries used during the analysis are reproduced in the supplementary material.
 
 #### Study aims
 
-Where explicitly stated the study aims were extracted. For those with no recorded aims the specific aims were inferred from the introduction or conclusions of manuscript or report. The aims of the studies were categorised by the research team with studies subsequently broadly categorised as pertaining to rodent ecology research or studies on risk of zoonoses.
+When explicitly stated the study aims were extracted, for those with no specified aims the aims were inferred from the introduction or conclusions of the manuscript or report. The aims of studies were categorised with a subsequent higher order allocation to rodent ecology research or studies on risk of zoonoses.
 
 #### Geolocation of trapping activity
 
-GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Coordinates were extracted in the format reported and converted to decimal degrees. Where no GPS location is reported coordinates will be matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [@national_geospatial-intelligence_agency_nga_nodate] based on study site name/region and through maps presented in the manuscript.
+GPS locations were extracted for the most precise location presented i.e. trap, trap-line, study-site or study region. Coordinates were extracted in the format reported and converted to decimal degrees. Where no GPS location was reported coordinates were matched to study locations using the National Geospatial Intelligence Agency NGA GEOnet Names Server [@national_geospatial-intelligence_agency_nga_nodate] based on study site name/region and comparison to maps presented in the manuscript (when available).
 
 #### Trapping methodology
 
-The brand, if reported, or the description of the structure of the rodent trap was obtained from each study. For studies using multiple devices all types were recorded. The method employed when setting the traps was extracted where reported. Studies that reported setting a transect line were classified as such, for studies reporting using a line of traps but not through a specified habitat the term trap line was used. 
+The brand, if reported, or the description of the structure of the rodent trap was obtained from each study. For studies using multiple devices all types were recorded. The method employed when setting the traps was also extracted, studies that reported setting a transect line were classified as such, for studies reporting using a line of traps but not through a specified habitat the term trap line was used. 
 
-The trapping effort in trap-nights was recorded. A trap-night is the setting of a single trap for a single night. If this was reported at the habitat level or the level at which the study reported rodent captures it was classified as a complete recording of trapping effort. For studies that reported trapping effort at different levels to the capture level the recording of trap-nights was classified as incomplete. For studies reporting number of nights trapping occurred for or for where the number of traps set was stated but the number of nights not recorded they were classified as incomplete.
+The trapping effort in trap-nights (the setting of a single trap for a single night) was recorded. If this was reported at the habitat level or the level at which the study reported rodent captures it was classified as a complete recording of trapping effort. For studies that reported trapping effort at different levels to the capture level the recording of trap-nights was classified as incomplete. For studies reporting number of nights trapping occurred for or for where the number of traps set was stated but the number of nights not recorded they were classified as incomplete.
 
 #### Habitat classification
 
@@ -135,9 +133,17 @@ The habitat classification scheme a study used was recorded. For studies not usi
 
 Species classifications can vary over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility [@global_biodiversity_information_facility_gbiforg_nodate]. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
 
+#### Genus/species' trapped
+
+For studies reporting on all trapped species (i.e. not those only reporting on specific species of interest) that do not report absence at study sites all species trapped within the study will be recorded at all study sites with explicitly zero observations.
+
 #### Zoonoses testing
 
-In studies investigating rodents for potential zoonoses the pathogens tested for were extracted. For studies reporting multiple potential pathogens all of the organisms were extracted. For studies solely reporting on pathogens of rodents (i.e. rodent parasites) pathogens were grouped as "Rodent pathogens". The number of rodents tested and the number of positive or negative samples were extracted alongisde the type of assay used to detect the pathogens (e.g. Polymerase Chain Reaction (PCR), Enzyme Linked ImmunoSorbent Assay (ELISA) or viral culture). Where possible pathogens were identified to the species level, however, where an assay only allows for attribution to a family of viruses or bacteria the higher order grouping was used.
+In studies investigating rodents for potential zoonoses all pathogens tested for were extracted. The number of rodents tested and the number of positive or negative samples were extracted alongside the type of assay used to detect the pathogens (e.g. Polymerase Chain Reaction (PCR), Enzyme Linked ImmunoSorbent Assay (ELISA) or viral culture). Where possible pathogens were identified to the species level, however, where an assay only allows for attribution to a family of viruses or bacteria the higher order grouping was used (i.e. PCR using a non-specific arenavirus primer).
+
+#### Risk of bias
+
+No formal risk of bias assessment tool was used.
 
 ### Analysis
 
@@ -147,30 +153,84 @@ The locations of traps, trap-sites and studies were assigned to level 2 administ
 
 ## Results
 
-A total of 4,282 records were identified, with 124 studies included in narrative synthesis (see Figure \@ref(fig:prisma)). A table of the included studies and their DoIs is presented in Supplementary table 1. The earliest studies identified were from 1974 with the majority (61%) published since 2010. Most of the included studies were classified as rodent ecology research (56%) with the remainder of studies on zoonotic diseases (44%). 
+A total of 4,282 records were identified, with 124 studies included in narrative synthesis (see Figure \@ref(fig:prisma)). A summary table of the included studies and the citations of the study or report are presented in supplementary table 1. The earliest studies identified were from 1974 with the majority (61%) published since 2010. Most of the included studies were classified as rodent ecology research (56%) with the remainder of studies on zoonotic diseases (44%).
 
 
 ``` {r prisma, fig.cap = "Flow diagram of records returned from the search strategy. Reasons for exclusion of studies at the full text stage are given.", echo = F}
 knitr::include_graphics(here::here("figures", "figure_1.png"))
 ```
 
+Table 1 summarises the included studies by publication year, and methodology with grouping by study aim.
+
+``` {r table-1, echo=F}
+studies <- read_rds(here("data_clean", "studies.rds"))
+
+studies %>%
+  mutate(decade_publication = case_when(year_publication < 1980 ~ "1970-79",
+                                        year_publication < 1990 ~ "1980-89",
+                                        year_publication < 2000 ~ "1990-99",
+                                        year_publication < 2010 ~ "2000-09",
+                                        year_publication < 2020 ~ "2010-19",
+                                        year_publication < 2030 ~ "2020-",
+                                        TRUE ~ "other"),
+         geolocation_level = case_when(geolocation_level == "island" ~ "Study site",
+                                       geolocation_level == "none" ~ "No geolocation",
+                                       geolocation_level == "study" ~ "Study",
+                                       geolocation_level == "study_region" ~ "Study",
+                                       geolocation_level == "study_site" ~ "Study site",
+                                       geolocation_level == "trap_line" ~ "Specific trap site",
+                                       geolocation_level == "trap_site" ~ "Specific trap site",
+                                       geolocation_level == "trap_site, study_site" ~ "Specific trap site",
+                                       TRUE ~ "other"),
+         speciation = case_when(speciation == "molecular" ~ "Molecular",
+                                speciation == "morphological" ~ "Morphological",
+                                speciation == "morphological, molecular" ~ "Morphological and molecular",
+                                speciation == "not_stated" ~ "Not stated",
+                                TRUE ~ "other"),
+         pathogen = case_when(pathogen == "Yes, second paper" ~ "Yes",
+                               TRUE ~ pathogen),
+         country = sub('(^[^_]+_[^_]+)_(.*)$', '\\2', unique_id),
+         country = case_when(country == "multiple" ~ "Multiple",
+                             TRUE ~ countryname(sub("_2", "", country), destination = "un.name.en"))) %>%
+  dplyr::select(country, decade_publication, aim, repeated_visit, geolocation_level,
+                speciation, species_accumulation, diversity_measurement, trapping_effort, pathogen) %>%
+  tbl_summary(by = aim,
+              label = c(country ~ "Country",
+                        decade_publication ~ "Publication year",
+                        repeated_visit ~ "Repeat study visits - Yes",
+                        geolocation_level ~ "Level of geolocation",
+                        speciation ~ "Method of speciation",
+                        species_accumulation ~ "Use of a species accumulation curve - Yes",
+                        diversity_measurement ~ "Use of a measure of species diversity - Yes",
+                        trapping_effort ~ "Reporting of trapping effort",
+                        pathogen ~ "Reporting of potential pathogens")) %>%
+  add_overall() %>%
+  as_gt() %>%
+  tab_header(title = "Table 1: Characteristics of included studies summarised by study aim") %>%
+  tab_options(table.font.size = px(12),
+              data_row.padding = px(2),
+              container.height = 600) %>%
+  fmt_missing(columns = everything(), missing_text = " ")
+```
 
 ### Aims of included studies 
 
-The detailed aims of the included studies are shown in Figure \@ref(fig:aims). Biodiversity of rodents was a shared aim between the two themes with 37 ecological studies and 2 zoonoses studies investigating this. The remaining aims were more disparate with ecological studies investigating rodent population dynamics, rodent species assemblages, the genetics of rodents and their behaviours. Most zoonotic disease research focussed on prevalence of pathogens in rodent populations, the risk of spillover to human populations, the identity of pathogen reservoir species with fewer studies investigating the phylogenetics of pathogen strains.
+The detailed aims of the included studies are shown in Figure \@ref(fig:aims). Biodiversity of rodents was a shared aim between the two themes with 37 ecological studies and 2 zoonoses studies investigating this.
 
-``` {r aims, fig.cap = "The aims of included studies following division into ecological and zoonotic infectious disease themes. Multiple aims were identified from each study, the number on the arrow indicates the number of distinct studies with that aim. Opening the image separately will allow you to zoom in.", echo = F, layout = "l-screen-inset shaded"}
+
+``` {r aims, fig.cap = "The aims of included studies following division into ecological and zoonotic infectious disease themes. Multiple aims were identified from each study, the number on the arrow indicates the number of distinct studies with that aim.", echo = F, layout = "l-screen-inset shaded"}
 knitr::include_graphics(here::here("figures", "study_aims.png"))
 ```
 
 
 ### Location of studies
 
-Trapped occurred in 17 countries, however, three countries were outside of the scope of this study (Cameroon and Chad in Central Africa and Morocco in Northern Africa). At least a single trap site was recorded from 14 West African countries, with no rodent trapping reported from Gambia or Togo. 
+Rodent trapping occurred in 17 countries, three countries were outside of the scope of this study (Cameroon and Chad in Central Africa and Morocco in Northern Africa). At least a single trap site was recorded from 14 West African countries. No rodent trapping was identified from Gambia or Togo.
 
-Most studies (93%) were conducted in a single country, five studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. In summary 146 trapping activities were reported across the 14 West African countries. More trapping activity was reported from Senegal (19%) than any other country. Nigeria (13%), Ghana and Guinea (both 12%) were the next most frequently trapped countries, followed by Mali and Benin (both 8%), Niger and Sierra Leone (both 6%), Mauritania and the Ivory Coast (4%), Burkina Faso (3%), Liberia (2%) with Guinea-Bissau and Cape Verde recording a single trapping activity. 
+Most studies (92%) were conducted in a single country, six studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. In summary 146 trapping activities were reported across the 14 West African countries.
 
-The trapping activity from the included studies was spread across 1,193 study sites. Thirty-one (25%) studies reported trapping only at a single study site, 45 (37%) studies trapped at between two and five study sites, the remaining 48 studies trapped at between six and 93 study sites. Trap sites were mapped to level two country administrative regions and density of sites per thousand square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger, Sierra Leone, Senegal, Benin, Mali, Ghana and the Ivory Coast. Of the areas not incorporating capital cities Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions.
+The trapping activity from the included studies was performed at 1,193 study sites. Thirty-one (25%) studies reported trapping only at a single study site, 45 (37%) studies trapped at between two and five study sites, the remaining 48 studies trapped at between six and 93 study sites. Trap sites were mapped to level two country administrative regions and density of sites per thousand square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger (Niamey), Sierra Leone (Freetown), Senegal (Dakar), Mali (Bamako) and Ghana (Accra) and the largest cities of Ivory Coast (Abidjan) and Benin (Cotonou). Of the areas not incorporating these cities; Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions.
+
 
 ``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "static_site_density_2.png"))
@@ -183,29 +243,30 @@ Eighteen studies did not state the type of trap used, with three studies reporti
 
 ### Trap setup within the study area
 
-Forty studies did not describe the structure of the trap setup within the defined study area. Twenty seven studies placed transect lines of traps through study sites with nineteen studies placing traps along a line but not clearly describing a transect across a defined site. Twenty-two studies purposefully sampled houses, with nine further studies purposefully placing traps in targeted locations (i.e. near rivers, in fields, by houses). Ten studies placed traps in a structured grid across a single or multiple specified habitat types. Three studies described a stratified or randomised approach to placing traps within a defined area. Trap setup was commonly reported in ecology studies (81%) with transect lines the most commonly used approach. Trap setup was reported in 56% of zoonoses risk studies with purposeful placement of traps in houses the most common approach (24%).
+Forty studies did not describe the trap setup within a defined study area. Twenty seven studies placed transect lines of traps through study sites with nineteen studies placing traps along a line but not clearly describing a transect across a defined habitat. Twenty-two studies purposefully sampled domestic structures (i.e. homes), with nine further studies purposefully placing traps in targeted locations (i.e. near rivers, in fields, by houses). Ten studies placed traps in a structured grid across a single or multiple specified habitat types. Three studies described a stratified or randomised approach to placing traps within a defined area. Trap setup was commonly reported in ecology studies (81%) with transect lines the most commonly used approach. Trap setup was reported in 56% of zoonoses risk studies with purposeful placement of traps in houses the most common method (24%).
 
 ### Trapping effort
 
-Trapping effort was variably reported across included studies. Thirty-nine studies did not report any measures of trapping effort. Forty-two studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures  (the unit of analysis) and were classified as complete reports. Thirty-nine studies had incomplete reports on trapping effort due to not presenting the number of trap nights at the appropriate unit of analysis (i.e. number of study nights only or total number of trap-nights). Trapping effort was more completely reported from ecology studies (51% complete information and 21% no information) compared to zoonoses risk studies (11% complete information and 44% no information).
+Thirty-nine studies did not report any measures of trapping effort. Forty-two studies reported a measure of trapping effort at the same level of detail at which they reported rodent captures  (the unit of analysis) and were classed as complete reports. Thirty-nine studies were classed as incomplete reports on trapping effort due to not presenting the number of trap nights at the same scale as the unit of analysis (i.e. number of study nights only or total number of trap-nights). Trapping effort was more completely reported from ecology studies (51% complete information and 21% no information) compared to zoonoses risk studies (11% complete information and 44% no information).
 
-Among studies that reported complete trap-night information the median number of trap-nights per study was 4,418 (Interquartile range (IQR) = 1,187-10,252) with a minimum of 240 trap-nights and maximum of 45,274 trap-nights. For studies reporting the number of trap-nights at the unit of analysis (typically study site or habitat type) the median number of trap-nights at each site was 360 (IQR = 246-793). In studies with incomplete reports on trap-nights there was a median of 7,200 trap-nights (IQR = 1,184-9,424) conducted, for 26 studies reporting only on the number of days or nights trapping was performed on activities typically lasted between 1-4 nights.
+Among studies that reported complete trap-night information the median number of trap-nights per study was 4,418 (Interquartile range (IQR) = 1,187-10,252) with a minimum of 240 trap-nights and maximum of 45,274 trap-nights. For studies reporting the number of trap-nights at the unit of analysis (typically study site or habitat type) the median number of trap-nights at each site was 360 (IQR = 246-793). In studies with incomplete reports on trap-nights there was a median of 7,200 trap-nights (IQR = 1,184-9,424) conducted. For 26 studies reporting only on the number of days or nights trapping was performed the trapping activity typically lasted between 1-4 nights.
 
 ### Habitat classification
 
-No studies reported trap habitats with direct reference to a habitat classification scheme. Thirteen studies did not describe the local habitat where traps were placed (4 ecology, 9 zoonoses). The remaining studies used more than 170 descriptions of the habitat type in which trapping was conducted, further, the resolution of the description varied between studies with some reporting the habitat of the location of the trap and others the study site or region. The reported habitat types were combined into 30 categories (see Supplementary table 2 for the habitat dictionary) for further analysis. At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 habitat or trap sites. The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents "natural habitat" (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
+No studies reported trap habitats with direct reference to a habitat classification scheme. Thirteen studies did not describe the local habitat in which traps were placed (4 ecology, 9 zoonoses). The remaining studies used more than 170 descriptions of the habitat type in which trapping was conducted, further, the scale of habitat of the description varied. The extracted habitat types were grouped into 30 categories (see Supplementary table 2 for the habitat dictionary) for further analysis. At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 habitat or trap sites. The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents "natural habitat" (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
 
-Habitat type was more comprehensively reported from ecology studies, 30 habitat categories were reported from ecology studies with the most commonly investigated habitats being agriculture (23%), within forests (18%) and in or around buildings (16%). Among studies on zoonoses 15 habitat categories were reported, the most commonly reported classification was described as the rodents "natural habitat" (39%), within or around buildings (38%) and in agricultural settings (7%).
+Habitat type was more comprehensively reported from ecology studie and were most commonly agricultural (23%), within forests (18%) and in or around buildings (16%). The most commonly reported habitats from zoonoses studies were the rodents "natural habitat" (39%), within or around buildings (38%) and in agricultural settings (7%).
   
 ### Species identification
 
-Thirteen included studies did not describe the method used to identify trapped rodents. Most studies (52%) relied solely on morphometric identification against taxonomic keys or museum voucher specimens. Nine studies described molecular identification of rodents with 30% using a combination of morphological and molecular techniques. In more recently published studies since 2010, 76% used molecular techniques to assist with speciation, compared with less than 15% in studies published prior to 2010.
+Thirteen included studies did not describe the method used to identify trapped rodents. Most studies (52%) relied solely on morphometric identification against taxonomic keys or museum voucher specimens. Nine studies described molecular identification of rodents with 30% using a combination of morphological and molecular techniques. In more recently published studies since 2010, 76% used molecular techniques to aid speciation, compared with less than 15% in studies published prior to 2010.
 
 ### Reported species and species abundance
 
 Across all West African study sites there were 73,164 trapped small mammals (592 were trapped outside of West African countries), 2,830 (4%) trapped individuals were only identified to order level (Rodentia), 7,760 (11%) were identified to genus level, the remaining 62,574 (85%) were identified to species level. Of the 147 distinct identified species trapped (see Supplementary table 3) the majority were from the order Rodentia (112) with Muridae (82) being the largest family of rodents, Sciuridae (10), followed by Gliridae and Nesomyidae (both 6), Ctenodactylidae and Anomaluridae (2) and Dipodidae, Hystricidae and Thryonomidae (all 1). The remaining 34 species came from the orders of the Soricomorpha (30), Erinaceomorpha (2) and Afrosoricida (1). 
 
 A similar number of rodents were trapped for ecology studies (36,367) as for studies investigating the risk of zoonoses (36,205). Animals trapped as part of ecological research were more often identified to species level (90%) than those trapped in zoonoses research (82%). The most commonly trapped genera of rodents were *Mastomys sp.* (27,072, 38.5%), *Rattus sp.* (10,191, 14.5%), *Mus sp.* (8,624, 12.3%), *Arvicanthis sp.* (5,821, 8.3%) and *Praomys sp.* (5,409, 7.7%). At the species level *Mastomys natalensis* (11,221, 17.9%) and *Rattus rattus* (8,578, 13.7%) were the most commonly trapped rodents, *Mastomys erythroleucus* (7,379, 11.8%), *Mus musculus* (6,245, 10%), *Arvicanthis niloticus* (5,497, 8.8%) and *Mastomys huberti* (4,699, 7.5%) made up the next most commonly trapped species. Presence and absence maps for these six most commonly trapped species are shown in Figure \@ref(fig:dist).
+
 
 ``` {r dist, fig.cap = "Presence and absence of the 6 most commonly trapped species in included studies, no adjustment made for trapping effort", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "top_6.png"))
@@ -218,19 +279,32 @@ Trap success is often used as a measure of rodent abundance in the absence of ma
 
 ### Rodent biodiversity
 
-Twenty-six studies reported a numeric measure of rodent species diversity or richness, these included the Shannon Index, Simpson's Index and Chao Index. Six of these studies present a species accumulation curve to estimate the completeness of their sampling activity. A further 8 studies that did not calculate diversity indices produced species accumulation curves to measure completeness of sampling.
+Twenty-six studies reported a numeric measure of rodent species diversity or richness, the indices used included the Shannon Index, Simpson's Index and Chao Index. Six of these studies present a species accumulation curve to estimate the completeness of their sampling activity. A further 8 studies that did not present diversity indices produced species accumulation curves to measure completeness of sampling.
 
 ### Pathogens
 
 Sixty-two studies presented data on microorganisms that infect or are carried by small mammal species in West Africa. Data from a study previously excluded [@fichet-calvet_fluctuation_2007] due to duplicated data was incorporated as it provided the complementary pathogen data to the rodent trapping data of the more comprehensively reported study [@fichet-calvet_spatial_2005]. Seven studies solely investigated pathogens of rodents, the remaining fifty-five studies investigated organisms that were potentially zoonotic pathogens, pathogens of rodents or microbial organisms that were of uncertain significance to rodent or human health. Thirty-two microorganisms were tested for, 8 of these at the species level, with the remaining 24 at levels higher than species.
 
+
+``` {r pathogen-table, echo=F}
+readRDS(here::here("tables", "pathogen_table.rds")) %>%
+  ungroup() %>%
+  gt::gt(rowname_col = "Pathogen tested") %>%
+  gt::tab_header(title = "Table 2: The number of studies testing for each microorganism or group of microorganisms by assay type") %>%
+  tab_options(table.font.size = px(12),
+              data_row.padding = px(2)) %>%
+  gt::fmt_missing(columns = everything(), missing_text = " ")
+```
+
+
 Thirty-two studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Eleven studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Eight studies conducted histological or direct visualisation assays of samples for 11 parasitic or bacterial species. Three studies performed direct culture of *Lassa mammarenavirus* or *Leishmania species* to detect the presence of the pathogen in rodent specimens. PCR was the most commonly used diagnostic assay being performed on 21,953 rodent samples, antibody or antigen based serological assays were performed on 11,430 samples, histological or direct visualisation was used on 11,229 samples with direct culture being used for 643 samples.
 
-The most common pathogens assessed for with PCR were *Lassa mammarenavirus* or other Arenaviridae (31%) the bacteria *Borrelia sp.* (11.3%) and *Bartonella sp.* (6.5%) followed by Usutu virus (6.4%) and Hantaviridae (5.6%). The most common pathogens assessed for with serology were *Lassa mammarenavirus* or other Arenaviridae (78%), *Toxoplasma gondii* (10.6%), *Borrelia sp.* (6.3%) and *Leptospirosis sp.* (2.2%). The most common pathogens assessed for with histology or direct visualisation were *Borrelia sp.* (48.7%), *Schistosoma sp.* (20.4%) and other parasites. All the studies using direct culture were assessing for either *Lassa mammarenavirus* (81%) or *Leishmania sp.* (19%).
+The most common pathogens assessed for with PCR were *Lassa mammarenavirus* or other Arenaviridae (31%) the bacteria *Borrelia sp.* (11.3%) and *Bartonella sp.* (6.5%) followed by Usutu virus (6.4%) and Hantaviridae (5.6%). The most common pathogens assessed for with serology were *Lassa mammarenavirus* or other Arenaviridae (78%), *Toxoplasma gondii* (10.6%), *Borrelia sp.* (6.3%) and *Leptospirosis sp.* (2.2%). The most common pathogens assessed for with histology or direct visualisation were *Borrelia sp.* (48.7%), *Schistosoma sp.* (20.4%) and other parasites. All  studies using direct culture were investigating either *Lassa mammarenavirus* (81%) or *Leishmania sp.* (19%).
 
 The rodent pathogens included *Hydatigera species* (previously *Taenia species*) and *Trichuris species* both of which are gastro-intestinal helminths.
 
-Most studies tested for a single pathogen (39), with two studies testing for six pathogens, one for five pathogens, two for three pathogens and 11 for two pathogens. The most frequently tested for pathogens were *Lassa mammarenavirus* (28%) or members of the *Arenaviridae* family (16%), the spirochete bacteria *Borrelia sp.* was investigated in 8 studies, *Bartonella sp.* and *Toxoplasma gondii* were investigated in 4 each, the remaining 25 pathogens were reported in three or fewer studies. 
+Most studies tested for a single pathogen (39), with 16 studies testing for two or more pathogens. The most frequently tested for pathogens were *Lassa mammarenavirus* (28%) or members of the *Arenaviridae* family (16%), the spirochete bacteria *Borrelia sp.* was investigated in 8 studies, *Bartonella sp.* and *Toxoplasma gondii* were investigated in 4 each, the remaining 25 pathogens were reported in three or fewer studies. 
+
 
 ``` {r paths, fig.cap = "Presence and absence of the 4 most commonly tested for zoonotic pathogens, no adjustment made for trapping or diagnostic effort", echo = F, layout="l-screen-inset shaded"}
 knitr::include_graphics(here::here("figures", "top_4.png"))
@@ -241,16 +315,18 @@ knitr::include_graphics(here::here("figures", "top_4.png"))
 
 Ninety-seven rodent species were investigated for the presence of a zoonotic pathogen, 32,014 individual rodents were tested for at least one of the above pathogens, with 42,940 assays being performed. The rodent species most commonly assayed for zoonotic pathogens were also the most commonly trapped, *Rattus rattus* (n = 2,977) were assessed for 24 pathogens, *Mus musculus* (n = 3,402) for 23, *Mastomys natalensis* (n = 7,189) and *Mastomys erythroleucus* (n = 3,013) for 19 and *Arvicanthis niloticus* (n = 3,840) for 18. All remaining species were investigated for 10 or fewer pathogens.
 
+
 ``` {r rodents-tested, fig.cap = "The number of individuals tested from the 19 monst commonly tested species, note that the x axis differs by genus", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "rodent_testing.png"))
 ```
 
 
-*Lassa mammarenavirus* was detected in 414 *Mastomys natalensis*, 9 *Mastomys erythroleucus*, 5 *Hylomyscus pamfi* and 3 *Mus baoulei* through PCR (demonstrating acute infection), in serological assays, evidence of prior infection or acquisition of maternal antibodies was found in 465 *Mastomys natalensis* and 361 *Mastomys sp.* individuals alongside 6 *Mus musculus* and 4 *Rattus rattus*. From direct viral culture 19 *Mastomys natalensis*, 2 *Rattus rattus* and 1 *Mus minutoides* were found to be infected with *Lassa mammarenavirus*. *Bartonella sp.* were detected in 113 *Mastomys natalensis*, 50 *Mastomys erythroleucus*, 39 *Rattus norvegicus*, 16 *Rattus rattus* and 13 individuals of 7 further species through PCR. 
+*Lassa mammarenavirus* was detected in 414 *Mastomys natalensis*, 9 *Mastomys erythroleucus*, 5 *Hylomyscus pamfi* and 3 *Mus baoulei* through PCR (demonstrating acute infection). In serological assays, evidence of prior infection or acquisition of maternal antibodies to *Lassa mammarenavirus* was found in; 465 *Mastomys natalensis*, 361 *Mastomys sp.* and 6 *Mus musculus* and 4 *Rattus rattus*. From direct viral culture 19 *Mastomys natalensis*, 2 *Rattus rattus* and 1 *Mus minutoides* were found to be infected with *Lassa mammarenavirus*. *Bartonella sp.* were detected in; 113 *Mastomys natalensis*, 50 *Mastomys erythroleucus*, 39 *Rattus norvegicus*, 16 *Rattus rattus* and 13 individuals of 7 further species through PCR.
 
-*Borrelia sp.* were identified via PCR in 110 individuals, 37 *Mastomys erythroleucus*, 12 *Mus musculus*, 11 *Mastomys huberti* and *Praomys daltoni*, the remaining 39 positive results were from 9 further species. In serological assays 47 *Mastomys natalensis*, 12 *Mastomys erythroleucus* and 8 *Praomys daltoni* were found to be positive, the remaining 11 positive individuals came from three further species. Most *Borrelia sp.* infections were identified through histology or direct visualisation with, 243 *Arvicanthis niloticus*, 102 *Mastomys natalensis*, and 78 *Mastomys huberti* along with a further 64 individuals from 8 species infected.
+*Borrelia sp.* infections were identified through PCR in 110 individuals; 37 *Mastomys erythroleucus*, 12 *Mus musculus*, 11 *Mastomys huberti* and *Praomys daltoni*, the remaining 39 positive results were from 9 further species. In serological assays; 47 *Mastomys natalensis*, 12 *Mastomys erythroleucus* and 8 *Praomys daltoni* were found to be positive, the remaining 11 positive individuals came from three further species. Most *Borrelia sp.* infections were identified through histology or direct visualisation with, 243 *Arvicanthis niloticus*, 102 *Mastomys natalensis*, and 78 *Mastomys huberti* along with a further 64 individuals from 8 species infected.
 
-Finally *Toxoplasma gondii* was detected via PCR in 89 *Mus musculus*, 13 *Cricetomys gambianus*, 5 *Crocidura olivieri* and 3 *Rattus rattus*. From serological assays evidence of infection was found in 25 *Mus musculus*, 46 *Mastomys erythroleucus*, 4 *Rattus rattus*, and *Mastomys natalensis*, using histology and direct visualisation 1 *Mus musculus* and 1 *Rattus rattus* were also found to be infected.
+Finally *Toxoplasma gondii* was detected via PCR in; 89 *Mus musculus*, 13 *Cricetomys gambianus*, 5 *Crocidura olivieri* and 3 *Rattus rattus*. From serological assays evidence of infection was found in 25 *Mus musculus*, 46 *Mastomys erythroleucus*, 4 *Rattus rattus*, and *Mastomys natalensis*, using histology and direct visualisation 1 *Mus musculus* and 1 *Rattus rattus* were also found to be infected.
+
 
 ``` {r rodents-positive, fig.cap = "The proportion of individuals testing positive for the assessed pathogens from the 19 most commonly tested species, note that the x axis differs by assay", echo = F, layout="l-page"}
 knitr::include_graphics(here::here("figures", "all_assays.png"))
@@ -261,17 +337,45 @@ Thirty eight species of Rodentia, 3 species of Soricomorpha and 2 species of Eri
 
 ## Discussion
 
-This scoping review aimed to consolidate and summarise research conducted on rodents and their potential zoonoses in West Africa. A comprehensive search identified X studies performed in Y West African countries. Around half of these studies were conducted to understand the ecology of rodents with the others being conducted to understand the risk of zoonotic pathogens to human populations in West Africa.
+This scoping review aimed to consolidate and summarise research conducted on rodents and their potential zoonoses in West Africa. A comprehensive search identified 124 studies performed in 14 West African countries. Around half of these studies were conducted to understand the ecology of rodents with the others being conducted to understand the risk of zoonotic pathogens to human populations in West Africa.
 
-Rodent trappping has been performed in most West African countries since the first recorded study from 197x, however, the distribution of effort between the countries and regions within those countries has been highly skewed. More than 50% of trapping activity has occurred in Senegal, Nigeria, Ghana and Guinea. Capital cities and their surrounding regions were more commonly studied than more sparsely populated areas. 
+Rodent trappping has been performed in most West African countries since the first recorded study from 1974, however, the distribution of effort between the countries and regions within those countries has been highly skewed. More than 50% of trapping activity has occurred in Senegal, Nigeria, Ghana and Guinea. Large cities and their surrounding regions were more commonly studied than less densely populated areas. 
 
-The studies conducted to assess rodent ecology typically focussed on investigating rodent biodiveristy or conducting small mammal surveys of national parks or areas of specific scientific interest. Other studies investigated rodnt population dynamics using mark and release methods to measure rodent recruitment (birth rates) and survival. 
+The studies conducted to assess rodent ecology typically focussed on rodent biodiversity or conducting small mammal surveys of national parks or areas of specific interest such as those about to be exploited for mining dam building. Other studies investigated rodent population dynamics using mark and release methods to measure rodent recruitment (birth rates) and survival. The majority of zoonoses studies were conducted to determine the prevalence of zonoses in the rodent population and to identify the potential reservoirs of pathogens.
 
+The most commonly trapped species are likely those of most direct importance to human populations in West Africa. Of the 62,574 individuals identified to species level the *Mastomys* species' and *Arvicanthis niloticus* are commensal 'native' rodents with *Mus musculus* and *Rattus sp.* commensal 'introduced' species that are important pest species of human agriculture in addition to being potential vectors of zoonotic pathogens. A further concern is that these species that thrive in human dominated landscapes will continue to expand in their habitable range and so continue to exert pressure on the distribution of other rodent species. The *Mastomys* species alongside *Mus musculus* and *Rattus rattus* had some evidence of infection with the four most studied pathogens (Arenaviruses, Bartonellae, Borrelia and Toxoplasma) this compares with *Arvicanthis niloticus* which despite being as widely tested was only found to harbour Borrelia in Mali.
 
-  + 2. What are the stated aims of these rodent trapping studies?
-  + 3. Which rodent species are being targeted for trapping activities? Are species with high potential for hosting zoonotic pathogens targeted at higher rates?
-  + 4. How is the type of land use and/or land use intensity classified in the literature and are classifications comparable across studies?
-  +	5. Is rodent trapping occurring in all habitat types or are some habitats targeted at higher rates?
+From the data obtained for this scoping review it would appear that rodents that have the potential to carry zoonotic pathogens or species that are significant agricultural pests are studied with greater intensity.
+
+Land use has not been consistently classified either within ecological studies or zoonoses studies which limits the ability to synthesise data across multiple studies. Areas of human modified habitats were the most commonly used for these rodent trapping studies with less information obtained about rodent assemblages and their potential zoonoses in less human dominated landscapes. 
+
+### Limitations
+
+While the search terms favoured sensitivity over specificity it is possible that studies conducted for other purposes (i.e. agricultural studies) may have trapped rodents without it being a key component of the study and therefore not detected through the predominantly keyword based search.
+
+While entirely duplicated studies were excluded at the inclusion and exclusion stage of the search, however, it appears that several studies have incorporated data that had been published previously in other studies. One notable example was a synthesis of trapping studies undertaken by a research group based in Dakar, Senegal over 30 years, it was not possible to identify which data had not been published in prior publications and thus introduces the risk that some data were double counted in this review.
+
+Some studies did not present detailed information about the location of rodent trapping. Coordinates for the study were derived from information within the manuscript, this may have introduced errors as locations within much of West Africa are not uniquely named.
+
+Absence of individuals of a species was often not explicitly recorded by the study teams, the absence of a species was imputed when it's presence was reported elsewhere in the study, this assumption may not always have been correct and may introduce inappropriate absences.
+
+### Recommendations to support future meta-analyses
+
+Meta-analyses to synthesise data obtained from multiple observational studies are increasingly prevalent in both ecology and infectious disease research. This methodological approach could be helpful to understand both rodent ecology and the risk of zoonotic disease emergence. This method would currently face several limitations, we highlight these below and suggest adaptations to practice that could support meta-analysis and future re-use of study data. 
+
+First, study reporting remains heterogenous with insufficient detail presented on study methodology to assess potential risks of bias, for example when choosing suitable trap locations or selecting the time period to perform the trapping study. This could be improved by pre-registering study protocols prior to analysis to make clear the rationale underlying these decisions. 
+
+Second, the selection of trap type (i.e the size of the trap) can influence the species of rodents that are caught. If specific species are targeted through choice of trap size this should be explicitly stated in the methods section. 
+
+Third, trapping effort was often incompletely recorded. Trapping effort equates to sample size and without sufficient information on the structure or quantity of this parameter incorporation of studies into meta-analyses are challenging. At a minimum study level trapping effort should be reported, ideally the number of trap-nights at each defined trap site should be reported.
+
+Fourth, habitat classification when recorded did not use a standardised approach limiting direct comparison between studies. The use of and referencing a standardised scale such as the IUCN Habitat Classification Scheme (Version 3.1) would support synthesis of results across studies.
+
+Finally, collection of data on rodents and their pathogens is often costly and is associated with risk to researchers and local communities, particularly when investigating zoonotic pathogens. Increasing the availability of primary data for further analysis should be promoted and is increasingly being mandated by governmental and non-governmental research funders. Further, the often lengthy delay between collection of data and it's subsequent publication can also lead to unnecessary duplication of research by different teams. This can be minimised by pre-registering studies and releasing study-protocols. These approaches are key components of the growing Open Science movement within ecology and beyond [@powers_open_2019].
+
+## Conclusions
+
+This scoping review identified 124 studies, conducted in 14 countries at 1,193 study sites trapping 73,164 small rodents. Current research to describe the rodent populations of West Africa have provided some information about the distribution of species across this heterogenous region and the distribution of potential pathogens within individual species. We make recommendations for subsequent research to enable wider data sharing and re-use to to support meta-analysis of obtained data to address questions on rodent ecology and zoonotic disease risk.
 
 ## Supplementary material 
 

@@ -24,6 +24,56 @@ species_gbif <- read_rds(here("data_clean", "species_data.rds")) %>%
 
 long_pathogen <- read_rds(here("data_clean", "long_pathogen.rds"))
 
+
+# Summary table -----------------------------------------------------------
+
+studies %>%
+  mutate(decade_publication = case_when(year_publication < 1980 ~ "1970's",
+                                        year_publication < 1990 ~ "1980's",
+                                        year_publication < 2000 ~ "1990's",
+                                        year_publication < 2010 ~ "2000's",
+                                        year_publication < 2020 ~ "2010's",
+                                        year_publication < 2030 ~ "2020's",
+                                        TRUE ~ "other"),
+         geolocation_level = case_when(geolocation_level == "island" ~ "Study site",
+                                       geolocation_level == "none" ~ "No geolocation",
+                                       geolocation_level == "study" ~ "Study",
+                                       geolocation_level == "study_region" ~ "Study",
+                                       geolocation_level == "study_site" ~ "Study site",
+                                       geolocation_level == "trap_line" ~ "Specific trap site",
+                                       geolocation_level == "trap_site" ~ "Specific trap site",
+                                       geolocation_level == "trap_site, study_site" ~ "Specific trap site",
+                                       TRUE ~ "other"),
+         speciation = case_when(speciation == "molecular" ~ "Molecular",
+                                speciation == "morphological" ~ "Morphological",
+                                speciation == "morphological, molecular" ~ "Morphological and molecular",
+                                speciation == "not_stated" ~ "Not stated",
+                                TRUE ~ "other"),
+         pathogen = case_when(pathogen == "Yes, second paper" ~ "Yes",
+                               TRUE ~ pathogen),
+         country = sub('(^[^_]+_[^_]+)_(.*)$', '\\2', unique_id),
+         country = case_when(country == "multiple" ~ "Multiple",
+                             TRUE ~ countryname(sub("_2", "", country), destination = "un.name.en"))) %>%
+  dplyr::select(country, decade_publication, aim, repeated_visit, geolocation_level,
+                speciation, species_accumulation, diversity_measurement, trapping_effort, pathogen) %>%
+  tbl_summary(by = aim,
+              label = c(country ~ "Country",
+                        decade_publication ~ "Publication year",
+                        repeated_visit ~ "Repeat study visits",
+                        geolocation_level ~ "Level of geolocation",
+                        speciation ~ "Method of speciation",
+                        species_accumulation ~ "Use of a species accumulation curve",
+                        diversity_measurement ~ "Use of a measure of species diversity",
+                        trapping_effort ~ "Reporting of trapping effort",
+                        pathogen ~ "Reporting of potential pathogens")) %>%
+  add_overall() %>%
+  as_gt() %>%
+  gt::tab_header(title = "Table 1: Characteristics of included studies summarised by study aim") %>%
+  tab_options(table.font.size = px(12),
+              data_row.padding = px(2)) %>%
+ saveRDS(file = here("tables", "study_table.rds"))
+
+
 # Publication year --------------------------------------------------------
 ggplot(studies) +
   geom_bar(aes(x = year_publication)) +
@@ -414,6 +464,24 @@ long_pathogen %>%
   summarise(n_pathogen_tested = sum(number)) %>%
   arrange(-n_pathogen_tested) %>% # The pathogens tested for
   print(n = 32)
+
+long_pathogen %>%
+  filter(str_detect(assay, regex("positive"))) %>%
+  mutate(assay = case_when(str_detect(assay, regex("pcr")) ~ "PCR",
+                           str_detect(assay, regex("ab_ag")) ~ "Antibody/antigen",
+                           str_detect(assay, regex("histo")) ~ "Histology/direct visualisation",
+                           str_detect(assay, regex("culture")) ~ "Culture",
+                           TRUE ~ "Error")) %>%
+  dplyr::select(unique_id, assay, pathogen_tested) %>%
+  distinct(unique_id, assay, pathogen_tested) %>%
+  group_by(pathogen_tested, assay) %>%
+  summarise(studies = n()) %>%
+  pivot_wider(id_cols = pathogen_tested, names_from = assay, values_from = studies) %>%
+  mutate(pathogen_tested = snakecase::to_any_case(pathogen_tested, case = "sentence"),
+         pathogen_tested = case_when(str_detect(pathogen_tested, regex("esbl")) ~ str_replace(pathogen_tested, "esbl", "ESBL"),
+                                     TRUE ~ pathogen_tested)) %>%
+  rename("Pathogen tested" = pathogen_tested) %>%
+  saveRDS(file = here("tables", "pathogen_table.rds"))
 
 long_pathogen %>%
   filter(str_detect(assay, regex("path_1_tested"))) %>%

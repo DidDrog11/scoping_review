@@ -19,6 +19,8 @@ pkgs =
     "distill",
     "leaflet",
     "RColorBrewer",
+    "lubridate",
+    "gtsummary",
     "lubridate"
   )
 pacman::p_load(pkgs, character.only = T)
