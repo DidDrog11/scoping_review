@@ -1,5 +1,5 @@
 ---
-title: "Associations of environmental and human factors with altered rodent populations in West Africa: A scoping review"
+title: "Rodent trapping to explore rodent ecology and zoonotic disease risk: A scoping review"
 description: |
 date: "`r Sys.Date()`"
 author: 
@@ -72,14 +72,14 @@ We specifically aim to address the following research questions:
 
 ### Study design
 
-A scoping review approach was used to identify and map the available information on rodent assemblages, abundance and diversity across West Africa. This approach is recommended when examining how research is conducted within a topic area [@munn_systematic_2018]. The review followed the recommended appreach from the PRISMA extension for Scoping Review guidance [@tricco_prisma_2018]. The protocol for this review was not pre-registered. 
+A scoping review method was adopted to identify and map the available information on rodent assemblages, abundance and diversity across West Africa. This is a recommended approach when examining how research is conducted within a topic area [@munn_systematic_2018]. The review followed the PRISMA extension for Scoping Review guidance [@tricco_prisma_2018]. The protocol for this review was not pre-registered. 
 
 ### Eligibility criteria
 
   + Studies were included if:
     + Trapping of small mammals including at least one species of Rodentia.
     + Described trap used, length of trapping activity or location of trapping activity.
-    + Included trapping activity from at least one West African country: Benin, Burkina-Faso, Cape Verde, Gambia, Ghana, Guinea, Guinea-Bissau, Cote d'Ivoire, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone and Togo
+    + Included trapping activity from at least one West African country: Benin, Burkina-Faso, Cape Verde, Gambia, Ghana, Guinea, Guinea-Bissau, C&#244;te d'Ivoire, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone and Togo
     + Recorded as outcome genus or species of trapped individual
     + Published in a peer-reviewed journal, a pre-print manuscript or a report by a an identifiable organisation/consultancy
   + Studies were excluded if:
@@ -113,7 +113,7 @@ Data from eligible studies were extracted using a standardised data abstraction 
 
 #### Study aims
 
-When explicitly stated the study aims were extracted, for those with no specified aims the aims were inferred from the introduction or conclusions of the manuscript or report. The aims of studies were categorised with a subsequent higher order allocation to rodent ecology research or studies on risk of zoonoses.
+Explicitly stated study aims were extracted, for those with no specified aims the aims were inferred from the introduction or conclusions of the manuscript or report. The aims of studies were categorised to a higher order grouping, namely, rodent ecology research or studies on the risk of zoonoses.
 
 #### Geolocation of trapping activity
 
@@ -131,11 +131,11 @@ The habitat classification scheme a study used was recorded. For studies not usi
 
 #### Genus and species definitions
 
-Species classifications can vary over time as morphological and genetic information emerges. To handle species classification synonyms and reclassification the reported names of trapped species was compared to the Global Biodiversity Information Facility [@global_biodiversity_information_facility_gbiforg_nodate]. For species with updated taxonomies the synonym was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
+Species classifications may vary over time as morphological and genetic information emerges, to handle potential species classification synonyms and reclassification the reported names of trapped species was mapped to the Global Biodiversity Information Facility [@global_biodiversity_information_facility_gbiforg_nodate] identification code. For species with updated taxonomies the reported species identity was converted to the accepted species name for all subsequent analyses. Where a subspecies is reported by study authors the species complex it belongs to will be used for subsequent analysis.
 
 #### Genus/species' trapped
 
-For studies reporting on all trapped species (i.e. not those only reporting on specific species of interest) that do not report absence at study sites all species trapped within the study will be recorded at all study sites with explicitly zero observations.
+The presence and absence of trapped individuals and genus/species will be extracted. For studies reporting on all trapped individuals (i.e. not those only reporting on the presence of specific species of interest) the absence of a reported capture of a species recorded elsewhere in the study will be explicitly recorded as an absence at the study location.
 
 #### Zoonoses testing
 
@@ -147,7 +147,7 @@ No formal risk of bias assessment tool was used.
 
 ### Analysis
 
-Descriptive analyis of included studies was conducted in R (v4.0.2) [@r_core_team_r_2020] within the RStudio IDE [@rstudio_team_rstudio_2020]. The analysis code and packages used for this analysis are available on GitHub [repository](https://doi.org/10.5281/zenodo.4718375). 
+Descriptive analysis of included studies was conducted in R (v4.0.2) [@r_core_team_r_2020] within the RStudio IDE [@rstudio_team_rstudio_2020]. The analysis code and packages used for this analysis are available on GitHub [repository](https://doi.org/10.5281/zenodo.4718375). 
 
 The locations of traps, trap-sites and studies were assigned to level 2 administrative areas in West Africa using shapefiles maintained by GADM [@database_of_global_administrative_areas_gadm_nodate]. 
 
@@ -206,7 +206,6 @@ studies %>%
                         pathogen ~ "Reporting of potential pathogens")) %>%
   add_overall() %>%
   as_gt() %>%
-  tab_header(title = "Table 1: Characteristics of included studies summarised by study aim") %>%
   tab_options(table.font.size = px(12),
               data_row.padding = px(2),
               container.height = 600) %>%
@@ -229,7 +228,7 @@ Rodent trapping occurred in 17 countries, three countries were outside of the sc
 
 Most studies (92%) were conducted in a single country, six studies were conducted in two countries, three studies were conducted in five countries and one study was conducted across six countries. In summary 146 trapping activities were reported across the 14 West African countries.
 
-The trapping activity from the included studies was performed at 1,193 study sites. Thirty-one (25%) studies reported trapping only at a single study site, 45 (37%) studies trapped at between two and five study sites, the remaining 48 studies trapped at between six and 93 study sites. Trap sites were mapped to level two country administrative regions and density of sites per thousand square kilometers was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger (Niamey), Sierra Leone (Freetown), Senegal (Dakar), Mali (Bamako) and Ghana (Accra) and the largest cities of Ivory Coast (Abidjan) and Benin (Cotonou). Of the areas not incorporating these cities; Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions.
+The trapping activity from the included studies was performed at 1,193 study sites. Thirty-one (25%) studies reported trapping only at a single study site, 45 (37%) studies trapped at between two and five study sites, the remaining 48 studies trapped at between six and 93 study sites. Trap sites were mapped to level two country administrative regions and density of sites per thousand square kilometres was calculated (see Figure \@ref(fig:density)). The areas with highest trapping densities included the capital cities of Niger (Niamey), Sierra Leone (Freetown), Senegal (Dakar), Mali (Bamako) and Ghana (Accra) and the largest cities of Ivory Coast (Abidjan) and Benin (Cotonou). Of the areas not incorporating these cities; Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions.
 
 
 ``` {r density, fig.cap = "Density of trap sites per thousand km^2^", echo = F, layout="l-page"}
@@ -297,7 +296,7 @@ readRDS(here::here("tables", "pathogen_table.rds")) %>%
 ```
 
 
-Thirty-two studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Eleven studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Eight studies conducted histological or direct visualisation assays of samples for 11 parasitic or bacterial species. Three studies performed direct culture of *Lassa mammarenavirus* or *Leishmania species* to detect the presence of the pathogen in rodent specimens. PCR was the most commonly used diagnostic assay being performed on 21,953 rodent samples, antibody or antigen based serological assays were performed on 11,430 samples, histological or direct visualisation was used on 11,229 samples with direct culture being used for 643 samples.
+Thirty-two studies used Polymerase Chain Reaction (PCR) to detect the presence of 22 different species or families of microorganisms. Eleven studies used antibody or antigen based molecular tests to detect the presence of 9 different species or families of microorganisms. Eight studies conducted histological or direct visualisation assays of samples for 11 parasitic or bacterial species. Three studies performed direct culture of *Lassa mammarenavirus* or *Leishmania species* to detect the presence of the pathogen in rodent specimens. PCR was performed on 21,953 rodent samples, antibody or antigen based serological assays were performed on 11,430 samples, histological or direct visualisation was used on 11,229 samples with direct culture being used for 643 samples.
 
 The most common pathogens assessed for with PCR were *Lassa mammarenavirus* or other Arenaviridae (31%) the bacteria *Borrelia sp.* (11.3%) and *Bartonella sp.* (6.5%) followed by Usutu virus (6.4%) and Hantaviridae (5.6%). The most common pathogens assessed for with serology were *Lassa mammarenavirus* or other Arenaviridae (78%), *Toxoplasma gondii* (10.6%), *Borrelia sp.* (6.3%) and *Leptospirosis sp.* (2.2%). The most common pathogens assessed for with histology or direct visualisation were *Borrelia sp.* (48.7%), *Schistosoma sp.* (20.4%) and other parasites. All  studies using direct culture were investigating either *Lassa mammarenavirus* (81%) or *Leishmania sp.* (19%).
 
@@ -351,17 +350,17 @@ Land use has not been consistently classified either within ecological studies o
 
 ### Limitations
 
-While the search terms favoured sensitivity over specificity it is possible that studies conducted for other purposes (i.e. agricultural studies) may have trapped rodents without it being a key component of the study and therefore not detected through the predominantly keyword based search.
+Search terms favoured sensitivity over specificity, however, it remains possible that studies conducted for other purposes (i.e. agricultural studies) may have trapped rodents without it being a key component of the study and thus not detected through the predominantly keyword based searches.
 
-While entirely duplicated studies were excluded at the inclusion and exclusion stage of the search, however, it appears that several studies have incorporated data that had been published previously in other studies. One notable example was a synthesis of trapping studies undertaken by a research group based in Dakar, Senegal over 30 years, it was not possible to identify which data had not been published in prior publications and thus introduces the risk that some data were double counted in this review.
+Entirely duplicated studies were removed at the inclusion and exclusion stage of the search, however, several studies have incorporated data that had been published previously within other studies. One notable example was a synthesis of trapping studies undertaken by a research group based in Senegal over 30 years. In some cases it was not possible to identify the novel data based on presented variables, thus, introducing the risk that some data were double counted in this review.
 
-Some studies did not present detailed information about the location of rodent trapping. Coordinates for the study were derived from information within the manuscript, this may have introduced errors as locations within much of West Africa are not uniquely named.
+Several studies did not present detailed information about the location of rodent trapping. For these studies coordinates were derived from information within the manuscript. This may introduce errors with the geolocation of these studies as locations within much of West Africa are not uniquely named.
 
-Absence of individuals of a species was often not explicitly recorded by the study teams, the absence of a species was imputed when it's presence was reported elsewhere in the study, this assumption may not always have been correct and may introduce inappropriate absences.
+Absence of individuals of a species was often not explicitly recorded in the included studies. The absence of a species was imputed when it's presence was reported elsewhere in the study, this assumption may not hold and where authors had variable data collection methods and may introduce inappropriate absences.
 
-### Recommendations to support future meta-analyses
+### Recommendations
 
-Meta-analyses to synthesise data obtained from multiple observational studies are increasingly prevalent in both ecology and infectious disease research. This methodological approach could be helpful to understand both rodent ecology and the risk of zoonotic disease emergence. This method would currently face several limitations, we highlight these below and suggest adaptations to practice that could support meta-analysis and future re-use of study data. 
+Meta-analyses to synthesise data obtained from multiple observational studies are increasingly prevalent in both ecology and infectious disease research. This approach is helpful to understand both rodent ecology and the risk of zoonotic disease emergence. This method would currently face several limitations, we discuss some of these below and suggest adaptations to practice that could support meta-analysis and future re-use of study data.
 
 First, study reporting remains heterogenous with insufficient detail presented on study methodology to assess potential risks of bias, for example when choosing suitable trap locations or selecting the time period to perform the trapping study. This could be improved by pre-registering study protocols prior to analysis to make clear the rationale underlying these decisions. 
 
@@ -376,6 +375,14 @@ Finally, collection of data on rodents and their pathogens is often costly and i
 ## Conclusions
 
 This scoping review identified 124 studies, conducted in 14 countries at 1,193 study sites trapping 73,164 small rodents. Current research to describe the rodent populations of West Africa have provided some information about the distribution of species across this heterogenous region and the distribution of potential pathogens within individual species. We make recommendations for subsequent research to enable wider data sharing and re-use to to support meta-analysis of obtained data to address questions on rodent ecology and zoonotic disease risk.
+
+## Data availability
+
+All data required to reproduce this analysis are available [here](https://docs.google.com/spreadsheets/d/1rQYjHhk6uk1PoKZZVsgFlmuqWGicU2tTisk9ddfAwTM/edit?usp=sharing) (this will be converted to an archived link at manuscript submission)
+
+## Code availability
+
+All code required to reproduce this analysis, including this manuscript are available [here](https://github.com/DidDrog11/scoping_review) (this repository will be versioned at manuscript submission)
 
 ## Supplementary material 
 
