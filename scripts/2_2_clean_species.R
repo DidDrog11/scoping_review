@@ -5,7 +5,8 @@ rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
          record_id = 1:nrow(.))
 
 retain_columns <- c("unique_id", "year_trapping", "month_trapping", "country", "iso3c", "region", "town_village", "habitat", "intensity_use",
-                    "genus", "species", "classification", "gbif_id", "genus_gbif", "species_gbif",  "number", "trap_nights", "trap_night_unit", "record_id")
+                    "genus", "species", "classification", "gbif_id", "genus_gbif", "species_gbif",  "number", "trap_nights", "trap_night_unit",
+                    "capture_rate", "study_nights", "record_id")
 
 genus_synonym <-  as.list(c("praomys", "mus"))
 names(genus_synonym) <- c("myomys", "nannomys")

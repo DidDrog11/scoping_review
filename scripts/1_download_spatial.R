@@ -1,9 +1,12 @@
 source(here::here("scripts", "libraries.r"))
+rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
+
 
 countries <- rodent_spatial %>%
   drop_na(country) %>%
   mutate(iso3 = countrycode(as.character(country), "country.name", "iso3c"))
 countries <- unique(countries$iso3)
+
 # Level 0 -----------------------------------------------------------------
 #WA
 BEN_0 <- getData("GADM", country = "Benin", level = 0, path = here("data_download", "admin_spatial"))

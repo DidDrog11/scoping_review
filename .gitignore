@@ -4,6 +4,7 @@
 
 # Session Data files
 .RData
+.DS_Store
 
 # User-specific files
 .Ruserdata
@@ -41,5 +42,5 @@ vignettes/*.pdf
 # Spatial data files
 /data_download/admin_spatial
 
-# GBOF data
+# GBIF data
 /gbif_data

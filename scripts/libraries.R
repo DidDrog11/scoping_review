@@ -20,6 +20,7 @@ pkgs =
     "leaflet",
     "RColorBrewer",
     "lubridate",
+    "gt",
     "gtsummary",
     "lubridate"
   )
