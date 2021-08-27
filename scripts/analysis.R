@@ -1,10 +1,10 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 
 # Data --------------------------------------------------------------------
 studies <- read_rds(here("data_clean", "studies.rds"))
 rodent_data <- read_rds(here("data_clean", "rodent_df.rds")) %>%
   tibble()  %>%
-  dplyr::select(-all_of(c("intensity_use", "geometry")))
+  dplyr::select(-all_of(c("intensity_use", "geometry", "trap_nights")))
 
 habitat_split <- c("habitat_1", "habitat_2", "habitat_3", "habitat_4", "habitat_5", "habitat_6", "habitat_7")
 habitat_data <- read_rds(here("data_clean", "habitat_types.rds")) %>%
@@ -20,14 +20,7 @@ imputed_tn <- read_rds(here("data_clean", "imputed_trap_nights.rds"))
 
 rodent_data <- full_join(rodent_data, imputed_tn,
                   by = c("unique_id", "year_trapping", "month_trapping",
-                         "town_village", "habitat")) %>%
-  mutate(trap_nights.x = case_when(trap_nights.x == "50-200" ~ as.numeric(125),
-                                   TRUE ~ as.numeric(trap_nights.x)),
-         trap_nights = case_when(is.na(trap_nights.y) ~ trap_nights.x,
-                                 TRUE ~ trap_nights.y),
-         trap_night_data = case_when(is.na(trap_night_data) ~ "Actual",
-                                     TRUE ~ trap_night_data)) %>%
-  select(-c(trap_nights.x, trap_nights.y))
+                         "region", "town_village", "habitat"))
 
 pathogen <- read_rds(here("data_clean", "pathogen.rds"))
 wide_pathogen <- read_rds(here("data_clean", "wide_pathogen.rds"))
@@ -118,7 +111,7 @@ study_start <- rodent_data %>%
   arrange(year_start) %>%
   mutate(unique_id = as_factor(fct_inorder(unique_id)))
 
-ggplot(study_start) +
+study_timings <- ggplot(study_start) +
   geom_segment(aes(x = unique_id, xend = unique_id, y = year_start, yend = year_end), colour = "grey") +
   geom_point(aes(x = unique_id, y = year_start, alpha = reported), size = 3, colour = "#008b46") +
   geom_point(aes(x = unique_id, y = year_end, alpha = reported), size = 3, colour = "#00468b") +
@@ -136,6 +129,8 @@ ggplot(study_start) +
        x = element_blank(),
        alpha = "Study dates reported")
 
+ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300)
+
 
 described_studies <- study_start %>%
   filter(reported == "Yes")
@@ -145,6 +140,7 @@ summary(described_studies$year_end - described_studies$year_start)
 summary(described_studies$publishing_delay, na.rm = T)
 
 # Study aims ---------------------------------------------------------------
+# Exploring the different aims of studies
 
 # ### No longer being included
 # table(studies$aim)
@@ -155,6 +151,8 @@ summary(described_studies$publishing_delay, na.rm = T)
 # aim_detail_zoo <- studies %>% filter(aim == "Zoonoses risk") %>%  dplyr::select(unique_id, aim, aim_detail_1, aim_detail_2)
 
 # Study location ----------------------------------------------------------
+# Identifying countries trapping occured in and the number of different trap sites used
+
 countries <- studies %>%
   full_join(., rodent_data %>%
               distinct(unique_id, country),
@@ -201,6 +199,7 @@ rodent_data %>%
 
 
 # Study methodology -------------------------------------------------------
+# Investigating the set up of different studies
 
 # ### No longer being included
 # studies %>%
@@ -227,38 +226,48 @@ rodent_data %>%
 # trap_technique %>% filter(aim == "Zoonoses risk") %$%
 #   table(trap_method)
 
-# Trapping effort ---------------------------------------------------------
+# Trapping effort and trap success---------------------------------------------------------
 
 table(studies$trapping_effort)
 #table(ecology_studies$trapping_effort)
 #table(zoonoses_studies$trapping_effort)
 
-t_effort <- studies %>% filter(trapping_effort == "Yes") %>% distinct(unique_id)
+rodent_data %>%
+  distinct(unique_id, region, town_village, habitat, trap_night_data, trap_nights) %>%
+  group_by(unique_id, trap_night_data) %>%
+  summarise(total_trap_nights = sum(trap_nights))
 
-s_effort <- rodent_data %>% filter(unique_id %in% t_effort$unique_id) %>%
-  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat_1) %>%
-  summarise(trap_nights = unique(trap_nights)) %>%
-  group_by(unique_id) %>%
-  summarise(trap_nights = sum(trap_nights))
+ggplot(sense_check %>%
+         arrange(-total_trap_nights)) +
+  geom_histogram(aes(x = total_trap_nights, fill = trap_night_data)) +
+  theme_minimal()
 
-summary(s_effort$trap_nights) # summary for studies with complete reporting
+trap_nights_complete <- rodent_data %>%
+  filter(trap_night_data == "Actual")
 
-t_effort <- rodent_data %>% filter(unique_id %in% t_effort$unique_id) %>%
-  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat_1) %>%
-  summarise(trap_nights = unique(trap_nights))
+buildings_tn <- trap_nights_complete  %>%
+  filter(str_detect(habitat_1, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_2, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_3, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_4, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_5, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_6, "building|urban|village|Urban|Rural|airport") |
+           str_detect(habitat_7, "building|urban|village|Urban|Rural|airport")) %>%
+  group_by(across(all_of(c("unique_id", "year_trapping", "month_trapping", "region", "town_village", habitat_split)))) %>%
+  summarise(total_captures = sum(number),
+            total_trapnights = round(mean(trap_nights), 0),
+            trap_success = round(total_captures/total_trapnights, 4))
 
-summary(t_effort$trap_nights) # trap nights for studies with complete recording
+summary(buildings_tn$trap_success)
 
-inc_effort <- studies %>% filter(trapping_effort == "Incomplete")
+non_buildings_tn <- trap_nights_complete %>%
+  group_by(across(all_of(c("unique_id", "year_trapping", "month_trapping", "region", "town_village", habitat_split)))) %>%
+  summarise(total_captures = sum(number),
+            total_trapnights = round(mean(trap_nights), 0),
+            trap_success = round(total_captures/total_trapnights, 4)) %>%
+  anti_join(., buildings_tn)
 
-inc_effort <- rodent_data %>% filter(unique_id %in% inc_effort$unique_id & !is.na(trap_nights)) %>%
-  group_by(unique_id, year_trapping, month_trapping, region, town_village, habitat_1) %>%
-  summarise(trap_nights = unique(trap_nights)) %>%
-  group_by(unique_id) %>%
-  summarise(trap_nights = unique(trap_nights)) %>%
-  summarise(trap_nights = sum(trap_nights))
-
-summary(inc_effort$trap_nights) # trap nights for studies with incomplete recording
+summary(non_buildings_tn$trap_success)
 
 # Habitat classification --------------------------------------------------
 habitat_types <- rodent_data %>%
