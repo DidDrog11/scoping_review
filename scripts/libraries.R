@@ -13,6 +13,7 @@ pkgs =
     "tmap",
     "maptools",
     "raster",
+    "terra",
     "mapview",
     "ggmap",
     "taxize",

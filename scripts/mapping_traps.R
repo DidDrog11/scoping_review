@@ -116,31 +116,64 @@ leaflet(trap_map) %>%
 trapping_effort <- rodent_spatial %>%
   distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, geometry)
 
-sites_2 <- st_intersection(x = level_2, y = trapping_effort)
+if(!file.exists(here("data_clean", "traps_level_2.rds"))) {
+  sites_2 <- st_intersection(x = level_2, y = trapping_effort)
+  write_rds(sites_2, here("data_clean", "traps_level_2.rds"))
+} else {
+  sites_2 <- read_rds(here("data_clean", "traps_level_2.rds"))
+}
 
-n_sites_region <- sites_2 %>%
-  group_by(NAME_2) %>%
-  count() %>%
-  tibble()
+trap_nights_region <- tibble(sites_2) %>%
+  group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+  summarise(total_trap_nights = sum(trap_nights)) %>%
+  group_by(GID_2, NAME_2) %>%
+  summarise(region_trap_nights = sum(total_trap_nights))
 
-level_2_sites <- level_2_all %>%
-  left_join(., n_sites_region %>%
-              dplyr::select(-geometry),
-            by = "NAME_2") %>%
+level_2_sites <- level_2 %>%
+  left_join(., trap_nights_region,
+            by = c("GID_2", "NAME_2")) %>%
   mutate(area_m2 = st_area(.),
-         site_density = n/(as.numeric(area_m2)/1000000),
-         site_density = ifelse(is.na(site_density), NA, site_density))
+         tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
+         tn_density = ifelse(is.na(tn_density), NA, tn_density))
 
-site_density_level2 <- tm_shape(level_2_sites) +  tm_polygons(col = "site_density", style = "fixed", breaks = c(0, 0.001, 0.005, 0.01, 0.05, 1, 6),
-                                                       palette = "-viridis", colorNA = NULL, border.alpha = 1, border.col = "grey", lwd = 0.1,
-                                                       title = parse(text = paste("Density~of~trap~sites~per~1000~km^2"))) +
+trap_night_density_level2 <- tm_shape(level_2_sites) +
+  tm_polygons(col = "tn_density", style = "fixed",
+              breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
+              legend.format = list(fun = function(x) paste0(formatC(x, drop0trailing = TRUE))),
+              palette = "-viridis", colorNA = NULL, border.alpha = 1, border.col = "grey", lwd = 0.1,
+              title = parse(text = paste("Density~of~trap~nights~per~1000~km^2"))) +
   tm_shape(level_0 %>%
-             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1)
+             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1) +
+  tm_scale_bar(position = c("left", "bottom")) +
+  tm_graticules(labels.show = TRUE,
+                lwd = 0.5,
+                alpha = 0.5)
 
-tmap_save(site_density_level2, filename = here("figures", "static_site_density_2.png"))
+tmap_save(trap_night_density_level2, filename = here("figures", "static_tn_density_2.png"))
 
-high_density <- level_1_sites %>%
-  arrange(-site_density) %>%
-  as_tibble() %>%
-  dplyr::select(NAME_0, NAME_1, TYPE_1, site_density) %>%
-  filter(site_density > 0.01)
+# Human population --------------------------------------------------------
+
+human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
+vect_sites <- vect(level_2_sites)
+
+crop_pop <- crop(human_pop, vect_sites)
+region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple")
+region_pop_sf <- cbind(level_2_sites, region_pop) %>%
+  st_as_sf()
+
+deciles <- quantile(region_pop_sf$pop_2005, na.rm = T, probs = seq(0.1, 0.9, by = 0.1)) %>%
+  round(., -1)
+
+population_map <- tm_shape(region_pop_sf) +
+  tm_fill("pop_2005",
+          style = "fixed",
+          breaks = c(0, deciles, max(region_pop_sf$pop_2005))) +
+  tm_shape(level_0 %>%
+             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1) +
+  tm_scale_bar(position = c("left", "bottom")) +
+  tm_graticules(labels.show = TRUE,
+                lwd = 0.5,
+                alpha = 0.5)
+
+
+
