@@ -2,6 +2,7 @@ if (!require("pacman")) install.packages("pacman")
 pkgs =
   c("here",
     "tidyverse",
+    "mgcv",
     "magrittr",
     "bib2df",
     "googledrive",

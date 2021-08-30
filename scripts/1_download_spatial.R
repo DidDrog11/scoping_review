@@ -1,4 +1,4 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
 
 countries <- rodent_spatial %>%
