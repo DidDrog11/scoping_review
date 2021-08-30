@@ -14,6 +14,8 @@ level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
 
 level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
 
+non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
+
 studies <- read_rds(here("data_clean", "studies.rds"))
 
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
@@ -154,7 +156,8 @@ tmap_save(trap_night_density_level2, filename = here("figures", "static_tn_densi
 # Human population --------------------------------------------------------
 
 human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
-vect_sites <- vect(level_2_sites)
+vect_sites <- vect(bind_rows(level_2_sites,
+                             non_trapped))
 
 crop_pop <- crop(human_pop, vect_sites)
 region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple")
