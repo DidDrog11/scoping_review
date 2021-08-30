@@ -1,4 +1,4 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
 
 countries <- rodent_spatial %>%
@@ -127,3 +127,14 @@ CPV_2 <- CPV_1 %>%
 level_two <- ls(pattern = "_2")
 countries_level_2 <- do.call("list",mget(level_two))
 write_rds(bind_rows(countries_level_2), here("data_download", "admin_spatial", "level_2_admin.rds"))
+
+
+# Non-trapped level 2 -----------------------------------------------------
+
+nt_TGO <- getData(name = "GADM", country ="TGO", level = 2, path = here("data_download", "admin_spatial")) %>%
+  st_as_sf()
+
+nt_GMB <- getData(name = "GADM", country ="GMB", level = 2, path = here("data_download", "admin_spatial")) %>%
+  st_as_sf()
+
+write_rds(bind_rows(nt_GMB, nt_TGO), here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))

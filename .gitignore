@@ -41,6 +41,7 @@ vignettes/*.pdf
 
 # Spatial data files
 /data_download/admin_spatial
+/data_download/habitat_2005
 
 # GBIF data
 /gbif_data

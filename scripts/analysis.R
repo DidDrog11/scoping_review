@@ -130,7 +130,7 @@ study_timings <- ggplot(study_start) +
        alpha = "Study dates reported")
 
 ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300)
-
+write_rds(study_timings, here("plots", "study_timings.rds"))
 
 described_studies <- study_start %>%
   filter(reported == "Yes")
@@ -268,6 +268,96 @@ non_buildings_tn <- trap_nights_complete %>%
   anti_join(., buildings_tn)
 
 summary(non_buildings_tn$trap_success)
+
+# Trap night and population -----------------------------------------------
+if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
+  rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
+    select(-trap_nights)
+
+  imputed_tn <- read_rds(here("data_clean", "imputed_trap_nights.rds"))
+
+  rodent_spatial <- rodent_spatial %>%
+    left_join(., imputed_tn,
+              by = c("unique_id", "year_trapping", "month_trapping",
+                     "region", "town_village", "habitat"))
+
+  level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+  non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
+
+  level_2 <- bind_rows(level_2, non_trapped)
+
+  zoonotic_studies <- studies %>%
+    filter(str_detect(aim, "Zoonoses")) %>%
+    pull(unique_id)
+
+  trapping_effort <- rodent_spatial %>%
+    filter(unique_id %in% zoonotic_studies) %>%
+    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, geometry)
+
+  sites_2 <- st_intersection(x = level_2, y = trapping_effort)
+
+  trap_nights_region <- tibble(sites_2) %>%
+    group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+    summarise(total_trap_nights = sum(trap_nights)) %>%
+    group_by(GID_2, NAME_2) %>%
+    summarise(region_trap_nights = sum(total_trap_nights))
+
+  sites_2 <- level_2 %>%
+    left_join(., trap_nights_region, by = c("GID_2", "NAME_2")) %>%
+    mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
+                                          TRUE ~ region_trap_nights))  %>%
+    mutate(area_m2 = st_area(.),
+           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
+           tn_density = ifelse(is.na(tn_density), NA, tn_density))
+
+  write_rds(sites_2, here("data_clean", "traps_level_2_zoonoses.rds"))
+  human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
+
+vect_sites <- vect(sites_2)
+
+crop_pop <- crop(human_pop, vect_sites)
+wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"))
+region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
+region_pop_sf <- cbind(vect_sites, region_pop) %>%
+  st_as_sf() %>%
+  st_centroid() %>%
+  mutate(x = st_coordinates(.$geometry)[,1],
+         y = st_coordinates(.$geometry)[,2],
+         tn_density = case_when(is.na(tn_density) ~ 0,
+         TRUE ~ tn_density)) %>%
+  tibble() %>%
+  select(-geometry)
+
+write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
+} else {
+  region_pop_sf <- read_rds(here("data_clean", "pop_tn_analysis.rds"))
+  human_pop <- rast(here("data_download", "pop_2005","wa_pop_2005.tif"))
+}
+
+tn_pop_model <- gam(tn_density ~ s(x, y) + log(pop_2005),
+                    family = "tw",
+                    data = region_pop_sf %>% filter(GID_0 != "CPV"))
+
+summary(tn_pop_model)
+plot(tn_pop_model, scheme = 2)
+
+all_cells <- rasterToPoints(raster(human_pop)) %>%
+  tibble(x = .[,1],
+         y = .[,2],
+         pop_2005 = .[,3]) %>%
+  select(x, y, pop_2005)
+
+prediction_space <- tibble(x = all_cells$x,
+                           y = all_cells$y,
+                           pop_2005 = all_cells$pop_2005)
+prediction_space <- prediction_space %>%
+  mutate(predict = as.numeric(predict.gam(tn_pop_model,
+                                prediction_space)))
+
+prediction_raster <- vect(prediction_space, geom = c("x", "y")) %>%
+  terra::rasterize(., human_pop,
+                   field = "predict")
+names(prediction_raster) <- "predictor"
 
 # Habitat classification --------------------------------------------------
 habitat_types <- rodent_data %>%

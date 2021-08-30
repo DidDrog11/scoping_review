@@ -1,4 +1,4 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 
 all_countries <- c("BEN", "BFA", "CIV", "CMR", "CPV", "DZA", "ESH", "GHA",
                    "GIN", "GMB", "GNB", "LBR", "MAR", "MLI", "MRT", "NER",
@@ -13,6 +13,8 @@ level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
 level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
 
 level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+
+non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
 
 studies <- read_rds(here("data_clean", "studies.rds"))
 
@@ -59,22 +61,22 @@ if(!file.exists(here("figures", "static_site_map.png"))){
     tm_scale_bar(position = c("left", "bottom")) +
     tm_compass(position = c("right", "top"))
 
-data("World")
-afr <- st_as_sf(World) %>%
-  filter(continent == "Africa") %>%
-  st_make_valid()
+  data("World")
+  afr <- st_as_sf(World) %>%
+    filter(continent == "Africa") %>%
+    st_make_valid()
 
-# extracting bounding box Africa
-region <- st_as_sfc(st_bbox(afr))
+  # extracting bounding box Africa
+  region <- st_as_sfc(st_bbox(afr))
 
-afrmap <- tm_shape(afr) + tm_polygons() +
-  tm_shape(st_as_sfc(st_bbox(level_0))) + tm_polygons(col = "orange", alpha = 0.5) +
-  tm_shape(region) + tm_borders(lwd = .2)
+  afrmap <- tm_shape(afr) + tm_polygons() +
+    tm_shape(st_as_sfc(st_bbox(level_0))) + tm_polygons(col = "orange", alpha = 0.5) +
+    tm_shape(region) + tm_borders(lwd = .2)
 
-vp <- grid::viewport(0.13, 0.88, width = 0.23, height = 0.23)
+  vp <- grid::viewport(0.13, 0.88, width = 0.23, height = 0.23)
 
-tmap_save(trapping_map, filename = here("figures", "static_site_map.png"),
-          dpi = 320, insets_tm = afrmap, insets_vp = vp)
+  tmap_save(trapping_map, filename = here("figures", "static_site_map.png"),
+            dpi = 320, insets_tm = afrmap, insets_vp = vp)
 }
 
 # Plot as leaflet ---------------------------------------------------------
@@ -144,22 +146,33 @@ trap_night_density_level2 <- tm_shape(level_2_sites) +
               title = parse(text = paste("Density~of~trap~nights~per~1000~km^2"))) +
   tm_shape(level_0 %>%
              filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1) +
+  tm_compass(type = "arrow", size = 1, position = c("left", "bottom")) +
   tm_scale_bar(position = c("left", "bottom")) +
   tm_graticules(labels.show = TRUE,
                 lwd = 0.5,
                 alpha = 0.5)
 
+write_rds(trap_night_density_level2, here("plots", "tn_density.rds"))
 tmap_save(trap_night_density_level2, filename = here("figures", "static_tn_density_2.png"))
 
 # Human population --------------------------------------------------------
 
 human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
-vect_sites <- vect(level_2_sites)
+vect_sites <- vect(bind_rows(level_2_sites,
+                             non_trapped))
 
 crop_pop <- crop(human_pop, vect_sites)
-region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple")
-region_pop_sf <- cbind(level_2_sites, region_pop) %>%
-  st_as_sf()
+region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
+region_pop_sf <- cbind(vect_sites, region_pop) %>%
+  st_as_sf() %>%
+  mutate(pop_2005 = case_when(GID_2 == "CIV.14.1_1" ~ 12,
+                              GID_2 == "NGA.1.1_1" ~ 6,
+                              GID_2 == "NGA.4.18_1" ~ 8,
+                              GID_2 == "NGA.20.31_1" ~ 1.6,
+                              GID_2 == "NGA.31.9_1" ~ 11.3,
+                              GID_2 == "GMB.1.1_1" ~ 3800,
+                              GID_2 == "GMD.3.2_1" ~ 72,
+                              TRUE ~ pop_2005))
 
 deciles <- quantile(region_pop_sf$pop_2005, na.rm = T, probs = seq(0.1, 0.9, by = 0.1)) %>%
   round(., -1)
@@ -167,13 +180,60 @@ deciles <- quantile(region_pop_sf$pop_2005, na.rm = T, probs = seq(0.1, 0.9, by 
 population_map <- tm_shape(region_pop_sf) +
   tm_fill("pop_2005",
           style = "fixed",
-          breaks = c(0, deciles, max(region_pop_sf$pop_2005))) +
+          breaks = c(0, deciles, round(max(region_pop_sf$pop_2005), -4)),
+          title = parse(text = paste("Population~density~per~1~km^2"))) +
   tm_shape(level_0 %>%
-             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1) +
+             filter(GID_0 %in% wa_countries)) +
+  tm_polygons(alpha = 0, lwd = 1) +
+  tm_compass(type = "arrow", size = 1, position = c("left", "bottom")) +
   tm_scale_bar(position = c("left", "bottom")) +
   tm_graticules(labels.show = TRUE,
                 lwd = 0.5,
                 alpha = 0.5)
 
+write_rds(population_map, here("plots", "pop_map_2005.rds"))
+tmap_save(population_map, filename = here("figures", "pop_density_2.png"))
 
+log_pop_tn <- ggplot(tibble(region_pop_sf) %>%
+         select(-geometry) %>%
+         mutate(tn_density = case_when(is.na(tn_density) ~ 0,
+                                       TRUE ~ tn_density))) +
+  geom_smooth(aes(x = tn_density, y = log(pop_2005)),
+              formula = y ~ s(x, bs = "cs")) +
+  geom_point(data = . %>%
+               filter(tn_density > 0),
+             aes(x = tn_density, y = log(pop_2005)),
+             colour = "#440154") +
+  geom_point(data = . %>%
+               filter(tn_density == 0),
+             aes(x = tn_density, y = log(pop_2005)),
+             colour = "#fde725",
+             alpha = 0.2) +
+  theme_minimal() +
+  labs(x = parse(text = paste("Trap~night~density~per~1000~km^2")),
+       y = parse(text = paste("log~Population~density~per~1~km^2~(2005~level)")))
 
+pop_tn <- ggplot(tibble(region_pop_sf) %>%
+         select(-geometry) %>%
+         mutate(tn_density = case_when(is.na(tn_density) ~ 0,
+                                       TRUE ~ tn_density))) +
+  geom_smooth(aes(x = tn_density, y = pop_2005),
+              formula = y ~ s(x, bs = "cs")) +
+  geom_point(data = . %>%
+               filter(tn_density > 0),
+             aes(x = tn_density, y = pop_2005),
+             colour = "#440154") +
+  geom_point(data = . %>%
+               filter(tn_density == 0),
+             aes(x = tn_density, y = pop_2005),
+             colour = "#fde725",
+             alpha = 0.2) +
+  theme_minimal() +
+  labs(x = parse(text = paste("Trap~night~density~per~1000~km^2")),
+       y = parse(text = paste("Population~density~per~1~km^2~(2005~level)")))
+
+write_rds(log_pop_tn, here("plots", "log_pop_tn.rds"))
+write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
+
+ggsave(plot = log_pop_tn, here("figures", "log_pop_tn.png"), dpi = 300)
+ggsave(plot = pop_tn, here("figures", "pop_tn.png"), dpi = 300)
