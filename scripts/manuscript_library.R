@@ -4,6 +4,7 @@ pkgs =
     "tidyverse",
     "gt",
     "gtsummary",
-    "countrycode"
+    "countrycode",
+    "cowplot"
   )
 pacman::p_load(pkgs, character.only = T)
