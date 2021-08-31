@@ -13,7 +13,6 @@ pkgs =
     "OpenStreetMap",
     "tmap",
     "maptools",
-    "raster",
     "terra",
     "mapview",
     "ggmap",
