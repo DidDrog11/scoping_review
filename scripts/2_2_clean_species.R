@@ -1,4 +1,4 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 
 rodent_data <- read_rds(here("data_raw", "rodent_data.rds")) %>%
   mutate(country = as_factor(country),

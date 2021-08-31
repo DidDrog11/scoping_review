@@ -12,7 +12,13 @@ pkgs =
     "sf",
     "OpenStreetMap",
     "tmap",
+    "cowplot",
     "maptools",
+<<<<<<< HEAD
+=======
+    "raster",
+    "parzer",
+>>>>>>> ec3bd7b9c36a13fbc00bf7e14bdacb33a55ed90a
     "terra",
     "mapview",
     "ggmap",
@@ -23,7 +29,9 @@ pkgs =
     "lubridate",
     "gt",
     "gtsummary",
-    "lubridate"
+    "lubridate",
+    "see",
+    "scales"
   )
 pacman::p_load(pkgs, character.only = T)
 

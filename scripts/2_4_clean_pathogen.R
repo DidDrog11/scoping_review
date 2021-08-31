@@ -3,7 +3,6 @@ source(here::here("scripts", "libraries.R"))
 genus_dictionary <- read_rds(here("data_clean", "genus_dictionary.rds"))
 species_dictionary <- read_rds(here("data_clean", "species_dictionary.rds"))
 
-
 # Pathogen ----------------------------------------------------------------
 
 # Cleaning species names
@@ -36,7 +35,7 @@ pathogen_data <- pathogen_data %>%
 # Cleaning pathogen
 pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
 
-source(here("scripts", "pathogen_dictionary.r"))
+source(here("scripts", "pathogen_dictionary.R"))
 pathogen_name <- read_rds(here("data_clean", "pathogen_dictionary.rds"))
 
 pathogen_data <- pathogen_data %>%
