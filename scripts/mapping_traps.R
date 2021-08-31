@@ -194,24 +194,36 @@ population_map <- tm_shape(region_pop_sf) +
 write_rds(population_map, here("plots", "pop_map_2005.rds"))
 tmap_save(population_map, filename = here("figures", "pop_density_2.png"))
 
+non_trapped_regions <- tibble(region_pop_sf) %>%
+  select(-geometry) %>%
+  mutate(tn_density = case_when(is.na(tn_density) ~ 0,
+                                TRUE ~ tn_density)) %>%
+  filter(tn_density == 0)
+
 log_pop_tn <- ggplot(tibble(region_pop_sf) %>%
-         select(-geometry) %>%
-         mutate(tn_density = case_when(is.na(tn_density) ~ 0,
-                                       TRUE ~ tn_density))) +
+                       select(-geometry) %>%
+                       mutate(tn_density = case_when(is.na(tn_density) ~ 0,
+                                                     TRUE ~ tn_density))) +
   geom_smooth(aes(x = tn_density, y = log(pop_2005)),
-              formula = y ~ s(x, bs = "cs")) +
+              formula = y ~ s(x, bs = "cs"),
+              method = "gam") +
   geom_point(data = . %>%
                filter(tn_density > 0),
              aes(x = tn_density, y = log(pop_2005)),
              colour = "#440154") +
-  geom_point(data = . %>%
-               filter(tn_density == 0),
-             aes(x = tn_density, y = log(pop_2005)),
-             colour = "#fde725",
-             alpha = 0.2) +
+  geom_boxplot(non_trapped_regions,
+               mapping = aes(x = 0.01, y = log(pop_2005)),
+               colour = "#fde725",
+               fill = "#fde725",
+               alpha = 0.6,
+               inherit.aes = FALSE,
+               position = position_nudge(x = - 2)) +
   theme_minimal() +
-  labs(x = parse(text = paste("Trap~night~density~per~1000~km^2")),
-       y = parse(text = paste("log~Population~density~per~1~km^2~(2005~level)")))
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) +
+  annotation_logticks(sides = "b") +
+  labs(x = parse(text = paste("log~Trap~night~density~per~1000~km^2")),
+       y = parse(text = paste("log~Population~density~per~1~km^2~(2005)")))
 
 pop_tn <- ggplot(tibble(region_pop_sf) %>%
          select(-geometry) %>%
@@ -237,3 +249,45 @@ write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
 
 ggsave(plot = log_pop_tn, here("figures", "log_pop_tn.png"), dpi = 300)
 ggsave(plot = pop_tn, here("figures", "pop_tn.png"), dpi = 300)
+
+
+# Plotting trapping effort model ------------------------------------------
+
+pop_predict <- rast(here("data_clean", "prediction_space.tif"))
+
+tn_to_pop <- tm_shape(pop_predict) +
+  tm_raster(title = "Trap nights per log(Population density)",
+            palette = "-viridis",
+            n = 14,
+            midpoint = 0,
+            showNA = TRUE,
+            legend.is.portrait = FALSE) +
+  tm_shape(st_cast(level_0, to = "MULTIPOLYGON")) +
+  tm_borders() +
+  tm_text("NAME_0") +
+  tm_layout(legend.outside = TRUE,
+            legend.outside.position = "bottom") +
+  tm_scale_bar(position = c("left", "bottom")) +
+  tm_compass(position = c("left", "bottom")) +
+  tm_graticules(labels.show = TRUE,
+                lwd = 0.5,
+                alpha = 0.5)
+
+write_rds(tn_to_pop, here("plots", "tn_to_pop.rds"))
+
+panel_b <- plot_grid(log_pop_tn, tmap_grob(tn_to_pop))
+
+# Habitat trap night ------------------------------------------------------
+
+trap_habitats <- read_rds(here("plots", "trap_habitats.rds"))
+
+
+fig_2 <- plot_grid(tmap_grob(tn_map),
+                   panel_b,
+                   trap_habitats,
+                   nrow = 3,
+                   labels = "AUTO",
+                   rel_widths = c(1, 2, 1),
+                   rel_heights = c(2, 1, 1))
+
+save_plot(here("figures", "Figure_2.png"), fig_2, nrow = 3, base_height = 10, base_width = 16)

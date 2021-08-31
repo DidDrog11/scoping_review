@@ -19,6 +19,9 @@ knit: (function(inputFile, encoding) {
 always_allow_html: yes
 bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 ---
+```{r, echo=FALSE}
+source(here::here("scripts", "manuscript_library.R"))
+```
 
 # Introduction
 
@@ -78,7 +81,7 @@ bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
   * We summarised the habitat types of trap sites based on information reported in the study.
   * For the subset of studies investigating rodent zoonoses we compared the location of trapping sites with 2005 SEDAC Global Population Density estimates, the median year studies were commenced, using a Generalised Additive Model (GAM) incorporating a spatial interaction term to investigate the association of number of trap nights and human population density. The model structure was specified as below:
     * *trap night density* ~ *Tweedie*(*log*(Population density (2005)) + (Longitude * Latitude))   
-  * We repeated this approach for land cover classifications obtained from the European Space Agency Copernicus dataset (2005) using a GAM incorporating a spatial interaction term to investigate the association of trap nights and land cover.
+  * We obtained land cover classifications from the European Space Agency Copernicus dataset at 300m^2^ spatial resolution (2005) we extracted the proportion of land cover classes within all regions of West Africa and all regions in which rodent trapping for zoonotic diseases. We compared the proportion of possible land cover classes with those of regions where trapping occurred.
   * We mapped the presence and absence of rodent species and compared this to the presence and absence reported by both GBIF and IUCN to give a measure of the extent of each species range in which they have been sampled. 
 
 ### Rodent pathogen associations
@@ -92,27 +95,34 @@ bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 
   * 4,282 citations were identified, with 126 rodent trapping studies included in narrative synthesis.
   * The earliest included studies were from 1974 with increasing numbers of studies being performed annually since 2005.
-  * The median length of rodent trapping activity is one year (IQR 0-2 years). The median time from completion of rodent trapping to publication is 3 years (IQR 2-5 years) (see Figure 1 - Panel A).
+  * The median length of rodent trapping activity is one year (IQR 0-2 years). The median time from completion of rodent trapping to publication is 3 years (IQR 2-5 years) (see Figure 1).
+
+```{r, figure_1, echo=FALSE}
+study_timings <- read_rds(here("plots", "study_timings.rds"))
+
+plot_grid(study_timings)
+
+```
+
+*Figure 1*: Each row represents one of the 126 included studies, green points designate the first year of data collection, blue points designate the end of data collection. For studies completed within one year the blue point completely overlies the green. Studies with a transparent grey point did not report the year in which trapping was conducted. The year of publication is shown by a red point.
 
 ## Location and habitats of rodent trapping studies to investigate potential biases
 
   * Rodent trapping took place across 1,331 trap sites with at least one trap site recorded from 14 West African countries. No rodent trapping studies were identified from Gambia or Togo.
-  * Thirty-one (25%) studies reported trapping at a single study site, 46 (37%) studies trapped at between two and five study sites, the remaining 49 studies trapped at between six and 93 study sites. Trap sites were situated in 273 (19.3%) of 1414 level 2 administrative regions from the 14 West African nations. The areas with highest trapping activity included the capital cities of Niger (Niamey), Sierra Leone (Freetown), Senegal (Dakar), Mali (Bamako) and Ghana (Accra) and the largest cities of Ivory Coast (Abidjan) and Benin (Cotonou). Outside of these cities, Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions (see Figure 1 - Panel B).
-  * Greater numbers of trap nights were conducted in areas with higher population densities (*R~2~* = 0.167). In particular Mauritania, Northern Senegal, Eastern Sierra Leone, Eastern Guinea and South West Nigeria were trapped at increased rates than would be expected based on their population densities. South West Nigeria, Northern Nigeria, Liberia, the Ivory Coast, Ghana, Niger and Burkina Faso were trapped at lower rates.
+  * Thirty-one (25%) studies reported trapping at a single study site, 46 (37%) studies trapped at between two and five study sites, the remaining 49 studies trapped at between six and 93 study sites. Trap sites were situated in 273 (19.3%) of 1414 level 2 administrative regions from the 14 West African nations. The areas with highest trapping activity included the capital cities of Niger (Niamey), Sierra Leone (Freetown), Senegal (Dakar), Mali (Bamako) and Ghana (Accra) and the largest cities of Ivory Coast (Abidjan) and Benin (Cotonou). Outside of these cities, Northern Senegal (Fatique, Thies, Saint-Louis and Kedougou), Southern Guinea (Kindia and Nzerejore), Edo and Osun States in Nigeria and Eastern Sierra Leone were the most intensively studied regions (see Figure 2 - Panel A).
+  * Greater numbers of trap nights were conducted in areas with higher population densities (*R~2~* = 0.167). In particular Mauritania, Northern Senegal, Eastern Sierra Leone, Eastern Guinea and South West Nigeria were trapped at increased rates than would be expected based on their population densities. South West Nigeria, Northern Nigeria, Liberia, the Ivory Coast, Ghana, Niger and Burkina Faso were trapped at lower rates (see Figure 2 - Panel B) .
   * No studies reported trap habitats with reference to a standardised habitat classification scheme. 
   * Extracted habitat types were grouped into 30 categories (see Supplementary Material 2 for the habitat dictionary). At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 distinct habitat and trap sites. 
   * The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents “natural habitat” (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
   * Explore whether trap sites are more likely to have been conducted within high population regions or whether there is an association with trap location and habitat as obtained from remote sensing data (Need to do this. The remote sensing data will be matched to the trap dates there will be several years between the trapping and data this is compared to it seems impractical to try and get annual population estimates or land classification so this will be chosen pragmatically)
 
-```{r, figure_1}
+Figure 1 - Panel A - plot of studies, Panel B - location of traps, Panel C - The distribution of population density at trap sites, Panel D- The distribution of habitat types at trap sites compared to all habitat types in West Africa.
 
-cowplot::plot_grid(plotlist = )
-
+```{r, figure_2, layout = "l_page", echo=FALSE}
+knitr::include_graphics(here("figures", "Figure_2.png"))
 ```
 
-Figure 1 - Panel A - plot of studies, Panel B - location of traps, Panel C - The distribution of population density at trap sites, Panel D- The distribution of habitat types at trap sites compared to all habitat types in West Africa
-
-Figure 1: **Panel A:** Each row represents one of the 126 included studies, green points designate the first year of data collection, blue points designate the end of data collection. For studies completed within one year the blue point overlies the green. Studies with a transparent grey point did not report the year in which trapping was conducted. The year of publication is shown by a red point. **Panel B:** Map of West Africa, countries where rodent trapping has occurred are mapped to level 2 administrative areas (where available). These regions are coloured by the total number of trap nights performed at trap sites within their boundaries. **Panel C:** Histogram of human population density at 5km^2^ resolution across West Africa and for areas where trapping has occurred. **Panel D:** Histogram of habitat types at 1km^2^ resolution across West Africa and for areas where trapping has occurred.
+*Figure 2*: **Panel A:** Map of West Africa, countries where rodent trapping has occurred are mapped to level 2 administrative areas (where available). These regions are coloured by the total number of trap nights performed at trap sites within their boundaries. **Panel B:** (n.b. will not include map in final manuscript) The number of trap nights conducted is associated with a regions population density. The population density for all regions in West Africa is shown in the yellow box plot, the population density and trap night density for each region is show on the purple scatterplot. The line of best fit is a GAM model not incorporating spatial interactions. The map panel on the right is the product of the GAM model incorporating spatial interactions. **Panel C:** For each of the 10 land cover classes from the ESA dataset we measure the proportion of 300m^2^ pixels within a level 2 administrative area. Zoonotic trapping studies occurred in regions over-representative for Cropland, Mosaic landscapes and Shrubland while being under-representative for Bare and Sparse vegetation land cover classes.
 
 ## Rodent presence, absence, abundance
   * 73,164 small mammals were trapped (592 were trapped outside of West African countries), 2,830 (4%) trapped individuals were identified to order level (Rodentia), 7,760 (11%) were identified to genus level, the remaining 62,574 (85%) were identified to species level. 
@@ -122,9 +132,9 @@ Figure 1: **Panel A:** Each row represents one of the 126 included studies, gree
   * Presence and absence maps for the six most commonly trapped species are compared to GBIF and IUCN data. (Need to do this)
   * The number of individuals trapped provides a measure of abundance, the interpretation of this is limited by incomplete reporting on the trapping effort (i.e. number of trap nights) within a study. The most abundant species at presence locations were … (Need to do this. I will explore the number of individuals trapped by species, I imagine it will show that if a species is detected at a site the most abundant ones will be the synanthropic species such as mus, rattus etc. while the more specialised species will be less abundant in areas where they are detected)
 
-Figure 2 - Three plots side by side with 6 rows, one each for the most commonly trapped species Panel A - presence/absence from this review, Panel B - presence/absence from GBIF, Panel C - Species range from IUCN
+Figure 3 - Three plots side by side with 6 rows, one each for the most commonly trapped species Panel A - presence/absence from this review, Panel B - presence/absence from GBIF, Panel C - Species range from IUCN
 
-Figure 2 - **Panel A** shows the presence and absence of the 6 most commonly trapped rodent species from the current study. The perimeter polygon (blue) is the convex hull of the observation points produced from presence only data. **Panel B**  
+Figure 3 - **Panel A** shows the presence and absence of the 6 most commonly trapped rodent species from the current study. The perimeter polygon (blue) is the convex hull of the observation points produced from presence only data. **Panel B**  
 
 ## Pathogen presence and absence
   * Sixty-two studies presented data on microorganisms that infect or are carried by small mammal species in West Africa.
@@ -135,7 +145,7 @@ Figure 2 - **Panel A** shows the presence and absence of the 6 most commonly tra
   * Most studies tested for a single pathogen (39), with 16 studies testing for two or more pathogens. The most frequently tested for pathogens were Lassa mammarenavirus (28%) or members of the Arenaviridae family (16%), the spirochete bacteria Borrelia sp. was investigated in 8 studies, Bartonella sp. and Toxoplasma gondii were investigated in 4 each, the remaining 25 pathogens were reported in three or fewer studies.
 Define presence and absence of pathogens by country (Need to do)
 
-Figure 3 - Presence/absence plots for the following pathogens Arenaviruses with LASV highlighted, Bartonella, Borrelia and Toxoplasma.
+Figure 4 - Presence/absence plots for the following pathogens Arenaviruses with LASV highlighted, Bartonella, Borrelia and Toxoplasma.
 
 ## Host-pathogen associations
   * Ninety-seven rodent species were investigated for the presence of a zoonotic pathogen. 42,940 assays were performed on 32,014 individual rodents. 
@@ -145,7 +155,7 @@ Figure 3 - Presence/absence plots for the following pathogens Arenaviruses with 
   * Finally, Toxoplasma gondii was detected via PCR in 89 Mus musculus, 13 Cricetomys gambianus, 5 Crocidura olivieri and 3 Rattus rattus. From serological assays evidence of infection was found in 25 Mus musculus, 46 Mastomys erythroleucus, 4 Rattus rattus, and Mastomys natalensis, using histology and direct visualisation 1 Mus musculus and 1 Rattus rattus were also found to be infected.
   * Thirty-eight species of Rodentia, 3 species of Soricomorpha and 2 species of Erinaceomorpha that were tested for potential pathogens had entirely negative results.
 
-Figure 4 - Matrix heat plot Y - rodent species/genera, X - pathogen species/genera. Colour relates to proportion positive (Perhaps use bivariate colour to also highlight the number of test performed in that species).
+Figure 5 - Matrix heat plot Y - rodent species/genera, X - pathogen species/genera. Colour relates to proportion positive (Perhaps use bivariate colour to also highlight the number of test performed in that species).
 
 ## Discussion    
   

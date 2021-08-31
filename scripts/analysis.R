@@ -313,22 +313,22 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
   write_rds(sites_2, here("data_clean", "traps_level_2_zoonoses.rds"))
   human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
 
-vect_sites <- vect(sites_2)
+  vect_sites <- vect(sites_2)
 
-crop_pop <- crop(human_pop, vect_sites)
-wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"))
-region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
-region_pop_sf <- cbind(vect_sites, region_pop) %>%
-  st_as_sf() %>%
-  st_centroid() %>%
-  mutate(x = st_coordinates(.$geometry)[,1],
-         y = st_coordinates(.$geometry)[,2],
-         tn_density = case_when(is.na(tn_density) ~ 0,
-         TRUE ~ tn_density)) %>%
-  tibble() %>%
-  select(-geometry)
+  crop_pop <- crop(human_pop, vect_sites)
+  wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"))
+  region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
+  region_pop_sf <- cbind(vect_sites, region_pop) %>%
+    st_as_sf() %>%
+    st_centroid() %>%
+    mutate(X = st_coordinates(.$geometry)[,1],
+           Y = st_coordinates(.$geometry)[,2],
+           tn_density = case_when(is.na(tn_density) ~ 0,
+                                  TRUE ~ tn_density)) %>%
+    tibble() %>%
+    select(-geometry)
 
-write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
+  write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
 } else {
   region_pop_sf <- read_rds(here("data_clean", "pop_tn_analysis.rds"))
   human_pop <- rast(here("data_download", "pop_2005","wa_pop_2005.tif"))
@@ -336,7 +336,7 @@ write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
 
 tn_pop_model <- gam(tn_density ~ s(x, y) + log(pop_2005),
                     family = "tw",
-                    data = region_pop_sf %>% filter(GID_0 != "CPV"))
+                    data = gam_data %>% filter(GID_0 != "CPV"))
 
 summary(tn_pop_model)
 plot(tn_pop_model, scheme = 2)
@@ -359,7 +359,91 @@ prediction_raster <- vect(prediction_space, geom = c("x", "y")) %>%
                    field = "predict")
 names(prediction_raster) <- "predictor"
 
+writeRaster(prediction_raster, here("data_clean", "prediction_space.tif")) # This then gets mapped in the mapping_traps.R script
+
 # Habitat classification --------------------------------------------------
+habitat_2005 <- raster(here("data_download", "habitat_2005", "habitat_2005.nc"))
+crop_habitat <- crop(habitat_2005, raster(human_pop)) %>%
+  rast()
+
+sites_2 <- read_rds(here("data_clean", "traps_level_2_zoonoses.rds")) %>%
+  vect()
+
+all_regions <- lapply(1:nrow(sites_2), function(x) crop(crop_habitat, sites_2[x,]))
+all_regions_hab <- lapply(1:length(all_regions), function(x) as.data.frame(freq(all_regions[[x]])) %>%
+                            select(-layer))
+names(all_regions_hab) <- sites_2$GID_2
+habitats <- as.data.frame(data.table::rbindlist(all_regions_hab, idcol = TRUE)) %>%
+  rename("GID_2" = ".id")
+
+land_type_classification <- as.list(c("cropland",
+                                      "cropland",
+                                      "cropland",
+                                      "cropland",
+                                      "mosaic_cropland",
+                                      "mosaic_cropland",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "mosaic_vegetation",
+                                      "mosaic_vegetation",
+                                      "shrubland",
+                                      "shrubland",
+                                      "grassland",
+                                      "sparse_vegetation",
+                                      "sparse_vegetation",
+                                      "sparse_vegetation",
+                                      "flooded",
+                                      "flooded",
+                                      "flooded",
+                                      "urban",
+                                      "bare",
+                                      "bare",
+                                      "bare",
+                                      "water"))
+names(land_type_classification) <- as.list(c(10, 11, 12, 20, 30, 40, 50, 60, 61, 62, 100, 110, 120, 122, 130, 150, 152, 153, 160, 170, 180, 190, 200, 201, 202, 210))
+
+wa_habitats <- habitats %>%
+  mutate(habitat = recode(value, !!!land_type_classification)) %>%
+  group_by(GID_2, habitat) %>%
+  summarise(count = sum(count))
+
+plot_wa_habitats <- wa_habitats %>%
+  group_by(habitat) %>%
+  filter(habitat != "water") %>%
+  summarise(count = sum(count)) %>%
+  mutate(data = "all",
+         proportion = count/sum(count))
+
+zoonotic_regions <- as.data.frame(sites_2) %>%
+  filter(tn_density > 0) %>%
+  distinct(GID_2)
+
+plot_trap_habitat <- wa_habitats %>%
+  filter(GID_2 %in% zoonotic_regions$GID_2) %>%
+  group_by(habitat) %>%
+  filter(habitat != "water") %>%
+  summarise(count = sum(count)) %>%
+  mutate(data = "Zoonotic",
+         proportion = count/sum(count))
+
+plot_habitats <- bind_rows(plot_wa_habitats,
+                           plot_trap_habitat) %>%
+  arrange(-proportion) %>%
+  mutate(habitat = fct_inorder(snakecase::to_sentence_case(habitat)),
+         data = str_to_sentence(data)) %>%
+  ggplot() +
+  geom_col(aes(x = fct_rev(habitat), y = proportion, fill = data), position = position_dodge2()) +
+  coord_flip() +
+  labs(x = "Land cover classification",
+       y = "Proportion of region",
+       fill = "Region") +
+  scale_fill_manual(values = c("#fde725", "#440154")) +
+  theme_minimal()
+
+write_rds(plot_habitats, here("plots", "trap_habitats.rds"))
+
 habitat_types <- rodent_data %>%
   dplyr::select(unique_id, country, region, town_village, all_of(habitat_split), trap_night_unit, trap_nights) %>%
   pivot_longer(cols = all_of(habitat_split), values_to = "habitat_type") %>%
