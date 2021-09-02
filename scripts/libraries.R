@@ -9,6 +9,7 @@ pkgs =
     "readxl",
     "countrycode",
     "ggimage",
+    "ggspatial",
     "sf",
     "OpenStreetMap",
     "tmap",

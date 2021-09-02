@@ -129,17 +129,13 @@ knitr::include_graphics(here("figures", "Figure_2.png"))
   * In studies reporting the number of trap nights the median trap success rate of traps placed in or around buildings was 13% (IQR 6-24%), this compares to a median trap success rate of 3% (IQR 1-9%) in other habitats.
   * Of the 147 distinct identified species trapped (see Supplementary Material 3) the majority were from the order Rodentia (112). Muridae (82) represented the largest family of rodents, followed by, Sciuridae (10), Gliridae and Nesomyidae (both 6), Ctenodactylidae and Anomaluridae (2) and Dipodidae, Hystricidae and Thryonomidae (all 1). The remaining 34 species came from the orders of the Soricomorpha (30), Erinaceomorpha (2) and Afrosoricida (1).
   * The most commonly trapped genera of rodents were Mastomys sp. (27,079, 37.7%), Rattus sp. (11,472, 16.1%), Mus sp. (8,624, 12.0%), Arvicanthis sp. (5,821, 8.1%) and Praomys sp. (5,409, 7.5%). At species level Mastomys natalensis (11,116, 17.4%), Rattus rattus (9,959, 15.6%), Mastomys erythroleucus (7,386, 11.6%), Mus musculus (6,245, 9.8%), Arvicanthis niloticus (5,497, 8.6%), Mastomys huberti (4,699, 7.4%) and Praomys daltoni (1,854, 2.9%) were the most commonly trapped. 
-  * Presence and absence maps for the seven most commonly trapped species are compared to GBIF and IUCN data in Figure 3 Panel A-G. 
-  * The number of individuals trapped provides a measure of abundance, the interpretation of this is limited by incomplete reporting on the trapping effort (i.e. number of trap nights) within a study. The most abundant species at presence locations were … (Need to do this. I will explore the number of individuals trapped by species, I imagine it will show that if a species is detected at a site the most abundant ones will be the synanthropic species such as mus, rattus etc. while the more specialised species will be less abundant in areas where they are detected)
+  * Locations of points for the presence or absence of the seven most commonly trapped species are displayed in Figure 3 (left column). These are able to identify locations of absence within an individual species documented range. Whether an absence represents a "true absence" (i.e. not present at this location) or a "pseudo absence" (i.e. not detected at this location) should be interpreted with consideration to the trapping effort accompanying the report. This is compared to reported presence obtained from GBIF (centre column) and IUCN species range data (left column) in Figure 3. 
 
 ```{r, figure_3, layout = "l_page", echo=FALSE}
 knitr::include_graphics(here("figures", "Figure_3.png"))
 ```
 
-
-Figure 3 - Three plots side by side with 7 rows, one each for the most commonly trapped species Panel A - presence/absence from this review, Panel B - presence/absence from GBIF, Panel C - Species range from IUCN
-
-Figure 3 - **Panel A-G** shows the presence and absence of the 7 most commonly trapped rodent species from the current study.
+*Figure 3*: Each row corresponds to a single rodent species. The column on the left shows the presence and absence of a rodent species from the individual studies included in this review. The centre column shows the presence of a rodent species obtained from GBIF (September 2021) for records where longitude and latitude have been provided. The right column shows the range of rodent species as proposed by the IUCN (2021) (red shaded area), overlaid are the presence points from both this review and GBIF records.
 
 ## Pathogen presence and absence
   * Sixty-two studies presented data on microorganisms that infect or are carried by small mammal species in West Africa.

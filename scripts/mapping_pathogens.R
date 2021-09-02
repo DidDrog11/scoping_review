@@ -1,4 +1,4 @@
-source(here::here("scripts", "libraries.r"))
+source(here::here("scripts", "libraries.R"))
 
 studies <- read_rds(here("data_clean", "studies.rds"))
 
@@ -7,19 +7,10 @@ wa_mainland <- c("BEN", "BFA", "CIV", "ESH", "GHA",
                  "NER", "NGA", "SEN", "SLE", "TGO")
 
 level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
-list2env(level_0, envir = .GlobalEnv)
-level_0 <- do.call(rbind.SpatialPolygonsDataFrame, level_0)  %>%
-  st_as_sf()
 
 level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
-list2env(level_1, envir = .GlobalEnv)
-level_1_all <- do.call(rbind.SpatialPolygonsDataFrame, level_1) %>%
-  st_as_sf()
 
 level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
-list2env(level_2, envir = .GlobalEnv)
-level_2_all <- do.call(rbind.SpatialPolygonsDataFrame, level_2) %>%
-  st_as_sf()
 
 pathogen <- read_rds(here("data_clean", "pathogen.rds")) %>%
   filter(iso3c %in% wa_mainland)
@@ -50,7 +41,74 @@ four_paths_wide <- wide_pathogen %>%
   tibble() %>%
   dplyr::select(1:16, matches(four_paths)) %>%
   left_join(., species_data,
-            by = "gbif_id")
+            by = c("gbif_id", "classification")) %>%
+  distinct(record_id, .keep_all = T)
+
+pathogen_map <- function(pathogen_genus) {
+
+  included_countries = level_0 %>%
+    filter(GID_0 %in% wa_mainland)
+
+  pathogen_groups = list(arenaviridae = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
+                         borrelia = c("borrelia_species", "borrelia"),
+                         bartonella = c("bartonella_species"),
+                         toxo = c("toxoplasma_gondii"))
+
+  pathogen_data = list(pathogen = four_paths_wide %>%
+                         dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]])),
+                                       genus, species, genus_gbif, species_gbif) %>%
+                         janitor::remove_empty("cols")  %>%
+                         mutate(number_tested = rowSums(.[grep("tested", names(.))], na.rm = T)) %>%
+                         filter(number_tested != 0) %>%
+                         mutate(pcr_positive = rowSums(.[grep("pcr", names(.))], na.rm = T),
+                                ab_ag_positive = rowSums(.[grep("ab_ag", names(.))], na.rm = T),
+                                culture_positive = rowSums(.[grep("culture", names(.))], na.rm = T),
+                                pos_neg = case_when(pcr_positive + ab_ag_positive + culture_positive > 0 ~ "Positive",
+                                                    TRUE ~ "Negative")) %>%
+                         dplyr::select(1:15, all_of(c("number_tested", "pcr_positive", "ab_ag_positive", "culture_positive", "pos_neg")),
+                                       genus, species, genus_gbif, species_gbif) %>%
+                         st_as_sf())
+
+  species = list(rodents = pathogen_data$pathogen %>%
+                   tibble() %>%
+                   mutate(genus = snakecase::to_sentence_case(genus),
+                          species = snakecase::to_sentence_case(classification),
+                          pos_neg = case_when(pos_neg == "Positive" ~ 1,
+                                              TRUE ~ 0)) %>%
+                   group_by(genus, species) %>%
+                   summarise(number_tested = sum(number_tested),
+                             number_positive = sum(pos_neg),
+                             number_negative = number_tested-number_positive))
+
+
+  plots = list(pos_neg_plot =
+                 ggplot() +
+                 geom_sf(data = included_countries, fill = "#808080", alpha = 0.1, lwd = 0.1) +
+                 geom_point(data = pathogen_data$pathogen %>%
+                                      distinct(geometry, pos_neg) %>%
+                                      mutate(x = st_coordinates(.)[,1],
+                                             y = st_coordinates(.)[,2]),
+                                    mapping = aes(x = x, y = y, colour = pos_neg))
+
+
+               geom_sf(data = included_countries, fill = "#808080", alpha = 0.1, lwd = 0.1) +
+                 geom_point(data = data$gbif_review,
+                            mapping = aes(x = x, y = y, colour = source), size = .5,
+                            crs = 4326) +
+                 geom_sf(data = data$iucn,
+                         fill = "#C12D20", alpha = 0.4) +
+                 coord_sf(xlim = c(afr_bbox[1], afr_bbox[3]), ylim = c(afr_bbox[2], afr_bbox[4])) +
+                 labs(colour = "",
+                      title = paste0(snakecase::to_sentence_case(species_name), "- IUCN range"),
+                      x = element_blank(),
+                      y = element_blank()) +
+                 scale_colour_manual(values = c("#006400", "#440154")) +
+                 annotation_north_arrow(height = unit(1, "cm"),
+                                        style = north_arrow_minimal(text_size = 8)) +
+                 annotation_scale(height = unit(0.1, "cm"),
+                                  location = "tr") +
+                 theme_minimal())
+}
 
 arenavirus_map <- four_paths_wide %>%
   dplyr::select(1:16, matches(arenaviridae), any_of(names(species_data))) %>%
