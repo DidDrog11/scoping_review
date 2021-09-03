@@ -10,6 +10,7 @@ pkgs =
     "countrycode",
     "ggimage",
     "ggspatial",
+    "corrplot",
     "sf",
     "OpenStreetMap",
     "tmap",

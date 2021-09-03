@@ -757,6 +757,142 @@ names(pathogen_groups) <- tested %>%
   distinct(pathogen_tested) %>%
   pull()
 
+
+# Top four pathogens, rodents tested --------------------------------------
+four_paths <- vctrs::vec_c(arenaviridae, borrelia, bartonella, toxoplasma)
+
+four_paths_wide <- wide_pathogen %>%
+  tibble() %>%
+  dplyr::select(1:16, matches(four_paths)) %>%
+  left_join(., species_data,
+            by = c("gbif_id", "classification")) %>%
+  distinct(record_id, .keep_all = T)
+
+pathogen_table <- function(pathogen_genus) {
+  pathogen_groups = list(arenaviridae = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
+                         borrelia = c("borrelia_species", "borrelia"),
+                         bartonella = c("bartonella_species"),
+                         toxoplasma = c("toxoplasma_gondii"))
+
+  four_paths_wide %>%
+    dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]])),
+                  genus, species, genus_gbif, species_gbif) %>%
+    janitor::remove_empty("cols")  %>%
+    mutate(number_tested = rowSums(.[grep("tested", names(.))], na.rm = T)) %>%
+    filter(number_tested != 0) %>%
+    mutate(pcr_positive = rowSums(.[grep("pcr", names(.))], na.rm = T),
+           ab_ag_positive = rowSums(.[grep("ab_ag", names(.))], na.rm = T),
+           culture_positive = rowSums(.[grep("culture", names(.))], na.rm = T),
+           pos_neg = case_when(pcr_positive + ab_ag_positive + culture_positive > 0 ~ "Positive",
+                               TRUE ~ "Negative")) %>%
+    dplyr::select(1:15, all_of(c("number_tested", "pcr_positive", "ab_ag_positive", "culture_positive", "pos_neg")),
+                  genus, species, genus_gbif, species_gbif) %>%
+    tibble() %>%
+    mutate(genus = snakecase::to_sentence_case(genus),
+           `Species` = snakecase::to_sentence_case(classification),
+           pos_neg = case_when(pos_neg == "Positive" ~ 1,
+                               TRUE ~ 0)) %>%
+    group_by(genus, `Species`) %>%
+    summarise(`Tested` = sum(number_tested),
+              `Positive` = sum(pos_neg),
+              `Negative` = `Tested`-`Positive`) %>%
+    mutate(`Prop. positive` = round(`Positive`/`Tested`, 3)) %>%
+    ungroup() %>%
+    arrange(-`Positive`, -`Tested`) %>%
+    group_by(genus) %>%
+    mutate(genus_test = sum(`Tested`)) %>%
+    arrange(-genus_test) %>%
+    ungroup() %>%
+    select(-genus_test, -genus)
+}
+
+areanaviridae_species <- pathogen_table("arenaviridae")
+areanviridae_positive <- areanaviridae_species %>%
+  filter(Positive >= 1)
+borrelia_species <- pathogen_table("borrelia")
+borrelia_positive <- borrelia_species %>%
+  filter(Positive >= 1)
+bartonella_species <- pathogen_table("bartonella")
+bartonella_positive <- bartonella_species %>%
+  filter(Positive >= 1)
+toxoplasma_species <- pathogen_table("toxoplasma")
+toxoplasma_positive <- toxoplasma_species %>%
+  filter(Positive >= 1)
+
+# Host-pathogen -----------------------------------------------------------
+genus_hierarchy <- read_rds(here("data_clean", "genus_hierarchy.rds"))
+speciation <- speciation %>%
+  rename("gbif_id" = 1)
+genus_gbif <- genus_gbif %>%
+  mutate(gbif_id = as.character(gbif_id),
+         genus = str_to_sentence(genus)) %>%
+  filter(!gbif_id %in% speciation[,1])
+
+genus_data <- bind_rows(speciation %>%
+                          select(gbif_id, genus),
+                        genus_gbif) %>%
+  ungroup() %>%
+  left_join(., speciation %>%
+              select(genus, family),
+            by = "genus") %>%
+  distinct(gbif_id.x, genus, family) %>%
+  rename("gbif_id" = 1)
+
+
+matrix_hp <- long_pathogen %>%
+  left_join(., genus_data,
+            by = "gbif_id") %>%
+  group_by(classification, gbif_id, family, assay, pathogen_tested) %>%
+  summarise(number = sum(number)) %>%
+  mutate(assay = case_when(str_detect(assay, "tested") ~ "Tested",
+                           TRUE ~ "Prop. positive")) %>%
+  group_by(classification, gbif_id, family, pathogen_tested, assay) %>%
+  summarise(number = sum(number)) %>%
+  group_by(classification, gbif_id, family, pathogen_tested) %>%
+  mutate(number = round(case_when(assay == "Prop. positive" ~ number/max(number, na.rm = TRUE),
+                            TRUE ~ number), 4)) %>%
+  pivot_wider(names_from = assay, values_from = number) %>%
+  mutate(Tested = sqrt(Tested))
+
+greater_4 <- matrix_hp %>%
+  group_by(classification) %>%
+  add_count() %>%
+  filter(n >= 4)
+
+less_4 <- matrix_hp %>%
+  group_by(classification) %>%
+  add_count() %>%
+  filter(n < 4)
+
+#   pivot_wider(names_from = pathogen_tested, values_from = number)
+#
+# corplot_mat <- matrix_hp %>%
+#   filter(assay == "Positive") %>%
+#   ungroup() %>%
+#   select(1, 4:10) %>%
+#   head(30) %>%
+#   pivot_longer(cols = c(2:8),
+#                names_to = "Microorganism",
+#                values_to = "Number")
+
+hp_g4 <- ggplot(greater_4,
+       aes(x = pathogen_tested, y = classification, colour = `Prop. positive`, size = Tested)) +
+  geom_point() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_colour_viridis_c()
+
+hp_l4 <- ggplot(less_4,
+                aes(x = pathogen_tested, y = classification, colour = `Prop. positive`, size = Tested)) +
+  geom_point() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_colour_viridis_c()
+
+save_plot(here("figures", "Figure_5.png"), plot_grid(hp_g4, hp_l4),
+          base_height = 12,
+          base_width = 18)
+
 pal <- c("Arvicanthis niloticus" = "#bdbdbd",
          "Crocidura foxi" = "#e6550d",
          "Crocidura olivieri" = "#fdae6b",

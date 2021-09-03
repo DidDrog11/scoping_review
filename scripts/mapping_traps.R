@@ -138,19 +138,51 @@ level_2_sites <- level_2 %>%
          tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
          tn_density = ifelse(is.na(tn_density), NA, tn_density))
 
-trap_night_density_level2 <- tm_shape(level_2_sites) +
-  tm_polygons(col = "tn_density", style = "fixed",
-              breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
-              legend.format = list(fun = function(x) paste0(formatC(x, drop0trailing = TRUE))),
-              palette = "-viridis", colorNA = NULL, border.alpha = 1, border.col = "grey", lwd = 0.1,
-              title = parse(text = paste("Density~of~trap~nights~per~1000~km^2"))) +
-  tm_shape(level_0 %>%
-             filter(GID_0 %in% wa_countries)) +  tm_polygons(alpha = 0, lwd = 1) +
-  tm_compass(type = "arrow", size = 1, position = c("left", "bottom")) +
-  tm_scale_bar(position = c("left", "bottom")) +
-  tm_graticules(labels.show = TRUE,
-                lwd = 0.5,
-                alpha = 0.5)
+ggplot() +
+  geom_sf(data = included_countries, fill = "#808080", alpha = 0.1, lwd = 0.1) +
+  geom_point(data = data$review %>%
+               filter(pres_abs == "Present"), mapping = aes(colour = pres_abs, x = x, y = y), size = .5,
+             crs = 4326) +
+  geom_spatial_point(data = anti_join(tibble(data$review), tibble(data$review) %>%
+                                        filter(pres_abs == "Present"),
+                                      by = c("x", "y")),
+                     mapping = aes(colour = pres_abs, x = x, y = y), size = .5,
+                     crs = 4326) +
+  scale_colour_manual(values = c("#ff8c00", "#440154")) +
+  labs(colour = "",
+       title = paste0(snakecase::to_sentence_case(species_name), " - this review"),
+       x = element_blank(),
+       y = element_blank()) +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr") +
+  theme_minimal()
+
+level_2_sites$breaks <- cut(level_2_sites$tn_density,
+                   breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
+                   labels = c("0 - 0.001", "0.001 - 0.01", "0.01 - 0.1",
+                            "0.1 - 1", "1 - 10", "10 - 100", "100 - 200"))
+
+trap_night_density_level2 <- ggplot() +
+  geom_sf(data = level_2_sites,
+          mapping = aes(fill = breaks),
+          lwd = 0.05,
+          colour = "gray") +
+  scale_fill_viridis_d(aesthetics = "fill",
+                       direction = -1,
+                       labels = c("0 - 0.001", "0.001 - 0.01", "0.01 - 0.1",
+                                  "0.1 - 1", "1 - 10", "10 - 100", "100 - 200",
+                                  "No trapping")) +
+  geom_sf(data = level_0 %>%
+            filter(GID_0 %in% wa_countries),
+          alpha = 0, lwd = 0.1, colour = "black") +
+  theme_minimal() +
+  labs(fill = parse(text = paste("Density~of~trap~nights~per~1000~km^2"))) +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr")
 
 write_rds(trap_night_density_level2, here("plots", "tn_density.rds"))
 tmap_save(trap_night_density_level2, filename = here("figures", "static_tn_density_2.png"))
@@ -282,7 +314,7 @@ panel_b <- plot_grid(log_pop_tn, tmap_grob(tn_to_pop))
 trap_habitats <- read_rds(here("plots", "trap_habitats.rds"))
 
 
-fig_2 <- plot_grid(tmap_grob(tn_map),
+fig_2 <- plot_grid(trap_night_density_level2,
                    panel_b,
                    trap_habitats,
                    nrow = 3,
@@ -290,4 +322,4 @@ fig_2 <- plot_grid(tmap_grob(tn_map),
                    rel_widths = c(1, 2, 1),
                    rel_heights = c(2, 1, 1))
 
-save_plot(here("figures", "Figure_2.png"), fig_2, nrow = 3, base_height = 10, base_width = 16)
+save_plot(here("figures", "Figure_2.png"), fig_2, nrow = 3, base_height = 10, base_width = 17)
