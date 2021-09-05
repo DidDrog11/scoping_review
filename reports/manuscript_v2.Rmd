@@ -12,7 +12,7 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
-  word_document:
+  # word_document:
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
   })
@@ -98,9 +98,8 @@ source(here::here("scripts", "manuscript_library.R"))
   * The median length of rodent trapping activity was one year (IQR 0-2 years). The median time from completion of rodent trapping to publication is 3 years (IQR 2-5 years) (see Figure 1).
 
 ```{r, figure_1, layout = "l_page", echo=FALSE}
-study_timings <- read_rds(here("plots", "study_timings.rds"))
 
-plot_grid(study_timings)
+knitr::include_graphics(here("figures", "Fig_1_Panel_A.png"))
 
 ```
 
@@ -117,7 +116,7 @@ plot_grid(study_timings)
   * Explore whether trap sites are more likely to have been conducted within high population regions or whether there is an association with trap location and habitat as obtained from remote sensing data (Need to do this. The remote sensing data will be matched to the trap dates there will be several years between the trapping and data this is compared to it seems impractical to try and get annual population estimates or land classification so this will be chosen pragmatically)
 
 
-```{r, figure_2, layout = "l_page", echo=FALSE}
+```{r, figure_2, layout = "l-screen-inset", echo=FALSE}
 knitr::include_graphics(here("figures", "Figure_2.png"))
 ```
 
@@ -130,7 +129,7 @@ knitr::include_graphics(here("figures", "Figure_2.png"))
   * The most commonly trapped genera of rodents were *Mastomys sp.* (27,079, 37.7%), *Rattus sp.* (11,472, 16.1%), *Mus sp.* (8,624, 12.0%), *Arvicanthis sp.* (5,821, 8.1%) and *Praomys sp.* (5,409, 7.5%). At species level *Mastomys natalensis* (11,116, 17.4%), *Rattus rattus* (9,959, 15.6%), *Mastomys erythroleucus* (7,386, 11.6%), *Mus musculus* (6,245, 9.8%), *Arvicanthis niloticus* (5,497, 8.6%), *Mastomys huberti* (4,699, 7.4%) and Praomys daltoni (1,854, 2.9%) were the most commonly trapped. 
   * Locations of points for the presence or absence of the seven most commonly trapped species are displayed in Figure 3 (left column). These are able to identify locations of absence within an individual species documented range. Whether an absence represents a "true absence" (i.e. not present at this location) or a "pseudo absence" (i.e. not detected at this location) should be interpreted with consideration to the trapping effort at the site. This is compared to reported presence obtained from GBIF (centre column) and IUCN species range data (left column) in Figure 3. 
 
-```{r, figure_3, layout = "l_page", echo=FALSE}
+```{r, figure_3, layout = "l-screen-inset", echo=FALSE}
 knitr::include_graphics(here("figures", "Figure_3.png"))
 ```
 
@@ -168,14 +167,14 @@ knitr::include_graphics(here("figures", "Figure_4_legend.png"))
   * Finally, *Toxoplasma gondii* was detected through PCR in 89 Mus musculus, 13 *Cricetomys gambianus*, 5 *Crocidura olivieri* and 3 *Rattus rattus*. From serological assays evidence of prior infection was found in 25 *Mus musculus*, 46 *Mastomys erythroleucus*, 4 *Rattus rattus* and *Mastomys natalensis*. A single *Mus musculus* and *Rattus rattus* were found to be infected using histology and direct visualisation.
   * Thirty-eight species of Rodentia, 3 species of Soricomorpha and 2 species of Erinaceomorpha that were tested for potential pathogens had entirely negative results.
   
-```{r figure_5, layout = "l_page", echo=FALSE}
+```{r figure_5, layout ="l-screen-inset", echo=FALSE}
 
 knitr::include_graphics(here("figures", "Figure_5.png"))
 
 ```
   
 
-Figure 5 - Matrix heat plot Y - rodent species/genera, X - pathogen species/genera. Colour relates to proportion positive (Perhaps use bivariate colour to also highlight the number of test performed in that species).
+*Figure 5*: The percentage of assays from each included species and microorganism tested for is represented by colour. The size of a point relates to the squareroot of the number of individuals assayed. The plot on the left is for species/genera assayed for four or more microorganisms, the plot on rights are for species/genera assayed for 3 or less microorganisms.
 
 ## Discussion    
   
