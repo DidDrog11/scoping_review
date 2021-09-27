@@ -12,7 +12,7 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
-  word_document:
+  # word_document:
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
   })
@@ -94,9 +94,8 @@ We summarised the presence and absence of microorganisms, the assays used, their
 4,282 relevant citations were identified, with 126 rodent trapping studies included in narrative synthesis. The earliest included studies were published in 1974 with increasing numbers of studies being performed annually since 2005. The median length of rodent trapping activity was one year (IQR 0-2 years). The median time from completion of rodent trapping to publication is 3 years (IQR 2-5 years) (Figure 1.).
 
 ```{r, figure_1, layout = "l_page", echo=FALSE}
-study_timings <- read_rds(here("plots", "study_timings.rds"))
 
-plot_grid(study_timings)
+knitr::include_graphics(here("figures", "Fig_1_Panel_A.png"))
 
 ```
 
@@ -111,7 +110,7 @@ Greater numbers of trap nights were conducted in areas with higher population de
 No studies reported trap habitats with reference to a standardised habitat classification scheme. Extracted habitat types were grouped into 30 categories (see Supplementary Material 2 for the habitat dictionary). At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 distinct habitat and trap sites. The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents “natural habitat” (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
 
 
-```{r, figure_2, layout = "l_page", echo=FALSE}
+```{r, figure_2, layout = "l-screen-inset", echo=FALSE}
 knitr::include_graphics(here("figures", "Figure_2.png"))
 ```
 
@@ -125,7 +124,7 @@ The most commonly trapped genera of rodents were *Mastomys sp.* (27,079, 37.7%),
 
 Locations of points for the presence or absence of the seven most commonly trapped species are shown in Figure 3 (left column). These are able to identify locations of absence within an individual species documented range. Whether an absence represents a "true absence" (i.e. not present at this location) or a "pseudo absence" (i.e. not detected at this location) should be interpreted with consideration to the trapping effort at the site. This is compared to reported presence obtained from GBIF (centre column) and IUCN species range data (left column) in Figure 3. 
 
-```{r, figure_3, layout = "l_page", echo=FALSE}
+```{r, figure_3, layout = "l-screen-inset", echo=FALSE}
 knitr::include_graphics(here("figures", "Figure_3.png"))
 ```
 
@@ -161,14 +160,14 @@ Ninety-seven rodent species were investigated for the presence of a zoonotic pat
 
 *Toxoplasma gondii* was detected through PCR in 89 Mus musculus, 13 *Cricetomys gambianus*, 5 *Crocidura olivieri* and 3 *Rattus rattus*. From serological assays evidence of prior infection was found in 25 *Mus musculus*, 46 *Mastomys erythroleucus*, 4 *Rattus rattus* and *Mastomys natalensis*. A single *Mus musculus* and *Rattus rattus* were found to be infected using histology and direct visualisation. Finally, 38 species of Rodentia, 3 species of Soricomorpha and 2 species of Erinaceomorpha that were tested for potential pathogens had entirely negative results.
   
-```{r figure_5, layout = "l_page", echo=FALSE}
+```{r figure_5, layout ="l-screen-inset", echo=FALSE}
 
 knitr::include_graphics(here("figures", "Figure_5.png"))
 
 ```
   
 
-Figure 5 - Matrix heat plot Y - rodent species/genera, X - pathogen species/genera. Colour relates to proportion positive (Perhaps use bivariate colour to also highlight the number of test performed in that species).
+*Figure 5*: The percentage of assays from each included species and microorganism tested for is represented by colour. The size of a point relates to the squareroot of the number of individuals assayed. The plot on the left is for species/genera assayed for four or more microorganisms, the plot on rights are for species/genera assayed for 3 or less microorganisms.
 
 # Discussion    
   

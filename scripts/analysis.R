@@ -129,7 +129,7 @@ study_timings <- ggplot(study_start) +
        x = element_blank(),
        alpha = "Study dates reported")
 
-ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300)
+ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300, height = 8)
 write_rds(study_timings, here("plots", "study_timings.rds"))
 
 described_studies <- study_start %>%
@@ -759,6 +759,11 @@ names(pathogen_groups) <- tested %>%
 
 
 # Top four pathogens, rodents tested --------------------------------------
+arenaviridae = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species")
+borrelia = c("borrelia_species", "borrelia")
+bartonella = c("bartonella_species")
+toxoplasma = c("toxoplasma_gondii")
+
 four_paths <- vctrs::vec_c(arenaviridae, borrelia, bartonella, toxoplasma)
 
 four_paths_wide <- wide_pathogen %>%
@@ -766,7 +771,7 @@ four_paths_wide <- wide_pathogen %>%
   dplyr::select(1:16, matches(four_paths)) %>%
   left_join(., species_data,
             by = c("gbif_id", "classification")) %>%
-  distinct(record_id, .keep_all = T)
+  distinct(record_id.x, .keep_all = T)
 
 pathogen_table <- function(pathogen_genus) {
   pathogen_groups = list(arenaviridae = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
@@ -820,7 +825,8 @@ toxoplasma_positive <- toxoplasma_species %>%
   filter(Positive >= 1)
 
 # Host-pathogen -----------------------------------------------------------
-genus_hierarchy <- read_rds(here("data_clean", "genus_hierarchy.rds"))
+genus_gbif <- read_rds(here("data_clean", "genus_gbif.rds"))
+
 speciation <- speciation %>%
   rename("gbif_id" = 1)
 genus_gbif <- genus_gbif %>%
@@ -849,10 +855,25 @@ matrix_hp <- long_pathogen %>%
   group_by(classification, gbif_id, family, pathogen_tested, assay) %>%
   summarise(number = sum(number)) %>%
   group_by(classification, gbif_id, family, pathogen_tested) %>%
-  mutate(number = round(case_when(assay == "Prop. positive" ~ number/max(number, na.rm = TRUE),
+  mutate(number = round(case_when(assay == "Prop. positive" & number == 0 ~ 0,
+                                  assay == "Prop. positive" & number != 0 ~ number/max(number, na.rm = TRUE),
                             TRUE ~ number), 4)) %>%
   pivot_wider(names_from = assay, values_from = number) %>%
-  mutate(Tested = sqrt(Tested))
+  mutate(Tested = sqrt(Tested)) %>%
+  mutate(Percent_positive = factor(case_when(`Prop. positive` == 0 ~ "0%",
+                                         `Prop. positive` > 0 & `Prop. positive` <= 0.005 ~ "0 - 0.5%",
+                                         `Prop. positive` > 0.005 & `Prop. positive` <= 0.01 ~ "0.5% - 1%",
+                                         `Prop. positive` > 0.01 & `Prop. positive` <= 0.05 ~ "1% - 5%",
+                                         `Prop. positive` > 0.05 & `Prop. positive` <= 0.1 ~ "5% - 10%",
+                                         `Prop. positive` > 0.1 & `Prop. positive` <= 0.2 ~ "10% - 20%",
+                                         `Prop. positive` > 0.2 & `Prop. positive` <= 0.5 ~ "20% - 50%",
+                                         `Prop. positive` > 0.5 & `Prop. positive` <= 1 ~ "50% - 100%",
+                                         TRUE ~ "Missing"),
+                                   levels = c("0%", "0 - 0.5%", "0.5% - 1%", "1% - 5%", "5% - 10%",
+                                              "10% - 20%", "20% - 50%", "50% - 100%")),
+         classification = str_to_sentence(classification),
+         pathogen_tested = str_to_sentence(pathogen_tested),
+         pathogen_tested = str_replace_all(pathogen_tested, "_", " "))
 
 greater_4 <- matrix_hp %>%
   group_by(classification) %>%
@@ -876,18 +897,29 @@ less_4 <- matrix_hp %>%
 #                values_to = "Number")
 
 hp_g4 <- ggplot(greater_4,
-       aes(x = pathogen_tested, y = classification, colour = `Prop. positive`, size = Tested)) +
+       aes(x = pathogen_tested, y = fct_rev(classification), colour = Percent_positive, size = Tested)) +
   geom_point() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90)) +
-  scale_colour_viridis_c()
+  scale_colour_viridis_d() +
+  scale_x_discrete(position = "top") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       colour = element_blank()) +
+  guides(size = "none")
 
 hp_l4 <- ggplot(less_4,
-                aes(x = pathogen_tested, y = classification, colour = `Prop. positive`, size = Tested)) +
+                aes(x = pathogen_tested, y = fct_rev(classification), colour = Percent_positive, size = Tested)) +
   geom_point() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90)) +
-  scale_colour_viridis_c()
+  scale_colour_viridis_d() +
+  scale_x_discrete(position = "top") +
+  labs(x = element_blank(),
+       y = element_blank(),
+       colour = element_blank()) +
+  guides(size = "none",
+         colour = "none")
 
 save_plot(here("figures", "Figure_5.png"), plot_grid(hp_g4, hp_l4),
           base_height = 12,
