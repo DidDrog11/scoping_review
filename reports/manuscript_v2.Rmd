@@ -59,7 +59,7 @@ We extracted data from eligible studies into a Google sheets document. Extracted
 
 ### Location of rodent trapping studies and habitats studied
 
-We extracted GPS locations for the most precise location presented (i.e. trap, trap-line, study site or study region). We extracted coordinates in the format reported and converted them to decimal degrees. We recorded the habitat classification scheme a study used (e.g.  IUCN Habitat Classification Scheme (Version 3.1)). For studies not using standardised recording, the explicit description from of the habitat in which the trap was placed was extracted. For studies reporting multiple habitat types (e.g. rice field, corn field and vegetable garden) for a single trap, trap-line or trapping grid, a higher order classification of habitat type was recorded (e.g.  agricultural land).
+We extracted GPS locations for the most precise location presented (i.e. trap, trap-line, study site or study region). We extracted coordinates in the format reported and converted them to decimal degrees. We recorded the habitat classification scheme used by a study (e.g. IUCN Habitat Classification Scheme (Version 3.1)). For studies not using standardised habitat recording, the explicit description of the habitat in which the trap was placed were extracted. For studies reporting multiple habitat types (e.g. rice field, corn field and vegetable garden) for a single trap, trap-line or trapping grid, a higher order classification of habitat type was recorded (e.g. agricultural land).
 
 ### Rodent presence, absence, abundance
 
