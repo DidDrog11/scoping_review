@@ -42,7 +42,7 @@ pathogen_data <- pathogen_data %>%
   mutate(across(
     all_of(pathogen_tested),
     ~recode(., !!!pathogen_name)
-    ))
+  ))
 
 # Cleaning location data
 pathogen_data %<>%

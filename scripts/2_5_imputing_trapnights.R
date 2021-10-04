@@ -126,16 +126,16 @@ no_data_other <- no_data %>%
 
 imputed_trap_nights <- complete_tn %>%
   ungroup() %>%
-  select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data) %>%
+  dplyr::select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data) %>%
   bind_rows(missing_tn %>%
               ungroup() %>%
-              select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data),
+              dplyr::select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data),
             no_data_buildings %>%
               ungroup() %>%
-              select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data),
+              dplyr::select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data),
             no_data_other %>%
               ungroup() %>%
-              select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data))
+              dplyr::select(unique_id, year_trapping, month_trapping, region, town_village, habitat, trap_nights, trap_night_data))
 
 sense_check <- imputed_trap_nights %>%
   distinct(unique_id, region, town_village, habitat, trap_night_data, trap_nights) %>%

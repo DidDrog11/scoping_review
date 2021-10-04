@@ -16,10 +16,13 @@ level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
 
 non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
 
+included_countries <- level_0 %>%
+  filter(GID_0 %in% wa_countries)
+
 studies <- read_rds(here("data_clean", "studies.rds"))
 
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
-  select(-trap_nights)
+  dplyr::select(-trap_nights)
 
 imputed_tn <- read_rds(here("data_clean", "imputed_trap_nights.rds"))
 
@@ -160,9 +163,9 @@ ggplot() +
   theme_minimal()
 
 level_2_sites$breaks <- cut(level_2_sites$tn_density,
-                   breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
-                   labels = c("0 - 0.001", "0.001 - 0.01", "0.01 - 0.1",
-                            "0.1 - 1", "1 - 10", "10 - 100", "100 - 200"))
+                            breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
+                            labels = c("0 - 0.001", "0.001 - 0.01", "0.01 - 0.1",
+                                       "0.1 - 1", "1 - 10", "10 - 100", "100 - 200"))
 
 trap_night_density_level2 <- ggplot() +
   geom_sf(data = level_2_sites,
@@ -307,7 +310,27 @@ tn_to_pop <- tm_shape(pop_predict) +
 
 write_rds(tn_to_pop, here("plots", "tn_to_pop.rds"))
 
-panel_b <- plot_grid(log_pop_tn, tmap_grob(tn_to_pop))
+tn_pop_map <- read_rds(here("data_clean", "tn_pop_model.rds"))
+
+map_1 <- getViz(tn_pop_model)
+(
+  m1 <- plot(sm(map_1, 1), n = 150, too.far = 0.02) +
+    l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
+    geom_sf(data = included_countries, alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
+    scale_fill_viridis_c(na.value = "white") +
+    annotation_north_arrow(height = unit(1, "cm"),
+                           style = north_arrow_minimal(text_size = 8)) +
+    annotation_scale(height = unit(0.1, "cm"),
+                     location = "tr") +
+    theme_minimal() +
+    labs(title = element_blank(),
+         x = element_blank(),
+         y = element_blank(),
+         fill = "Linear predictor")
+)
+
+
+panel_b <- plot_grid(as.grob(m1$ggObj))
 
 # Habitat trap night ------------------------------------------------------
 
@@ -319,7 +342,7 @@ fig_2 <- plot_grid(trap_night_density_level2,
                    trap_habitats,
                    nrow = 3,
                    labels = "AUTO",
-                   rel_widths = c(1, 2, 1),
-                   rel_heights = c(2, 1, 1))
+                   rel_widths = c(1, 1, 1),
+                   rel_heights = c(2, 2, 1))
 
 save_plot(here("figures", "Figure_2.png"), fig_2, nrow = 3, base_height = 10, base_width = 17)

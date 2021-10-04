@@ -3,6 +3,7 @@ pkgs =
   c("here",
     "tidyverse",
     "mgcv",
+    "mgcViz",
     "magrittr",
     "bib2df",
     "googledrive",
@@ -17,6 +18,7 @@ pkgs =
     "cowplot",
     "maptools",
     "raster",
+    "ncdf4",
     "parzer",
     "terra",
     "mapview",
@@ -28,6 +30,7 @@ pkgs =
     "lubridate",
     "gt",
     "gtsummary",
+    "gridExtra",
     "lubridate",
     "see",
     "scales"
