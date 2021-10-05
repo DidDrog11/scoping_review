@@ -53,6 +53,4 @@ vignettes/*.pdf
 /data_clean/traps_level_2_zoonoses.rds
 
 # Large plot .rds
-/plots/tn_density.rds
-/plots/tn_to_pop.rds
-/plots/pop_map_2005.rds
+/plots/
