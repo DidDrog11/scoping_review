@@ -52,7 +52,7 @@ top_7_plot <- tm_shape(level_0 %>%
   tm_shape(top_7_spatial) + tm_dots(col = "pres_abs", palette = "Dark2", title = "", size = .1, shape = 20) +
   tm_facets(by = "classification")
 
-# Figure 3 ----------------------------------------------------------------
+# Figure 4 ----------------------------------------------------------------
 
 
 # M natalensis ------------------------------------------------------------
@@ -186,7 +186,7 @@ praomys_daltoni_plots <- plot_species("Praomys daltoni")
 pdal_row <- plot_grid(plotlist = praomys_daltoni_plots[c(1:3)], nrow = 1)
 legend_row <- plot_grid(plotlist = praomys_daltoni_plots[[4]][[1]][c(1:3)], nrow = 1)
 
-fig_3 <- list(mnat_row,
+fig_4 <- list(mnat_row,
               rrat_row,
               mery_row,
               mmus_row,
@@ -195,8 +195,8 @@ fig_3 <- list(mnat_row,
               pdal_row,
               legend_row)
 
-save_plot(plot_grid(plotlist = fig_3,
+save_plot(plot_grid(plotlist = fig_4,
                     ncol = 1,
                     greedy = TRUE,
                     rel_heights = c(1, 1, 1, 1, 1, 1, 1, 0.5)),
-          filename = here("figures", "Figure_3.png"), base_height = 18, base_width = 14)
+          filename = here("figures", "Figure_4.png"), base_height = 18, base_width = 14)

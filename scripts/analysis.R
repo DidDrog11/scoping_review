@@ -334,7 +334,7 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
   human_pop <- rast(here("data_download", "pop_2005","wa_pop_2005.tif"))
 }
 
-tn_pop_model <- gam(tn_density ~ s(x, y, k = 480) + s(log(pop_2005), k = 9),
+tn_pop_model <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
                     family = "tw",
                     data = region_pop_sf %>% filter(GID_0 != "CPV"))
 
@@ -429,7 +429,7 @@ plot_trap_habitat <- wa_habitats %>%
   group_by(habitat) %>%
   filter(habitat != "water") %>%
   summarise(count = sum(count)) %>%
-  mutate(data = "Zoonotic",
+  mutate(data = "Trapped regions",
          proportion = count/sum(count))
 
 plot_habitats <- bind_rows(plot_wa_habitats,
@@ -447,6 +447,7 @@ plot_habitats <- bind_rows(plot_wa_habitats,
   theme_minimal()
 
 write_rds(plot_habitats, here("plots", "trap_habitats.rds"))
+save_plot(here("figures", "Figure_3.png"), plot_grid(trap_habitats), base_height = 10, base_width = 17)
 
 habitat_types <- rodent_data %>%
   dplyr::select(unique_id, country, region, town_village, all_of(habitat_split), trap_night_unit, trap_nights) %>%
@@ -913,16 +914,17 @@ less_4 <- matrix_hp %>%
 #                values_to = "Number")
 
 hp_g4 <- ggplot(greater_4,
-       aes(x = pathogen_tested, y = fct_rev(classification), colour = Percent_positive, size = Tested)) +
+       aes(y = fct_rev(pathogen_tested), x = classification, colour = Percent_positive, size = Tested)) +
   geom_point() +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = -0.01)) +
   scale_colour_viridis_d() +
   scale_x_discrete(position = "top") +
+  scale_size(breaks = c(20, 40, 60), labels = c("400", "1,600", "3,600")) +
   labs(x = element_blank(),
        y = element_blank(),
-       colour = element_blank()) +
-  guides(size = "none")
+       colour = "Proportion positive",
+       size = "Number tested")
 
 hp_l4 <- ggplot(less_4,
                 aes(x = pathogen_tested, y = fct_rev(classification), colour = Percent_positive, size = Tested)) +
@@ -937,9 +939,9 @@ hp_l4 <- ggplot(less_4,
   guides(size = "none",
          colour = "none")
 
-save_plot(here("figures", "Figure_5.png"), plot_grid(hp_g4, hp_l4),
+save_plot(here("figures", "Figure_6.png"), plot_grid(hp_g4),
           base_height = 12,
-          base_width = 18)
+          base_width = 14)
 
 pal <- c("Arvicanthis niloticus" = "#bdbdbd",
          "Crocidura foxi" = "#e6550d",

@@ -12,7 +12,9 @@ level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
 
 level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
 
-level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds")) %>%
+  bind_rows(level_1 %>%
+              filter(GID_0 == "CPV")) #Cape Verde doesn't have level_2 administrative regions
 
 non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
 
@@ -129,38 +131,17 @@ if(!file.exists(here("data_clean", "traps_level_2.rds"))) {
 }
 
 trap_nights_region <- tibble(sites_2) %>%
-  group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+  group_by(GID_1, NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
   summarise(total_trap_nights = sum(trap_nights)) %>%
-  group_by(GID_2, NAME_2) %>%
+  group_by(GID_1, GID_2, NAME_2) %>%
   summarise(region_trap_nights = sum(total_trap_nights))
 
 level_2_sites <- level_2 %>%
   left_join(., trap_nights_region,
-            by = c("GID_2", "NAME_2")) %>%
+            by = c("GID_1", "GID_2", "NAME_2")) %>%
   mutate(area_m2 = st_area(.),
          tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
          tn_density = ifelse(is.na(tn_density), NA, tn_density))
-
-ggplot() +
-  geom_sf(data = included_countries, fill = "#808080", alpha = 0.1, lwd = 0.1) +
-  geom_point(data = data$review %>%
-               filter(pres_abs == "Present"), mapping = aes(colour = pres_abs, x = x, y = y), size = .5,
-             crs = 4326) +
-  geom_spatial_point(data = anti_join(tibble(data$review), tibble(data$review) %>%
-                                        filter(pres_abs == "Present"),
-                                      by = c("x", "y")),
-                     mapping = aes(colour = pres_abs, x = x, y = y), size = .5,
-                     crs = 4326) +
-  scale_colour_manual(values = c("#ff8c00", "#440154")) +
-  labs(colour = "",
-       title = paste0(snakecase::to_sentence_case(species_name), " - this review"),
-       x = element_blank(),
-       y = element_blank()) +
-  annotation_north_arrow(height = unit(1, "cm"),
-                         style = north_arrow_minimal(text_size = 8)) +
-  annotation_scale(height = unit(0.1, "cm"),
-                   location = "tr") +
-  theme_minimal()
 
 level_2_sites$breaks <- cut(level_2_sites$tn_density,
                             breaks = c(0, 0.001, 0.01, 0.1, 1, 10, 100, 200),
@@ -188,7 +169,6 @@ trap_night_density_level2 <- ggplot() +
                    location = "tr")
 
 write_rds(trap_night_density_level2, here("plots", "tn_density.rds"))
-tmap_save(trap_night_density_level2, filename = here("figures", "static_tn_density_2.png"))
 
 # Human population --------------------------------------------------------
 
@@ -332,17 +312,9 @@ map_1 <- getViz(tn_pop_model)
 
 panel_b <- plot_grid(as.grob(m1$ggObj))
 
-# Habitat trap night ------------------------------------------------------
-
-trap_habitats <- read_rds(here("plots", "trap_habitats.rds"))
-
-
 fig_2 <- plot_grid(trap_night_density_level2,
                    panel_b,
-                   trap_habitats,
-                   nrow = 3,
-                   labels = "AUTO",
-                   rel_widths = c(1, 1, 1),
-                   rel_heights = c(2, 2, 1))
+                   nrow = 2,
+                   labels = "AUTO")
 
-save_plot(here("figures", "Figure_2.png"), fig_2, nrow = 3, base_height = 10, base_width = 17)
+save_plot(here("figures", "Figure_2.png"), fig_2, base_height = 10, base_width = 17)

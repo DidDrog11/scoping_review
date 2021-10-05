@@ -172,17 +172,37 @@ save_plot(plot_grid(plotlist = list(av_row,
                     ncol = 1,
                     greedy = FALSE,
                     rel_heights = c(1, 1)),
-          filename = here("figures", "Figure_4a.png"), base_height = 10, base_width = 16)
+          filename = here("figures", "Figure_5a.png"), base_height = 10, base_width = 16)
 
 save_plot(plot_grid(plotlist = list(bo_row,
                                     to_row),
                     ncol = 1,
                     greedy = FALSE,
                     rel_heights = c(1, 1)),
-          filename = here("figures", "Figure_4b.png"), base_height = 10, base_width = 16)
+          filename = here("figures", "Figure_5b.png"), base_height = 10, base_width = 16)
 
 save_plot(plot_grid(plot = legend,
                     ncol = 1,
                     greedy = FALSE,
                     rel_heights = c(1)),
-          filename = here("figures", "Figure_4_legend.png"), base_height = 2, base_width = 10)
+          filename = here("figures", "Figure_5_legend.png"), base_height = 2, base_width = 10)
+
+save_plot(plot_grid(plot_grid(plotlist = list(av_row,
+                                    ba_row),
+                    ncol = 1,
+                    greedy = FALSE,
+                    rel_heights = c(1, 1)),
+          plot_grid(plotlist = list(bo_row,
+                                    to_row),
+                    ncol = 1,
+                    greedy = FALSE,
+                    rel_heights = c(1, 1)),
+          plot_grid(plot = legend,
+                    ncol = 1,
+                    greedy = FALSE,
+                    rel_heights = c(1)),
+          rel_heights = c(1, 1, 0.2),
+          rel_widths = c(1, 1, 0.6)),
+          filename = here("figures", "Figure_5_combined.png"),
+          base_height = 20,
+          base_width = 32)
