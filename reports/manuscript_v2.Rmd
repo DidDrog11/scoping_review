@@ -8,19 +8,21 @@ author:
     url: https://www.dsimons.org
     orcid_id: 0000-0001-9655-1656
 output: 
-  distill::distill_article:
+  # distill::distill_article:
+  #   toc: true
+  #   toc_depth: 3
+  #   toc_float: true
+  # word_document:
+  pdf_document:
     toc: true
     toc_depth: 3
-    toc_float: true
-  # word_document:
-  # pdf_document:
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = here::here())
   })
 always_allow_html: yes
 bibliography: "`r here::here('citations', 'manuscript_citations.bib')`"
 ---
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 source(here::here("scripts", "manuscript_library.R"))
 ```
 
@@ -95,7 +97,7 @@ We summarised the presence and absence of microorganisms, the assays used, their
 
 We identified 4,282 relevant citations, with 126 rodent trapping studies included. The earliest included studies were published in 1974 with increasing numbers of studies being performed annually since 2005. The median length of rodent trapping activity was one year (IQR 0-2 years). The median time from completion of rodent trapping to publication is 3 years (IQR 2-5 years) (Figure 1.).
 
-```{r, figure_1, layout = "l_page", echo=FALSE}
+```{r, figure_1, echo=FALSE, out.width="100%"}
 
 if(knitr::is_html_output()) {
   knitr::include_graphics(here("figures", "Fig_1_Panel_A.png"), dpi = 320)
@@ -116,7 +118,7 @@ Greater numbers of trap nights were conducted in areas with higher population de
 No studies reported trap habitats with reference to a standardised habitat classification scheme. Extracted habitat types were grouped into 30 categories (see Supplementary Material 2 for the habitat dictionary). At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 distinct habitat and trap sites. The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents “natural habitat” (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
 
 
-```{r, figure_2, layout = "l-screen-inset", echo=FALSE}
+```{r, figure_2, layout = "l-screen-inset", echo=FALSE, out.width="100%"}
 
 knitr::include_graphics(here("figures", "Figure_2.png"))
 
@@ -133,7 +135,7 @@ knitr::include_graphics(here("figures", "Figure_2.png"))
 Locations of points for the presence or absence of the seven most commonly trapped species are shown in Figure 3 (left column). Absence include true absences and pseudo-absences dependent on the trapping effort at the site. This are shown compared to species presence obtained from GBIF (centre column) and IUCN species range data (left column) (Figure 3). 
 
 
-```{r, figure_3, layout = "l-screen-inset", echo=FALSE}
+```{r, figure_3, layout = "l-screen-inset", echo=FALSE, out.width="100%"}
 
 knitr::include_graphics(here("figures", "Figure_3.png"))
 
@@ -151,7 +153,7 @@ Most studies tested for a single microorganisms (39), 16 studies tested for two 
 
 The location of trapped rodents that were tested for the four most commonly assayed microorganisms did not encompass the entire range of these hosts. The presence and absence of Arenaviridae, predominantly *Lassa mammarenavirus*, in rodents was investigated in Benin, Côte d'Ivoire, Guinea, Mali, Nigeria and Sierra Leone. No studies investigated the prevalence of these pathogens in hosts from Burkina-Faso, Guinea-Bissau, Liberia, Niger, Senegal and Togo. Arenaviridae were detected in rodents from 17 of 54 species or genera assayed in all the countries it was investigated except Benin (Figure 4 top row). The presence and absence of *Bartonella sp.* was investigated in Mali and Nigeria and Senegal with positive samples detected in 11 of 11 species or genera of rodents obtained at most sites from these countries (Figure 4 second row). The presence and absence of *Borrelia sp.* was investigated in Benin, Mali, Mauritania, Niger and Senegal. *Borrelia sp.* were detected in 8 of 44 species or genera of rodents assayed in Mali with negative samples obtained from Benin, Mauritania, Niger and Senegal (Figure 4 third row). The presence of *Toxoplasma gondii* was only investigated in Senegal and was detected in 6 of 8 rodent species assayed (Figure 4 fourth row).
 
-```{r, figure_4, echo=FALSE}
+```{r, figure_4, echo=FALSE, out.width="100%"}
 
 knitr::include_graphics(here("figures", "Figure_4a.png"))
 knitr::include_graphics(here("figures", "Figure_4b.png"))
@@ -167,7 +169,7 @@ Ninety-seven rodent species were investigated for the presence of a zoonotic pat
 
 *Lassa mammarenavirus* was detected in 14 species of rodents and Crocidura genera. *Mastomys natalensis* was the most common species to test positive (Figure 4.). Fifty-four species and genera were tested for arenaviruses, with 37 testing negative. *Bartonella sp.* infections were identified in all 11 species of rodents and shrews that were tested. *Mastomys erythroleucus* was the most common species to test positive. *Borrelia sp.* infections were identified in 13 species of rodents and shrews. *Mastomys natalensis* was the most common species to test positive. Forty-four species and genera were tested for *Borrelia sp.* with 36 testing negative. *Toxoplasma gondii* was detected in 6 species of rodents and shrews, with all individuals from two species *Arvicanthis niloticus* and *Praomys daltoni* testing negative. *Mus musculus* was the most common species to test positive. Finally, 38 species of Rodentia, 3 species of Soricomorpha and 2 species of Erinaceomorpha that were tested for pathogens had entirely negative results.
   
-```{r figure_5, echo=FALSE}
+```{r figure_5, echo=FALSE, out.width="100%"}
 
 knitr::include_graphics(here("figures", "Figure_5.png"))
 
@@ -186,36 +188,16 @@ Third, while up to 32 potential zoonoses were investigated only four were invest
 
 Finally, we found that only five of the 112 rodent species trapped had been tested for more than half of the potential pathogens. There is increasing emphasis on the role of co-infection and multi-species pathogen transmission systems on zoonotic disease spillover risk which depends on comprehensive testing of both known and un-known reservoir species. More comprehensive testing of potential reservoir species across West Africa is required to better understand the role of individual species in disease systems. This will also reduce the risk of bias in predictive risk modelling by better characterising host-pathogen associations in species rich environments.
 
-## Implications
-
 ## Limitations
 
-## Future research
+We identified several limitations to our approach. We identified studies from a diverse range of sources, however, it remains possible that rodent surveys have been performed for additional purposes that would not be captured in a survey of the scientific and "grey" literature, for example, risk assessments or ecological assessments for development work may not have been identified through our search. We were limited by the reporting from included studies, particularly for measuring trapping effort and identifying habitat types trapped. We imputed trapping effort for studies that did not report any measure of effort, removing these studies had no meaningful effect on the association of human population density and trapping effort in sensitivity analysis. Habitat type and human population density were obtained from 2005, the median year in which studies were conducted. Changes in both human populations and land use in the studied period (1969-2020) have been large across West Africa, this introduces the possibility that these values were not appropriate for the region at the time when the rodent trapping study was conducted. 
+
+## Implications
+
+We have identified important biases in the locations of studies, the trapping effort for different rodent species and the selection of zoonotic pathogens to assay across West Africa. The use of these data to infer risk of zoonotic spillover or novel disease emergence is likely inappropriate unless these systematic biases are addressed. We hope that the current synthesis of extant data will encourage further comprehensive ecological studies on rodent species assemblages and their pathogens. One priority would be to better understand the true distribution of known rodent reservoirs (particularly *Mastomys natalensis*) across the region with particular emphasis made to the habitat in which they reside and the structure of rodent assemblages in the region.
 
 # Conclusion
 
-# Notes
+In conclusion we present a comprehensive synthesis of rodent trapping studies across West Africa, we identify important biases in the sampling of rodents and their pathogens that limits inference able to be drawn from current evidence. We identify evidence gaps in the current literature and highlight geographic regions, habitat types and host-pathogen associations that would benefit from targeted research effort.
 
-First, we found that study locations were biased towards regions with higher human population densities and were more likely to be conducted within habitats associated with anthropogenic land use change. Second, we were able to obtain contextually rich information on the presence and absence of 147 small-mammal species to compare to IUCN and GBIF distributions and investigate spatial bias in species distributions in these datasets. Third, we synthesised data on the presence and absence of zoonotic pathogens detected within small-mammals from these studies and identified biases in the spatial and species sampling across West Africa. Finally, we synthesise host-pathogen associations from the included studies.
-
-## Spatial and habitat biases in rodent sampling
-
-Between countries there were large differences in the number of studies performed in each country and the intensity of trapping. Important heterogeneity was observed within countries with most countries sparsely sampled, Senegal and Sierra Leone were most comprehensively sampled with studies conducted in all but 7 level-2 administrative regions. 
-
-We found a non-linear positive relationship between human population density and the trap-night density of studied regions, suggesting that studies were preferentially conducted in regions of higher human habitation. Further, we found that regions consisting of habitat types associated with anthropogenic disturbance (e.g. mosaic vegetation, cropland) were more commonly sampled. Together, these results suggest that rodent sampling in West Africa is limited by biases introduced by the selection of study sites that impacts the inference and generalisability of results. This can importantly limit the applicability of out-of-sample predictions generated from models dependent on these data.
-
-## Rodent presence and absence
-
-Included studies trapped over 70,000 rodents identified to genus or species level, 112 species of Rodentia were reported. The most commonly trapped species were the commensal rodents *Mastomys natalensis*, *Rattus rattus*, *Mastomys erythroleucus* and *Mus musculus*. Rodents were more frequently trapped in or around buildings (13% trap success) compared with other habitats (3%). This difference potentially explains some of the observed bias in habitat selection for studies as more rodents are trapped for the same trapping effort. However, this may also suggest that rodents residing in human dominated landscapes are less "trap-shy" or that there is an increased abundance of rodents in these settings. Together these factors complicate comparisons made between urban and non-urban studies.
-
-The current study provided further information than is available from GBIF and IUCN. Absence and pseudo-absence of species was produced from included studies and provides important additional information compared to presence only data. For the three most commonly trapped species, *Mastomys natalensis*, *Rattus rattus* and *Mastomys erythroleucus* we observed absences interspersed with presences suggesting that populations are less spatially heterogeneous than previously assumed. Acknowledging these heterogeneities in spatial distribution is important for modelling of zoonotic risk based on host species distributions [ref].  These heterogeneities are not clearly captured in GBIF and IUCN data. GBIF data across West Africa demonstrates spatial bias, for example Togo 
-
-## Potential journals
-
-Philosophical transactions of the royal society B
-Ecology letters
-Emerging Microbes and Infection
-PLoS one/PLoS NTD
-The American journal of tropical medicine and hygiene
-Scientific reports 
-Vector borne and zoonotic diseases
+# References

@@ -1,0 +1,36 @@
+---
+title: "Notes"
+author: "David Simons"
+date: "04/10/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Notes
+
+First, we found that study locations were biased towards regions with higher human population densities and were more likely to be conducted within habitats associated with anthropogenic land use change. Second, we were able to obtain contextually rich information on the presence and absence of 147 small-mammal species to compare to IUCN and GBIF distributions and investigate spatial bias in species distributions in these datasets. Third, we synthesised data on the presence and absence of zoonotic pathogens detected within small-mammals from these studies and identified biases in the spatial and species sampling across West Africa. Finally, we synthesise host-pathogen associations from the included studies.
+
+## Spatial and habitat biases in rodent sampling
+
+Between countries there were large differences in the number of studies performed in each country and the intensity of trapping. Important heterogeneity was observed within countries with most countries sparsely sampled, Senegal and Sierra Leone were most comprehensively sampled with studies conducted in all but 7 level-2 administrative regions. 
+
+We found a non-linear positive relationship between human population density and the trap-night density of studied regions, suggesting that studies were preferentially conducted in regions of higher human habitation. Further, we found that regions consisting of habitat types associated with anthropogenic disturbance (e.g. mosaic vegetation, cropland) were more commonly sampled. Together, these results suggest that rodent sampling in West Africa is limited by biases introduced by the selection of study sites that impacts the inference and generalisability of results. This can importantly limit the applicability of out-of-sample predictions generated from models dependent on these data.
+
+## Rodent presence and absence
+
+Included studies trapped over 70,000 rodents identified to genus or species level, 112 species of Rodentia were reported. The most commonly trapped species were the commensal rodents *Mastomys natalensis*, *Rattus rattus*, *Mastomys erythroleucus* and *Mus musculus*. Rodents were more frequently trapped in or around buildings (13% trap success) compared with other habitats (3%). This difference potentially explains some of the observed bias in habitat selection for studies as more rodents are trapped for the same trapping effort. However, this may also suggest that rodents residing in human dominated landscapes are less "trap-shy" or that there is an increased abundance of rodents in these settings. Together these factors complicate comparisons made between urban and non-urban studies.
+
+The current study provided further information than is available from GBIF and IUCN. Absence and pseudo-absence of species was produced from included studies and provides important additional information compared to presence only data. For the three most commonly trapped species, *Mastomys natalensis*, *Rattus rattus* and *Mastomys erythroleucus* we observed absences interspersed with presences suggesting that populations are less spatially heterogeneous than previously assumed. Acknowledging these heterogeneities in spatial distribution is important for modelling of zoonotic risk based on host species distributions [ref].  These heterogeneities are not clearly captured in GBIF and IUCN data. GBIF data across West Africa demonstrates spatial bias, for example Togo 
+
+## Potential journals
+
+Philosophical transactions of the royal society B
+Ecology letters
+Emerging Microbes and Infection
+PLoS one/PLoS NTD
+The American journal of tropical medicine and hygiene
+Scientific reports 
+Vector borne and zoonotic diseases
