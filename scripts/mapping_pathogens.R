@@ -79,11 +79,11 @@ pathogen_map <- function(pathogen_genus) {
                                                             pcr_positive != 0 & ab_ag_positive == 0 ~ pcr_positive + culture_positive,
                                                             TRUE ~ ab_ag_positive + culture_positive)) %>%
                          group_by(x, y) %>%
-                         summarise(number_tested = sum(number_tested),
-                                   number_positive = sum(unique_positive),
-                                   number_negative = number_tested-number_positive,
-                                   prop_positive = number_positive/number_tested) %>%
-                         mutate(pos_neg = case_when(number_positive > 0 ~ "Positive",
+                         mutate(number_tested = sum(number_tested),
+                                number_positive = sum(unique_positive),
+                                number_negative = number_tested-number_positive,
+                                prop_positive = number_positive/number_tested,
+                                pos_neg = case_when(number_positive > 0 ~ "Positive",
                                                     TRUE ~ "Negative"))
   )
 
@@ -165,44 +165,17 @@ bartonella_plots <- pathogen_map("bartonella")
 ba_row <- plot_grid(plotlist = bartonella_plots[c(1:2)], nrow = 1)
 toxplasma_plots <- pathogen_map("toxoplasma")
 to_row <- plot_grid(plotlist = toxplasma_plots[c(1:2)], nrow = 1)
-legend <- plot_grid(as_grob(arenaviridae_plots[[3]][[1]]), rel_heights = 0.5)
+legend <- plot_grid(as_grob(arenaviridae_plots[[3]][[1]]))
+all_plots <- plot_grid(av_row,
+                       bo_row,
+                       ba_row,
+                       to_row,
+                       ncol = 2)
 
-save_plot(plot_grid(plotlist = list(av_row,
-                                    ba_row),
-                    ncol = 1,
+save_plot(plot_grid(all_plots, legend,
+                    nrow = 2,
                     greedy = FALSE,
-                    rel_heights = c(1, 1)),
-          filename = here("figures", "Figure_5a.png"), base_height = 10, base_width = 16)
-
-save_plot(plot_grid(plotlist = list(bo_row,
-                                    to_row),
-                    ncol = 1,
-                    greedy = FALSE,
-                    rel_heights = c(1, 1)),
-          filename = here("figures", "Figure_5b.png"), base_height = 10, base_width = 16)
-
-save_plot(plot_grid(plot = legend,
-                    ncol = 1,
-                    greedy = FALSE,
-                    rel_heights = c(1)),
-          filename = here("figures", "Figure_5_legend.png"), base_height = 2, base_width = 10)
-
-save_plot(plot_grid(plot_grid(plotlist = list(av_row,
-                                    ba_row),
-                    ncol = 1,
-                    greedy = FALSE,
-                    rel_heights = c(1, 1)),
-          plot_grid(plotlist = list(bo_row,
-                                    to_row),
-                    ncol = 1,
-                    greedy = FALSE,
-                    rel_heights = c(1, 1)),
-          plot_grid(plot = legend,
-                    ncol = 1,
-                    greedy = FALSE,
-                    rel_heights = c(1)),
-          rel_heights = c(1, 1, 0.2),
-          rel_widths = c(1, 1, 0.6)),
+                    rel_heights = c(4, 0.1)),
           filename = here("figures", "Figure_5_combined.png"),
-          base_height = 20,
-          base_width = 32)
+          base_height = 12,
+          base_width = 24)

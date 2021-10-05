@@ -104,9 +104,11 @@ Rodent trapping took place at 1,331 trap sites with at least one trap site recor
 
 Greater numbers of trap nights were conducted in areas with higher population densities (*R~2~* = 0.18) adjusting for spatial autocorrelation. In particular Mauritania, Northern Senegal, Eastern Sierra Leone, Eastern Guinea and South West Nigeria were trapped at higher rates than would be expected based on their population densities. South West Nigeria, Northern Nigeria, Liberia, Côte d'Ivoire, Ghana, Niger and Burkina Faso were trapped at lower rates than would be expected.
 
+
 ![**A:** Map of West Africa, countries where rodent trapping has occurred are mapped to level 2 administrative areas. The colour of the region corresponds to the trap night density per 1000 km^2. Colourless regions reported no trapping. **B:** This shows the linear predictor from obtained from the GAM. Predictions are limited to coordinates are trap sites (coloured areas), uncertainty in the linear predictor is represented by th transparency of the colour. Yellow regions represent areas with higher than expected trapping effort for the regional population and purple regions represent areas trapped at lower than expected rates based on their populations](../figures/Figure_2.png)
 
 No studies reported trap habitats with reference to a standardised habitat classification scheme. Extracted habitat types were grouped into 30 categories (see Supplementary Material 2 for the habitat dictionary). At least one habitat was recorded for 17,122 trap sites (95%), with two or more habitats for a single trap site recorded for 4,403 (24%) sites. Single trap sites could span multiple habitat types resulting in 22,202 distinct habitat and trap sites. The most commonly trapped sites were in or around buildings (29%), in areas described as the rodents “natural habitat” (24%), in agricultural areas (13%) (e.g. rice fields, palm plantations), forests (8%) and in the area surrounding buildings (4%).
+
 
 ![The proportion of the 10 land cover classes reported by the ESA Copernicus dataset at 300m^2 resolution are shown for all regions of West Africa (yellow) and for regions in which trapping occurred (purple). Rodent trapping occurred in regions over-representative for cropland, mosaic landscapes and shrubland wile occurring in regions under-representative for bare- and sparse vegetation land cover classes.](../figures/Figure_3.png)
 
@@ -117,6 +119,7 @@ No studies reported trap habitats with reference to a standardised habitat class
 *Mastomys sp.* were the most commonly trapped genus (27,079, 37.7%), followed by, *Rattus sp.* (11,472, 16.1%), *Mus sp.* (8,624, 12.0%), *Arvicanthis sp.* (5,821, 8.1%) and *Praomys sp.* (5,409, 7.5%). *Mastomys natalensis* were the most commonly trapped species (11,116, 17.4%), followed by, *Rattus rattus* (9,959, 15.6%), *Mastomys erythroleucus* (7,386, 11.6%), *Mus musculus* (6,245, 9.8%), *Arvicanthis niloticus* (5,497, 8.6%), *Mastomys huberti* (4,699, 7.4%) and *Praomys daltoni* (1,854, 2.9%). 
 
 Locations of points for the presence or absence of the seven most commonly trapped species are shown in Figure 3 (left column). Absence include true absences and pseudo-absences dependent on the trapping effort at the site. This are shown compared to species presence obtained from GBIF (centre column) and IUCN species range data (left column) (Figure 3). 
+
 
 ![Each row corresponds to a single rodent species. The column on the left shows the presence and absence of a rodent species from the individual studies included in this review. The centre column shows the presence of a rodent species obtained from GBIF (September 2021) for records where longitude and latitude have been provided. The right column shows the range of rodent species as proposed by the IUCN (2021) (red shaded area), overlaid are the presence points from both this review and GBIF records.](../figures/Figure_4.png)
 
@@ -130,19 +133,15 @@ Most studies tested for a single microorganisms (39), 16 studies tested for two 
 
 The location of trapped rodents that were tested for the four most commonly assayed microorganisms did not encompass the entire range of these hosts. The presence and absence of Arenaviridae, predominantly *Lassa mammarenavirus*, in rodents was investigated in Benin, Côte d'Ivoire, Guinea, Mali, Nigeria and Sierra Leone. No studies investigated the prevalence of these pathogens in hosts from Burkina-Faso, Guinea-Bissau, Liberia, Niger, Senegal and Togo. Arenaviridae were detected in rodents from 17 of 54 species or genera assayed in all the countries it was investigated except Benin (Figure 4 top row). The presence and absence of *Bartonella sp.* was investigated in Mali and Nigeria and Senegal with positive samples detected in 11 of 11 species or genera of rodents obtained at most sites from these countries (Figure 4 second row). The presence and absence of *Borrelia sp.* was investigated in Benin, Mali, Mauritania, Niger and Senegal. *Borrelia sp.* were detected in 8 of 44 species or genera of rodents assayed in Mali with negative samples obtained from Benin, Mauritania, Niger and Senegal (Figure 4 third row). The presence of *Toxoplasma gondii* was only investigated in Senegal and was detected in 6 of 8 rodent species assayed (Figure 4 fourth row).
 
-```{r, figure_5, echo=FALSE, out.width="100%", fig.cap="Presence/absence plots at each unique trapping site for the four most commonly assayed microorganisms Arenaviridae (top), *Bartonella sp.* (second row), *Borrelia sp.* (third row) and *Toxoplasma gondii* (fourth row). The tables to the right of each map highlight the 10 (or number applicable) most commonly positive and tested rodent species and genera assayed."}
 
-knitr::include_graphics(here("figures", "Figure_5a.png"),
-                        here("figures", "Figure_5b.png"),
-                        here("figures", "Figure_5_legend.png"))
-
-```
+![Presence/absence plots at each unique trapping site for the four most commonly assayed microorganisms Arenaviridae (top), *Bartonella sp.* (second row), *Borrelia sp.* (third row) and *Toxoplasma gondii* (fourth row). The tables to the right of each map highlight the 10 (or number applicable) most commonly positive and tested rodent species and genera assayed.](../figures/Figure_5_combined.png)
 
 ## Host-pathogen associations
 
 Ninety-seven rodent species were investigated for the presence of a zoonotic pathogen, 42,940 assays were performed on 32,014 individual rodent samples. The rodent species most commonly assayed for zoonotic pathogens were, *Rattus rattus* (n = 2,977) assessed for 24 pathogens, *Mus musculus* (n = 3,402) for 23, *Mastomys natalensis* (n = 7,189) and *Mastomys erythroleucus* (n = 3,013) both 19 and *Arvicanthis niloticus* (n = 3,840) for 18. All remaining species were investigated for 10 or fewer pathogens.
 
 *Lassa mammarenavirus* was detected in 14 species of rodents and Crocidura genera. *Mastomys natalensis* was the most common species to test positive (Figure 4.). Fifty-four species and genera were tested for arenaviruses, with 37 testing negative. *Bartonella sp.* infections were identified in all 11 species of rodents and shrews that were tested. *Mastomys erythroleucus* was the most common species to test positive. *Borrelia sp.* infections were identified in 13 species of rodents and shrews. *Mastomys natalensis* was the most common species to test positive. Forty-four species and genera were tested for *Borrelia sp.* with 36 testing negative. *Toxoplasma gondii* was detected in 6 species of rodents and shrews, with all individuals from two species *Arvicanthis niloticus* and *Praomys daltoni* testing negative. *Mus musculus* was the most common species to test positive. Finally, 38 species of Rodentia, 3 species of Soricomorpha and 2 species of Erinaceomorpha that were tested for pathogens had entirely negative results.
+
 
 ![For the 27 most commonly assayed rodent species and genera, the percentage of positive assays against each of the 32 microorganisms tested for is shown. The size of a point is proportional to the the number of individuals assayed for that microorganism.](../figures/Figure_6.png)
 

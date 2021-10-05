@@ -129,7 +129,7 @@ study_timings <- ggplot(study_start) +
        x = element_blank(),
        alpha = "Study dates reported")
 
-ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300, height = 8)
+ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dpi = 300, height = 8, width = 10)
 write_rds(study_timings, here("plots", "study_timings.rds"))
 
 described_studies <- study_start %>%
