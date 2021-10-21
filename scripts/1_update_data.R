@@ -2,7 +2,7 @@ source(here::here("scripts", "libraries.R"))
 
 drive_download("https://docs.google.com/spreadsheets/d/1rQYjHhk6uk1PoKZZVsgFlmuqWGicU2tTisk9ddfAwTM/edit#gid=0", path = here("data_download", "included_studies.xlsx"), overwrite = T)
 
-studies <- read_xlsx(here("data_download", "included_studies.xlsx"), sheet = "study")
+studies <- read_xlsx(here("data_download", "included_studies.xlsx"), sheet = "study", col_types = "text")
 write_rds(studies, here("data_raw", "studies.rds"))
 
 rodent_data <- read_xlsx(here("data_download", "included_studies.xlsx"), sheet = "trapping", col_types = c("guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess", "guess",

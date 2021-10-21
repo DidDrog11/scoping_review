@@ -154,7 +154,7 @@ trap_night_density_level2 <- ggplot() +
           lwd = 0.05,
           colour = "gray") +
   scale_fill_viridis_d(aesthetics = "fill",
-                       direction = -1,
+                       direction = 1,
                        labels = c("0 - 0.001", "0.001 - 0.01", "0.01 - 0.1",
                                   "0.1 - 1", "1 - 10", "10 - 100", "100 - 200",
                                   "No trapping")) +
@@ -302,7 +302,7 @@ m1 <- plot(sm(map_1, 1), n = 150, too.far = 0.02) +
   labs(title = element_blank(),
        x = element_blank(),
        y = element_blank(),
-       fill = "Linear predictor") +
+       fill = "Relative trapping density") +
   annotation_north_arrow(height = unit(1, "cm"),
                          style = north_arrow_minimal(text_size = 8)) +
   annotation_scale(height = unit(0.1, "cm"),

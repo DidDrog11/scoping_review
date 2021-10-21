@@ -444,10 +444,11 @@ plot_habitats <- bind_rows(plot_wa_habitats,
        y = "Proportion of region",
        fill = "Region") +
   scale_fill_manual(values = c("#fde725", "#440154")) +
-  theme_minimal()
+  theme_minimal() +
+  theme(text = element_text(size = 16))
 
 write_rds(plot_habitats, here("plots", "trap_habitats.rds"))
-save_plot(here("figures", "Figure_3.png"), plot_grid(trap_habitats), base_height = 10, base_width = 17)
+save_plot(here("figures", "Figure_3.png"), plot_grid(plot_habitats), base_height = 8, base_width = 12)
 
 habitat_types <- rodent_data %>%
   dplyr::select(unique_id, country, region, town_village, all_of(habitat_split), trap_night_unit, trap_nights) %>%
@@ -895,7 +896,10 @@ matrix_hp <- long_pathogen %>%
 greater_4 <- matrix_hp %>%
   group_by(classification) %>%
   add_count() %>%
-  filter(n >= 4)
+  filter(n >= 4) %>%
+  mutate(pathogen_tested = case_when(pathogen_tested == "K pneumoniae esbl" ~ "K. pneumonia ESBL",
+                                     pathogen_tested == "E coli esbl" ~ "E. coli ESBL",
+                                     TRUE ~ pathogen_tested))
 
 less_4 <- matrix_hp %>%
   group_by(classification) %>%
@@ -924,7 +928,8 @@ hp_g4 <- ggplot(greater_4,
   labs(x = element_blank(),
        y = element_blank(),
        colour = "Proportion positive",
-       size = "Number tested")
+       size = "Number tested") +
+  theme(text = element_text(size = 18))
 
 hp_l4 <- ggplot(less_4,
                 aes(x = pathogen_tested, y = fct_rev(classification), colour = Percent_positive, size = Tested)) +

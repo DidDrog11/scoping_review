@@ -5,6 +5,10 @@ pkgs =
     "gt",
     "gtsummary",
     "countrycode",
-    "cowplot"
+    "cowplot",
+    "flextable",
+    "ftExtra",
+    "bib2df",
+    "lubridate"
   )
 pacman::p_load(pkgs, character.only = T)

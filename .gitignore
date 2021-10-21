@@ -53,4 +53,7 @@ vignettes/*.pdf
 /data_clean/traps_level_2_zoonoses.rds
 
 # Large plot .rds
-/plots/
+plots
+
+coauthors_comments
+reports/nul

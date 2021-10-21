@@ -49,10 +49,10 @@ pathogen_map <- function(pathogen_genus) {
   included_countries = level_0 %>%
     filter(GID_0 %in% wa_mainland)
 
-  pathogen_groups = list(arenaviridae = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
-                         borrelia = c("borrelia_species", "borrelia"),
-                         bartonella = c("bartonella_species"),
-                         toxoplasma = c("toxoplasma_gondii"))
+  pathogen_groups = list("A) Arenaviridae" = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
+                         "B) Borrelia" = c("borrelia_species", "borrelia"),
+                         "C) Bartonella" = c("bartonella_species"),
+                         "D) Toxoplasma" = c("toxoplasma_gondii"))
 
   pathogen_data = list(pathogen = four_paths_wide %>%
                          dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]])),
@@ -131,7 +131,7 @@ pathogen_map <- function(pathogen_genus) {
                             mapping = aes(x = x, y = y, colour = pos_neg, size = prop_positive), alpha = 0.5) +
                  labs(colour = "",
                       size = "Proportion positive",
-                      title = paste0(snakecase::to_sentence_case(pathogen_genus)),
+                      title = paste0(pathogen_genus),
                       x = element_blank(),
                       y = element_blank()) +
                  scale_colour_manual(values = c("#ff8c00", "#440154")) +
@@ -157,13 +157,13 @@ pathogen_map <- function(pathogen_genus) {
   return(output)
 }
 
-arenaviridae_plots <- pathogen_map("arenaviridae")
+arenaviridae_plots <- pathogen_map("A) Arenaviridae")
 av_row <- plot_grid(plotlist = arenaviridae_plots[c(1:2)], nrow = 1)
-borrelia_plots <- pathogen_map("borrelia")
+borrelia_plots <- pathogen_map("B) Borrelia")
 bo_row <- plot_grid(plotlist = borrelia_plots[c(1:2)], nrow = 1)
-bartonella_plots <- pathogen_map("bartonella")
+bartonella_plots <- pathogen_map("C) Bartonella")
 ba_row <- plot_grid(plotlist = bartonella_plots[c(1:2)], nrow = 1)
-toxplasma_plots <- pathogen_map("toxoplasma")
+toxplasma_plots <- pathogen_map("D) Toxoplasma")
 to_row <- plot_grid(plotlist = toxplasma_plots[c(1:2)], nrow = 1)
 legend <- plot_grid(as_grob(arenaviridae_plots[[3]][[1]]))
 all_plots <- plot_grid(av_row,
@@ -177,5 +177,5 @@ save_plot(plot_grid(all_plots, legend,
                     greedy = FALSE,
                     rel_heights = c(4, 0.1)),
           filename = here("figures", "Figure_5_combined.png"),
-          base_height = 12,
-          base_width = 24)
+          base_height = 8,
+          base_width = 20)
