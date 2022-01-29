@@ -292,11 +292,24 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
 
   trapping_effort <- rodent_spatial %>%
     filter(unique_id %in% zoonotic_studies) %>%
-    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, geometry)
+    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, trap_night_data, geometry)
+
+  trapping_effort_sensitivity <- rodent_spatial %>%
+    filter(unique_id %in% zoonotic_studies) %>%
+    filter(trap_night_data != "Imputed") %>%
+    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, trap_night_data, geometry)
 
   sites_2 <- st_intersection(x = level_2, y = trapping_effort)
 
+  sites_2_sensitivity <- st_intersection(x = level_2, y = trapping_effort_sensitivity)
+
   trap_nights_region <- tibble(sites_2) %>%
+    group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
+    summarise(total_trap_nights = sum(trap_nights)) %>%
+    group_by(GID_2, NAME_2) %>%
+    summarise(region_trap_nights = sum(total_trap_nights))
+
+  trap_nights_region_sensitivity <- tibble(sites_2_sensitivity) %>%
     group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
     summarise(total_trap_nights = sum(trap_nights)) %>%
     group_by(GID_2, NAME_2) %>%
@@ -310,13 +323,24 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
            tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
            tn_density = ifelse(is.na(tn_density), NA, tn_density))
 
+  sites_2_sensitivity <- level_2 %>%
+    left_join(., trap_nights_region_sensitivity, by = c("GID_2", "NAME_2")) %>%
+    mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
+                                          TRUE ~ region_trap_nights))  %>%
+    mutate(area_m2 = st_area(.),
+           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
+           tn_density = ifelse(is.na(tn_density), NA, tn_density))
+
   write_rds(sites_2, here("data_clean", "traps_level_2_zoonoses.rds"))
+  write_rds(sites_2_sensitivity, here("data_clean", "traps_level_2_zoonoses_sensitivity.rds"))
   human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
 
   vect_sites <- vect(sites_2)
+  vect_sites_sens <- vect(sites_2_sensitivity)
 
   crop_pop <- crop(human_pop, vect_sites)
   wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"), overwrite = TRUE)
+
   region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
   region_pop_sf <- cbind(vect_sites, region_pop) %>%
     st_as_sf() %>%
@@ -328,9 +352,22 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
     tibble() %>%
     dplyr::select(-geometry)
 
+  region_pop_sens <- terra::extract(crop_pop, vect_sites_sens, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
+  region_pop_sf_sens <- cbind(vect_sites_sens, region_pop_sens) %>%
+    st_as_sf() %>%
+    st_centroid() %>%
+    mutate(x = st_coordinates(.$geometry)[,1],
+           y = st_coordinates(.$geometry)[,2],
+           tn_density = case_when(is.na(tn_density) ~ 0,
+                                  TRUE ~ tn_density)) %>%
+    tibble() %>%
+    dplyr::select(-geometry)
+
   write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
+  write_rds(region_pop_sf_sens, here("data_clean", "pop_tn_analysis_sensitivity.rds"))
 } else {
   region_pop_sf <- read_rds(here("data_clean", "pop_tn_analysis.rds"))
+  region_pop_sf_sens <- read_rds(here("data_clean", "pop_tn_analysis_sensitivity.rds"))
   human_pop <- rast(here("data_download", "pop_2005","wa_pop_2005.tif"))
 }
 
@@ -343,6 +380,17 @@ gam.check(tn_pop_model)
 plot(tn_pop_model, all.terms = TRUE)
 
 write_rds(tn_pop_model, here("data_clean", "tn_pop_model.rds"))
+
+# Sensitivity analysis
+tn_pop_model_sens <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
+                    family = "tw",
+                    data = region_pop_sf_sens %>% filter(GID_0 != "CPV"))
+
+summary(tn_pop_model_sens)
+gam.check(tn_pop_model_sens)
+plot(tn_pop_model_sens, all.terms = TRUE)
+
+write_rds(tn_pop_model_sens, here("data_clean", "tn_pop_model_sens.rds"))
 
 # all_cells <- rasterToPoints(raster(human_pop)) %>%
 #   tibble(x = .[,1],

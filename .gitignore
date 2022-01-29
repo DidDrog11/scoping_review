@@ -42,13 +42,17 @@ vignettes/*.pdf
 # Spatial data files
 /data_download/admin_spatial
 /data_download/habitat_2005
-/data_download/pop_2005
+/data_download/pop_2005/*
+
+# Allow WA pop file
+!/data_download/pop_2005/wa_pop_2005.tif
 
 # GBIF data
 /gbif_data
 
 # Large data_clean files
 /data_clean/tn_pop_model.rds
+/data_clean/tn_pop_analysis.rds
 /data_clean/wide_pathogen.rds
 /data_clean/traps_level_2_zoonoses.rds
 

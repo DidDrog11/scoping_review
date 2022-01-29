@@ -52,9 +52,16 @@ pathogen_map <- function(pathogen_genus) {
   pathogen_groups = list("A) Arenaviridae" = c("arenaviridae_species", "lassa_mammarenavirus", "mammarenavirus_species"),
                          "B) Borrelia" = c("borrelia_species", "borrelia"),
                          "C) Bartonella" = c("bartonella_species"),
-                         "D) Toxoplasma" = c("toxoplasma_gondii"))
+                         "D) Toxoplasma" = c("toxoplasma_gondii"),
+                         "Leptospirosis" = c("leptospirosis_species"),
+                         "Usutu" = c("usutu_virus"))
 
-  pathogen_data = list(pathogen = four_paths_wide %>%
+  pathogen_data = list(pathogen = wide_pathogen %>%
+                         tibble() %>%
+                         dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]]))) %>%
+                         left_join(., species_data,
+                                   by = c("gbif_id", "classification")) %>%
+                         distinct(record_id, name, .keep_all = T) %>%
                          dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]])),
                                        genus, species, genus_gbif, species_gbif) %>%
                          janitor::remove_empty("cols")  %>%
@@ -87,7 +94,12 @@ pathogen_map <- function(pathogen_genus) {
                                                     TRUE ~ "Negative"))
   )
 
-  species = list(rodents = four_paths_wide %>%
+  species = list(rodents = wide_pathogen %>%
+                   tibble() %>%
+                   dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]]))) %>%
+                   left_join(., species_data,
+                             by = c("gbif_id", "classification")) %>%
+                   distinct(record_id, name, .keep_all = T) %>%
                    dplyr::select(1:16, matches(c(pathogen_groups[[pathogen_genus]])),
                                  genus, species, genus_gbif, species_gbif) %>%
                    janitor::remove_empty("cols")  %>%
@@ -113,7 +125,7 @@ pathogen_map <- function(pathogen_genus) {
                    summarise(`Tested` = sum(number_tested),
                              `Positive` = sum(unique_positive),
                              `Negative` = `Tested`-`Positive`) %>%
-                   mutate(`Prop. positive` = round(`Positive`/`Tested`, 3)) %>%
+                   mutate(`Positive (%)` = (round(`Positive`/`Tested`, 3)*100)) %>%
                    ungroup() %>%
                    arrange(-`Positive`, -`Tested`) %>%
                    head(10) %>%
@@ -171,6 +183,8 @@ all_plots <- plot_grid(av_row,
                        ba_row,
                        to_row,
                        ncol = 2)
+leptospirosis_plots <- pathogen_map("Leptospirosis")[[1]]
+usutu_plots <- pathogen_map("Usutu")[[1]]
 
 save_plot(plot_grid(all_plots, legend,
                     nrow = 2,
@@ -178,4 +192,4 @@ save_plot(plot_grid(all_plots, legend,
                     rel_heights = c(4, 0.1)),
           filename = here("figures", "Figure_5_combined.png"),
           base_height = 8,
-          base_width = 20)
+          base_width = 21)

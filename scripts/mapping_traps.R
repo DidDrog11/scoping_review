@@ -308,6 +308,51 @@ m1 <- plot(sm(map_1, 1), n = 150, too.far = 0.02) +
   annotation_scale(height = unit(0.1, "cm"),
                    location = "tr")
 
+tn_pop_map_sens <- read_rds(here("data_clean", "tn_pop_model_sens.rds"))
+
+m1_ss <- plot(sm(map_1, 1), n = 150, too.far = 0.02) +
+  l_fitRaster(pTrans = function(.p) .p<0.05) +
+  geom_sf(data = included_countries, alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
+  scale_fill_viridis_c(na.value = "#ffffff00") +
+  theme_minimal() +
+  labs(title = element_blank(),
+       x = element_blank(),
+       y = element_blank(),
+       fill = "Relative trapping density") +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr")
+
+map_1_s <- getViz(tn_pop_map_sens)
+
+m1_s <- plot(sm(map_1_s, 1), n = 150, too.far = 0.02) +
+  l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
+  geom_sf(data = included_countries, alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
+  scale_fill_viridis_c(na.value = "#ffffff00") +
+  theme_minimal() +
+  labs(title = element_blank(),
+       x = element_blank(),
+       y = element_blank(),
+       fill = "Relative trapping density") +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr")
+
+m1_s_ss <- plot(sm(map_1_s, 1), n = 150, too.far = 0.02) +
+  l_fitRaster(pTrans = function(.p) .p<0.05) +
+  geom_sf(data = included_countries, alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
+  scale_fill_viridis_c(na.value = "#ffffff00") +
+  theme_minimal() +
+  labs(title = element_blank(),
+       x = element_blank(),
+       y = element_blank(),
+       fill = "Relative trapping density") +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr")
 
 B <- as.grob(m1$ggObj)
 
@@ -320,4 +365,16 @@ fig_2 <- plot_grid(A,
                    axis = "l",
                    labels = "AUTO")
 
+fig_2_sens <- plot_grid(m1_s$ggObj)
+
+fig_2_ss <- plot_grid(as.grob(m1_ss$ggObj),
+                      as.grob(m1_s_ss$ggObj),
+                      nrow = 2,
+                      align = "v",
+                      axis = "l",
+                      labels = "AUTO")
+
+
 save_plot(here("figures", "Figure_2.png"), fig_2, base_height = 10, base_width = 12)
+save_plot(here("figures", "Figure_2_sensitivity.png"), fig_2_sens, base_height = 10, base_width = 12)
+save_plot(here("figures", "Figure_2_ss.png"), fig_2_ss, base_height = 10, base_width = 12)
