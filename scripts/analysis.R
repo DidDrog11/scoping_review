@@ -269,149 +269,11 @@ non_buildings_tn <- trap_nights_complete %>%
 
 summary(non_buildings_tn$trap_success)
 
-# Trap night and population -----------------------------------------------
-if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
-  rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
-    dplyr::select(-trap_nights)
 
-  imputed_tn <- read_rds(here("data_clean", "imputed_trap_nights.rds"))
+# Trap night bias ---------------------------------------------------------
 
-  rodent_spatial <- rodent_spatial %>%
-    left_join(., imputed_tn,
-              by = c("unique_id", "year_trapping", "month_trapping",
-                     "region", "town_village", "habitat"))
+source(here("scripts", "tn_gam.R"))
 
-  level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
-  non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
-
-  level_2 <- bind_rows(level_2, non_trapped)
-
-  zoonotic_studies <- studies %>%
-    filter(str_detect(aim, "Zoonoses")) %>%
-    pull(unique_id)
-
-  trapping_effort <- rodent_spatial %>%
-    filter(unique_id %in% zoonotic_studies) %>%
-    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, trap_night_data, geometry)
-
-  trapping_effort_sensitivity <- rodent_spatial %>%
-    filter(unique_id %in% zoonotic_studies) %>%
-    filter(trap_night_data != "Imputed") %>%
-    distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, trap_night_data, geometry)
-
-  sites_2 <- st_intersection(x = level_2, y = trapping_effort)
-
-  sites_2_sensitivity <- st_intersection(x = level_2, y = trapping_effort_sensitivity)
-
-  trap_nights_region <- tibble(sites_2) %>%
-    group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
-    summarise(total_trap_nights = sum(trap_nights)) %>%
-    group_by(GID_2, NAME_2) %>%
-    summarise(region_trap_nights = sum(total_trap_nights))
-
-  trap_nights_region_sensitivity <- tibble(sites_2_sensitivity) %>%
-    group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
-    summarise(total_trap_nights = sum(trap_nights)) %>%
-    group_by(GID_2, NAME_2) %>%
-    summarise(region_trap_nights = sum(total_trap_nights))
-
-  sites_2 <- level_2 %>%
-    left_join(., trap_nights_region, by = c("GID_2", "NAME_2")) %>%
-    mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
-                                          TRUE ~ region_trap_nights))  %>%
-    mutate(area_m2 = st_area(.),
-           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
-           tn_density = ifelse(is.na(tn_density), NA, tn_density))
-
-  sites_2_sensitivity <- level_2 %>%
-    left_join(., trap_nights_region_sensitivity, by = c("GID_2", "NAME_2")) %>%
-    mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
-                                          TRUE ~ region_trap_nights))  %>%
-    mutate(area_m2 = st_area(.),
-           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
-           tn_density = ifelse(is.na(tn_density), NA, tn_density))
-
-  write_rds(sites_2, here("data_clean", "traps_level_2_zoonoses.rds"))
-  write_rds(sites_2_sensitivity, here("data_clean", "traps_level_2_zoonoses_sensitivity.rds"))
-  human_pop <- rast(here("data_download", "pop_2005","pop_2005.tif"))
-
-  vect_sites <- vect(sites_2)
-  vect_sites_sens <- vect(sites_2_sensitivity)
-
-  crop_pop <- crop(human_pop, vect_sites)
-  wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"), overwrite = TRUE)
-
-  region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
-  region_pop_sf <- cbind(vect_sites, region_pop) %>%
-    st_as_sf() %>%
-    st_centroid() %>%
-    mutate(x = st_coordinates(.$geometry)[,1],
-           y = st_coordinates(.$geometry)[,2],
-           tn_density = case_when(is.na(tn_density) ~ 0,
-                                  TRUE ~ tn_density)) %>%
-    tibble() %>%
-    dplyr::select(-geometry)
-
-  region_pop_sens <- terra::extract(crop_pop, vect_sites_sens, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
-  region_pop_sf_sens <- cbind(vect_sites_sens, region_pop_sens) %>%
-    st_as_sf() %>%
-    st_centroid() %>%
-    mutate(x = st_coordinates(.$geometry)[,1],
-           y = st_coordinates(.$geometry)[,2],
-           tn_density = case_when(is.na(tn_density) ~ 0,
-                                  TRUE ~ tn_density)) %>%
-    tibble() %>%
-    dplyr::select(-geometry)
-
-  write_rds(region_pop_sf, here("data_clean", "pop_tn_analysis.rds"))
-  write_rds(region_pop_sf_sens, here("data_clean", "pop_tn_analysis_sensitivity.rds"))
-} else {
-  region_pop_sf <- read_rds(here("data_clean", "pop_tn_analysis.rds"))
-  region_pop_sf_sens <- read_rds(here("data_clean", "pop_tn_analysis_sensitivity.rds"))
-  human_pop <- rast(here("data_download", "pop_2005","wa_pop_2005.tif"))
-}
-
-tn_pop_model <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
-                    family = "tw",
-                    data = region_pop_sf %>% filter(GID_0 != "CPV"))
-
-summary(tn_pop_model)
-gam.check(tn_pop_model)
-plot(tn_pop_model, all.terms = TRUE)
-
-write_rds(tn_pop_model, here("data_clean", "tn_pop_model.rds"))
-
-# Sensitivity analysis
-tn_pop_model_sens <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
-                    family = "tw",
-                    data = region_pop_sf_sens %>% filter(GID_0 != "CPV"))
-
-summary(tn_pop_model_sens)
-gam.check(tn_pop_model_sens)
-plot(tn_pop_model_sens, all.terms = TRUE)
-
-write_rds(tn_pop_model_sens, here("data_clean", "tn_pop_model_sens.rds"))
-
-# all_cells <- rasterToPoints(raster(human_pop)) %>%
-#   tibble(x = .[,1],
-#          y = .[,2],
-#          pop_2005 = .[,3]) %>%
-#   dplyr::select(x, y, pop_2005)
-#
-# prediction_space <- tibble(x = all_cells$x,
-#                            y = all_cells$y,
-#                            pop_2005 = all_cells$pop_2005)
-# prediction_space <- prediction_space %>%
-#   mutate(predict = as.numeric(predict.gam(tn_pop_model,
-#                                 prediction_space)))
-#
-# prediction_raster <- vect(prediction_space, geom = c("x", "y"))
-#
-# prediction_raster <- terra::rasterize(., human_pop,
-#                    field = "predict")
-# names(prediction_raster) <- "predictor"
-#
-# writeRaster(prediction_raster, here("data_clean", "prediction_space.tif")) # This then gets mapped in the mapping_traps.R script
 
 # Habitat classification --------------------------------------------------
 habitat_2005 <- raster(here("data_download", "habitat_2005", "habitat_2005.nc"))
@@ -461,7 +323,7 @@ wa_habitats <- habitats %>%
   group_by(GID_2, habitat) %>%
   summarise(count = sum(count))
 
-plot_wa_habitats <- wa_habitats %>%
+compare_wa_habitats <- wa_habitats %>%
   group_by(habitat) %>%
   filter(habitat != "water") %>%
   summarise(count = sum(count)) %>%
@@ -472,7 +334,7 @@ zoonotic_regions <- as.data.frame(sites_2) %>%
   filter(tn_density > 0) %>%
   distinct(GID_2)
 
-plot_trap_habitat <- wa_habitats %>%
+compare_trap_habitat <- wa_habitats %>%
   filter(GID_2 %in% zoonotic_regions$GID_2) %>%
   group_by(habitat) %>%
   filter(habitat != "water") %>%
@@ -480,8 +342,25 @@ plot_trap_habitat <- wa_habitats %>%
   mutate(data = "Trapped regions",
          proportion = count/sum(count))
 
-plot_habitats <- bind_rows(plot_wa_habitats,
-                           plot_trap_habitat) %>%
+compare_trapping_habitats <- bind_rows(compare_wa_habitats, compare_trap_habitat) %>%
+  select(data, habitat, count) %>%
+  pivot_wider(names_from = habitat, values_from = count) %>%
+  rowwise(data) %>%
+  mutate(all = sum(c_across(where(is.numeric))))
+
+prop_tests <- list()
+
+for(i in 1:10) {
+
+  prop_tests[[i]] <- prop.test(x = c(compare_trapping_habitats[[1,i+1]], compare_trapping_habitats[[2,i+1]]),
+                               n = c(compare_trapping_habitats[[1,12]], compare_trapping_habitats[[2,12]]))
+}
+
+names(prop_tests) <- c(names(compare_trapping_habitats[2:11]))
+
+
+plot_habitats <- bind_rows(compare_wa_habitats,
+                           compare_trap_habitat) %>%
   arrange(-proportion) %>%
   mutate(habitat = fct_inorder(snakecase::to_sentence_case(habitat)),
          data = str_to_sentence(data)) %>%

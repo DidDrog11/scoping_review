@@ -84,6 +84,50 @@ if(!file.exists(here("figures", "static_site_map.png"))){
             dpi = 320, insets_tm = afrmap, insets_vp = vp)
 }
 
+
+# Updated figure 1 - trap sites -------------------------------------------
+
+if(!file.exists(here("figures", "updated_fig1.png"))){
+
+  bounding <- level_0 %>%
+    filter(GID_0 %in% c(wa_countries) & !GID_0 %in% c(no_data_countries))
+
+  trapping_map <-
+    tm_shape(level_0 %>%
+               filter(GID_0 %in% c(wa_countries) & !GID_0 %in% c(no_data_countries)),
+             bbox = bounding) +
+    tm_polygons(col = "#f2f0f0") +
+    tm_shape(level_0 %>%
+               filter(GID_0 %in% c(no_data_countries))) +
+    tm_polygons(col = "white") +
+    tm_shape(level_0 %>%
+               filter(GID_0 %in% c(all_countries) & !GID_0 %in% c(wa_countries)) %>%
+               st_cast(to = "MULTIPOLYGON")) +
+    tm_polygons(col = "white") + tm_text("NAME_0") +
+    tm_layout(frame = F) +
+    tm_shape(rodent_spatial %>%
+               distinct(geometry)) + tm_dots(col = "black", size = 0.05, shape = 19) +
+    tm_scale_bar(position = c("left", "bottom")) +
+    tm_compass(position = c("right", "top"))
+
+  data("World")
+  afr <- st_as_sf(World) %>%
+    filter(continent == "Africa") %>%
+    st_make_valid()
+
+  # extracting bounding box Africa
+  region <- st_as_sfc(st_bbox(afr))
+
+  afrmap <- tm_shape(afr) + tm_polygons() +
+    tm_shape(st_as_sfc(st_bbox(level_0))) + tm_polygons(col = "orange", alpha = 0.5) +
+    tm_shape(region) + tm_borders(lwd = .2)
+
+  vp <- grid::viewport(0.13, 0.88, width = 0.23, height = 0.23)
+
+  tmap_save(trapping_map, filename = here("figures", "static_site_map.png"),
+            dpi = 320, insets_tm = afrmap, insets_vp = vp)
+}
+
 # Plot as leaflet ---------------------------------------------------------
 tmap_mode("plot")
 
@@ -294,9 +338,9 @@ tn_pop_map <- read_rds(here("data_clean", "tn_pop_model.rds"))
 
 map_1 <- getViz(tn_pop_map)
 
-m1 <- plot(sm(map_1, 1), n = 150, too.far = 0.02) +
+m1 <- plot(sm(a, 5), n = 150, too.far = 0.02) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
-  geom_sf(data = included_countries, alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
+  geom_sf(data = included_countries %>% filter(GID_0 != "CPV"), alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
   scale_fill_viridis_c(na.value = "#ffffff00") +
   theme_minimal() +
   labs(title = element_blank(),

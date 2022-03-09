@@ -52,7 +52,9 @@ vignettes/*.pdf
 
 # Large data_clean files
 /data_clean/tn_pop_model.rds
+/data_clean/tn_pop_model_sens.rds
 /data_clean/tn_pop_analysis.rds
+/data_clean/tn_pop_habitat_model_sens.rds
 /data_clean/wide_pathogen.rds
 /data_clean/traps_level_2_zoonoses.rds
 

@@ -33,7 +33,9 @@ pkgs =
     "gridExtra",
     "lubridate",
     "see",
-    "scales"
+    "scales",
+    "units",
+    "flextable"
   )
 pacman::p_load(pkgs, character.only = T)
 
