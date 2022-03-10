@@ -143,11 +143,11 @@ save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
 
 # Figure 2 ----------------------------------------------------------------
 
-tn_pop_habitat_model <- read_rds(here("data_clean", "tn_pop_habitat_model.rds"))
+tn_final_model <- read_rds(here("data_clean", "tn_final_model.rds"))
 
-model_1 <- getViz(tn_pop_habitat_model)
+model_1 <- getViz(tn_final_model)
 
-fig_2_updated <- plot(sm(model_1, 5), n = 150, too.far = 0.02) +
+fig_2_updated <- plot(sm(model_1, 3), n = 150, too.far = 0.02) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
   geom_sf(data = included_countries %>% filter(GID_0 != "CPV"), fill = NA, alpha = 1, lwd = 0.5, inherit.aes = FALSE) +
   scale_fill_viridis_c(option = "inferno", na.value = "#ffffff00", direction = -1) +
@@ -183,7 +183,7 @@ supplementary_fig_2_updated <- plot(sm(model_1_s, 5), n = 150, too.far = 0.02) +
                    location = "tr")
 
 save_plot(plot = as.grob(supplementary_fig_2_updated$ggObj),
-          filename = here("figures", "Figure_2_updated_sensitivity.png"), dpi = 320, base_height = 10, base_width = 12)
+          filename = here("figures", "Figure_3_updated_sensitivity.png"), dpi = 320, base_height = 10, base_width = 12)
 
 # Figure 3 ----------------------------------------------------------------
 
@@ -316,10 +316,115 @@ plot_4 <- plot_4_df %>%
 save_plot(plot_4, filename = here("figures", "Figure_4_updated.png"), base_width = 12, base_height = 10)
 
 
-# Supplementary figure 3 --------------------------------------------------
+
+# Supplementary figure 2 --------------------------------------------------
+
+habitat_2005 <- rast(here("data_download", "habitat_2005", "habitat_2005.nc"))[[1]]
+crop_habitat <- crop(habitat_2005, vect(contiguous_boundary))
+
+sites_2 <- read_rds(here("data_clean", "traps_level_2_zoonoses.rds")) %>%
+  vect()
+
+all_regions <- lapply(1:nrow(sites_2), function(x) crop(crop_habitat, sites_2[x,]))
+all_regions_hab <- lapply(1:length(all_regions), function(x) as.data.frame(freq(all_regions[[x]])) %>%
+                            select(-layer))
+names(all_regions_hab) <- sites_2$GID_2
+habitats <- as.data.frame(data.table::rbindlist(all_regions_hab, idcol = TRUE)) %>%
+  rename("GID_2" = ".id")
+
+land_type_classification <- as.list(c("cropland",
+                                      "cropland",
+                                      "cropland",
+                                      "cropland",
+                                      "mosaic_cropland",
+                                      "mosaic_cropland",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "tree_cover",
+                                      "mosaic_vegetation",
+                                      "mosaic_vegetation",
+                                      "shrubland",
+                                      "shrubland",
+                                      "grassland",
+                                      "sparse_vegetation",
+                                      "sparse_vegetation",
+                                      "sparse_vegetation",
+                                      "flooded",
+                                      "flooded",
+                                      "flooded",
+                                      "urban",
+                                      "bare",
+                                      "bare",
+                                      "bare",
+                                      "water"))
+names(land_type_classification) <- as.list(c(10, 11, 12, 20, 30, 40, 50, 60, 61, 62, 100, 110, 120, 122, 130, 150, 152, 153, 160, 170, 180, 190, 200, 201, 202, 210))
+
+wa_habitats <- habitats %>%
+  mutate(habitat = recode(value, !!!land_type_classification)) %>%
+  group_by(GID_2, habitat) %>%
+  summarise(count = sum(count))
+
+compare_wa_habitats <- wa_habitats %>%
+  group_by(habitat) %>%
+  filter(habitat != "water") %>%
+  summarise(count = sum(count)) %>%
+  mutate(data = "all",
+         proportion = count/sum(count))
+
+zoonotic_regions <- as.data.frame(sites_2) %>%
+  filter(tn_density > 0) %>%
+  distinct(GID_2)
+
+compare_trap_habitat <- wa_habitats %>%
+  filter(GID_2 %in% zoonotic_regions$GID_2) %>%
+  group_by(habitat) %>%
+  filter(habitat != "water") %>%
+  summarise(count = sum(count)) %>%
+  mutate(data = "Trapped regions",
+         proportion = count/sum(count))
+
+compare_trapping_habitats <- bind_rows(compare_wa_habitats, compare_trap_habitat) %>%
+  select(data, habitat, count) %>%
+  pivot_wider(names_from = habitat, values_from = count) %>%
+  rowwise(data) %>%
+  mutate(all = sum(c_across(where(is.numeric))))
+
+prop_tests <- list()
+
+for(i in 1:10) {
+
+  prop_tests[[i]] <- prop.test(x = c(compare_trapping_habitats[[1,i+1]], compare_trapping_habitats[[2,i+1]]),
+                               n = c(compare_trapping_habitats[[1,12]], compare_trapping_habitats[[2,12]]))
+}
+
+names(prop_tests) <- c(names(compare_trapping_habitats[2:11]))
 
 
-supp_3_df <- confirmed_pathogen_family_host %>%
+plot_habitats <- bind_rows(compare_wa_habitats,
+                           compare_trap_habitat) %>%
+  arrange(-proportion) %>%
+  mutate(habitat = fct_inorder(snakecase::to_sentence_case(habitat)),
+         data = str_to_sentence(data)) %>%
+  ggplot() +
+  geom_col(aes(x = fct_rev(habitat), y = proportion, fill = data), position = position_dodge2()) +
+  coord_flip() +
+  labs(x = "Land cover classification",
+       y = "Proportion of West African region",
+       fill = "") +
+  scale_fill_manual(values = c("#fde725", "#440154")) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme_minimal() +
+  theme(text = element_text(size = 16))
+
+write_rds(plot_habitats, here("plots", "trap_habitats.rds"))
+save_plot(here("figures", "Supplementary_figure_2.png"), plot_grid(plot_habitats), base_height = 8, base_width = 12)
+
+
+# Supplementary figure 4 --------------------------------------------------
+
+
+supp_4_df <- confirmed_pathogen_family_host %>%
   ungroup() %>%
   rowwise() %>%
   mutate(prop_acute = acute_infection/n_tested * 100,
@@ -334,7 +439,7 @@ supp_3_df <- confirmed_pathogen_family_host %>%
                           name == "prop_prior" ~ "Serology"),
          source = factor(source, labels = c("CLOVER")))
 
-plot_3_supp <- supp_3_df %>%
+plot_4_supp <- supp_4_df %>%
   ggplot() +
   geom_tile(aes(x = pathogen_family, y = species, fill = value, colour = source, width = 0.95, height = 0.95), lwd = 1) +
   facet_wrap(~ name) +
@@ -349,4 +454,5 @@ plot_3_supp <- supp_3_df %>%
         strip.text.x = element_text(size = 14)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
-save_plot(plot_3_supp, filename = here("figures", "Supplementary_figure_3_updated.png"), base_width = 12, base_height = 10)
+save_plot(plot_3_supp, filename = here("figures", "Supplementary_figure_4_updated.png"), base_width = 12, base_height = 10)
+

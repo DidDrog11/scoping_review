@@ -1,3 +1,5 @@
+source(here::here("scripts", "libraries.R"))
+
 # Trap night and population -----------------------------------------------
 if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
   rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
@@ -151,13 +153,21 @@ tn_pop_model <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(x, y, k = 540),
                     family = "tw",
                     data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
-tn_pop_habitat_model <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(cropland) + s(tree_cover, k = 40) +s(urban) + s(x, y, k = 540),
+tn_pop_habitat_model <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(cropland) + s(x, y, k = 540),
                             family = "tw",
                             data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
 tn_habitat_model <- gam(tn_density ~ s(cropland) + s(shrubland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
                             family = "tw",
                             data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+
+tn_habitat_model_2 <- gam(tn_density ~ s(cropland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
+                        family = "tw",
+                        data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+
+tn_habitat_model_3 <- gam(tn_density ~ s(tree_cover, k = 15) + s(urban) + s(x, y, k = 540),
+                          family = "tw",
+                          data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
 summary(tn_simple_model)
 gam.check(tn_simple_model)
@@ -175,7 +185,31 @@ summary(tn_habitat_model)
 gam.check(tn_habitat_model)
 plot(tn_habitat_model, all.terms = TRUE)
 
-write_rds(tn_pop_habitat_model, here("data_clean", "tn_pop_habitat_model.rds"))
+summary(tn_habitat_model_2)
+gam.check(tn_habitat_model_2)
+plot(tn_habitat_model_2, all.terms = TRUE)
+
+summary(tn_habitat_model_3)
+gam.check(tn_habitat_model_3)
+plot(tn_habitat_model_3, all.terms = TRUE)
+
+as_flextable(tn_simple_model) %>%
+  set_caption(caption = "Supplementary Table 3.1: GAM model Trap night density ~ Tweedie(coordinates)") %>%
+  write_rds(here("tables", "supplementary_table_3_1.rds"))
+
+as_flextable(tn_pop_model) %>%
+  set_caption(caption = "Supplementary Table 3.2: GAM model Trap night density ~ Tweedie(log(population density) + coordinates)") %>%
+  write_rds(here("tables", "supplementary_table_3_2.rds"))
+
+as_flextable(tn_habitat_model) %>%
+  set_caption(caption = "Supplementary Table 3.3: GAM model Trap night density ~ Tweedie(proportion cropland + proportion shrubland + proportion tree cover + proportion urban + coordinates)") %>%
+  write_rds(here("tables", "supplementary_table_3_3.rds"))
+
+as_flextable(tn_habitat_model_3) %>%
+  set_caption(caption = "Supplementary Table 3.4: Final GAM model Trap night density ~ Tweedie(proportion tree cover + proportion urban + coordinates)") %>%
+  write_rds(here("tables", "supplementary_table_3_4.rds"))
+
+write_rds(tn_habitat_model_3, here("data_clean", "tn_final_model.rds"))
 
 # Sensitivity analysis
 tn_pop_model_sens <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
@@ -186,8 +220,12 @@ tn_pop_habitat_model_sens <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(cropla
                             family = "tw",
                             data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
 
-summary(tn_pop_habitat_model_sens)
-gam.check(tn_pop_habitat_model_sens)
-plot(tn_pop_habitat_model_sens, all.terms = TRUE)
+tn_habitat_model_3_sens <- gam(tn_density ~  s(tree_cover, k = 15) + s(urban) + s(x, y, k = 540),
+                                 family = "tw",
+                                 data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
 
-write_rds(tn_pop_habitat_model_sens, here("data_clean", "tn_pop_habitat_model_sens.rds"))
+summary(tn_habitat_model_3_sens)
+gam.check(tn_habitat_model_3_sens)
+plot(tn_habitat_model_3_sens, all.terms = TRUE)
+
+write_rds(tn_habitat_model_3_sens, here("data_clean", "tn_pop_habitat_model_sens.rds"))

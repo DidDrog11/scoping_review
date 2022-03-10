@@ -57,24 +57,33 @@ genera <- as_tibble(do.call(rbind,c(genera, make.row.names = T)), rownames = "ge
 if(!file.exists(here("data_clean", "species_gbif.rds"))){
 species <- tibble(rodent_data %>%
                     filter(species != "-") %>%
-                    distinct(classification)) %>%
+                    distinct(classification))
   arrange(classification)
 species$gbif_id <- get_gbifid(species$classification, ask = T)
 write_rds(species, here("data_clean", "species_gbif.rds"))
 }
 
 genus <- read_rds(here("data_clean", "genus_gbif.rds"))
+genus_hierarchy <- read_rds(here("data_clean", "genus_hierarchy.rds")) %>%
+  mutate(across(.cols = everything(), .fns = str_to_lower))
 species <- read_rds(here("data_clean", "species_gbif.rds"))
 
-rodent_data %<>%
+rodent_classifications <- rodent_data %>%
   full_join(., genus %>%
               rename("genus_gbif" = gbif_id), by = "genus") %>%
+  full_join(., genus_hierarchy, by = "genus") %>%
   full_join(., species %>%
               rename("species_gbif" = gbif_id), by = "classification") %>%
   mutate(gbif_id = ifelse(is.na(species_gbif), genus_gbif, species_gbif),
          iso3c = countrycode(as.character(country), "country.name", "iso3c"))
 
-rodent_data %>%
+rodent_classifications %>%
+  drop_na(species_gbif) %>%
+  group_by(order, species) %>%
+  summarise(n = n()) %>%
+  tabyl(order)
+
+rodent_classifications %>%
   dplyr::select(all_of(retain_columns)) %>%
   write_rds(here("data_clean", "species_data.rds"))
 

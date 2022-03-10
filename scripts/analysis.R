@@ -368,14 +368,15 @@ plot_habitats <- bind_rows(compare_wa_habitats,
   geom_col(aes(x = fct_rev(habitat), y = proportion, fill = data), position = position_dodge2()) +
   coord_flip() +
   labs(x = "Land cover classification",
-       y = "Proportion of region",
-       fill = "Region") +
+       y = "Proportion of West African region",
+       fill = "") +
   scale_fill_manual(values = c("#fde725", "#440154")) +
+  guides(fill = guide_legend(reverse = TRUE)) +
   theme_minimal() +
   theme(text = element_text(size = 16))
 
 write_rds(plot_habitats, here("plots", "trap_habitats.rds"))
-save_plot(here("figures", "Figure_3.png"), plot_grid(plot_habitats), base_height = 8, base_width = 12)
+save_plot(here("figures", "Supplementary_figure_2.png"), plot_grid(plot_habitats), base_height = 8, base_width = 12)
 
 habitat_types <- rodent_data %>%
   dplyr::select(unique_id, country, region, town_village, all_of(habitat_split), trap_night_unit, trap_nights) %>%
