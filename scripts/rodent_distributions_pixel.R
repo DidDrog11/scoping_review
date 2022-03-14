@@ -1,4 +1,3 @@
-
 # Load data ---------------------------------------------------------------
 
 all_countries <- c("BEN", "BFA", "CIV", "CMR", "CPV", "DZA", "ESH", "GHA",
@@ -101,130 +100,122 @@ if(!file.exists(here("data_clean", "rodent_gbif_spatial.rds"))) {
 
 }
 
+# Reference raster from pop_density
 
-# Analysis of distribution coverage ---------------------------------------
+ref_rast <- rast(here("data_download", "pop_2005", "wa_pop_2005.tif")) %>%
+  cellSize(unit = "km")
 
-analysis_proportion <- function(species_name, iucn = rodent_iucn, gbif = rodent_gbif, rodents = rodent_spatial) {
+analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, iucn_data = rodent_iucn, gbif_data = rodent_gbif) {
 
-  iucn <- iucn %>%
+  trap_v <- rodent_spatial %>%
     filter(classification == species_name) %>%
-    st_intersection(contiguous_boundary) %>%
-    st_union()
+    select(number, geometry) %>%
+    mutate(pres_abs = case_when(number > 0 ~ 1,
+                                TRUE ~ 0)) %>%
+    select(pres_abs, geometry) %>%
+    vect()
 
-  gbif <- gbif[[species_name]] %>%
-    select(classification, geometry)
+  trap_r_detection <- rasterize(subset(trap_v, trap_v$pres_abs == 1), ref_rast, fun = "max", field = "pres_abs")
 
-  level_2_gbif <- st_join(level_2_all, gbif, st_contains) %>%
-    drop_na(classification) %>%
-    distinct(classification, geometry) %>%
-    summarise(geometry = st_union(geometry))
+  trap_r_non_detection <- rasterize(subset(trap_v, trap_v$pres_abs == 0), ref_rast, fun = "max", field = "pres_abs")
 
-  level_2_gbif_within_iucn <- level_2_gbif %>%
-    st_intersection(iucn)
-
-  rodents <- rodents %>%
+  iucn_v <- iucn_data %>%
     filter(classification == species_name) %>%
-    select(classification, number, geometry) %>%
-    mutate(pres_abs = case_when(number == 0 ~ factor("Non-detection", levels = c("Detection", "Non-detection")),
-                                TRUE ~ factor("Detection", levels = c("Detection", "Non-detection")))) %>%
+    mutate(pres_abs = 1) %>%
     st_intersection(contiguous_boundary) %>%
-    distinct(classification, pres_abs, geometry)
+    select(pres_abs, geometry)
 
-  level_2_rodents <- st_join(level_2_all, rodents, st_contains) %>%
-    drop_na(classification) %>%
-    distinct(GID_2, classification, pres_abs, geometry) %>%
-    arrange(GID_2, pres_abs) %>%
-    group_by(GID_2) %>%
-    slice(1) %>%
-    group_by(pres_abs) %>%
-    summarise(geometry = st_union(geometry))
+  gbif_v <- rodent_gbif[[species_name]] %>%
+    mutate(pres_abs = 1) %>%
+    select(pres_abs, geometry) %>%
+    vect()
 
-  level_2_rodent_presence <- level_2_rodents %>%
-    filter(pres_abs == "Detection")
+  gbif_r <- rasterize(gbif_v, ref_rast, fun = "max", field = "pres_abs")
 
-  level_2_rodent_presence_within_iucn <- level_2_rodents %>%
-    filter(pres_abs == "Detection") %>%
-    st_intersection(iucn)
+  combined_v <- rbind(trap_v, gbif_v)
 
-  level_2_rodent_absence <- level_2_rodents %>%
-    filter(pres_abs == "Non-detection")
+  combined_r <- rasterize(combined_v, ref_rast, fun = "max", field = "pres_abs")
 
-  level_2_rodent_absence_within_iucn <- level_2_rodents %>%
-    filter(pres_abs == "Non-detection") %>%
-    st_intersection(iucn)
+  if(nrow(iucn_v) > 0) {
 
-  combined_gbif_rodent <- bind_rows(level_2_gbif_within_iucn, level_2_rodent_presence_within_iucn) %>%
-    st_union()
+    iucn_v <- iucn_v %>%
+      vect()
 
-  area_iucn <- set_units(st_area(iucn), km^2)
+    iucn_r <- rasterize(iucn_v, ref_rast, fun = "max", field = "pres_abs")
 
-  if(length(st_area(iucn)) > 0) {
+    area_gbif_in_iucn <- mask(gbif_r, iucn_v) %>%
+      expanse(unit = "km")
 
-    area_gbif_in_iucn <- set_units(st_area(level_2_gbif_within_iucn), km^2)
+    area_gbif_outside_iucn <- mask(gbif_r, iucn_v, inverse = TRUE) %>%
+      expanse(unit = "km")
 
-    area_gbif_outside_iucn <- set_units(st_area(level_2_gbif), km^2) - area_gbif_in_iucn
+    prop_gbif_coverage <- (mask(gbif_r, iucn_v) %>%
+                             expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
 
-    prop_gbif_coverage <- area_gbif_in_iucn/area_iucn
+    area_trapping_detection_in_iucn <- mask(trap_r_detection, iucn_v) %>%
+      expanse(unit = "km")
 
-    area_trapping_in_iucn <- set_units(st_area(level_2_rodent_presence_within_iucn), km^2)
+    prop_detection_coverage <- (mask(trap_r_detection, iucn_v) %>%
+                                  expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
 
-    area_trapping_outside_iucn <- set_units(st_area(level_2_rodent_presence), km^2) - area_trapping_in_iucn
+    area_trapping_non_detection_in_iucn <- mask(trap_r_non_detection, iucn_v) %>%
+      expanse(unit = "km")
 
-    prop_trapping_coverage <- area_trapping_in_iucn/area_iucn
+    prop_non_detection_coverage <- (mask(trap_r_non_detection, iucn_v) %>%
+                                      expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
 
-    area_combined_in_iucn <- set_units(st_area(combined_gbif_rodent), km^2)
+    area_detection_outside_iucn <- mask(trap_r_detection, iucn_v, inverse = TRUE) %>%
+      expanse(unit = "km")
 
-    prop_combined_coverage <- area_combined_in_iucn/area_iucn
+    area_combined_in_iucn <- mask(combined_r, iucn_v) %>%
+      expanse(unit = "km")
 
-    area_non_detection_in_iucn <- set_units(st_area(level_2_rodent_absence_within_iucn), km^2)
+    prop_combined_coverage <- (mask(combined_r, iucn_v) %>%
+                                 expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
 
-    prop_non_detection <- area_non_detection_in_iucn/area_iucn
-
-    results = tibble(species = str_to_sentence(species_name), range_area = area_iucn,
-                     gbif_perc = prop_gbif_coverage * 100, gbif_outside_range = area_gbif_outside_iucn,
-                     detection_perc = prop_trapping_coverage * 100, trapping_outside_range = area_trapping_outside_iucn,
-                     combined_perc = prop_combined_coverage * 100,
-                     non_detection_perc = prop_non_detection * 100)
+    results = tibble(species = str_to_sentence(species_name), range_area = expanse(iucn_r, unit = "km")/1000,
+                     gbif_perc = prop_gbif_coverage, gbif_outside_range = area_gbif_outside_iucn/1000,
+                     detection_perc = prop_detection_coverage, trapping_outside_range = area_detection_outside_iucn/1000,
+                     non_detection_perc = prop_non_detection_coverage,
+                     combined_perc = prop_combined_coverage)
 
   } else {
 
-    area_gbif_outside_iucn <- set_units(st_area(level_2_gbif), km^2)
+    area_gbif_outside_iucn <- expanse(gbif_r, unit = "km")
 
-    area_trapping_outside_iucn <- set_units(st_area(level_2_rodent_presence), km^2)
+    area_detection_outside_iucn <- expanse(trap_r_detection, unit = "km")
 
-    results = tibble(species = str_to_sentence(species_name), range_area = set_units(NA, km^2),
-                     gbif_perc = set_units(NA, km^2), gbif_outside_range = area_gbif_outside_iucn,
-                     detection_perc = set_units(NA, km^2), trapping_outside_range = area_trapping_outside_iucn,
-                     combined_perc = set_units(NA, km^2),
-                     non_detection_perc = set_units(NA, km^2))
+    results = tibble(species = str_to_sentence(species_name), range_area = NA,
+                     gbif_perc = NA, gbif_outside_range = area_gbif_outside_iucn/1000,
+                     detection_perc = NA, trapping_outside_range = area_detection_outside_iucn/1000,
+                     combined_perc = NA,
+                     non_detection_perc = NA)
 
   }
 
   return(results)
 }
 
-testing_coverage <- list()
+testing_coverage_pixel <- list()
 
 for(i in 1:length(species_names)) {
 
-  testing_coverage[[i]] <- analysis_proportion(species_name = species_names[[i]])
+  testing_coverage_pixel[[i]] <- analysis_proportion_pixel(species_name = species_names[[i]])
 
 }
 
-testing_coverage <- lapply(testing_coverage, function(x) x %>%
-                             mutate(across(.cols = any_of(2:8), .fns = as.numeric)))
-table_1 <-  bind_rows(testing_coverage) %>%
+table_1_pixel <- bind_rows(testing_coverage_pixel) %>%
   group_by(species) %>%
-  mutate(range_area = round(as.numeric(range_area)/1000, 0),
-         gbif_perc = round(as.numeric(gbif_perc), 1),
-         gbif_outside_range = round(as.numeric(gbif_outside_range)/1000, 0),
-         detection_perc = round(as.numeric(detection_perc), 1),
-         trapping_outside_range = round(as.numeric(trapping_outside_range)/1000, 0),
-         non_detection_perc = round(as.numeric(non_detection_perc), 1),
-         combined_perc = round(as.numeric(combined_perc), 0)) %>%
+  mutate(range_area = round(as.numeric(range_area), 0),
+         gbif_perc = round(as.numeric(gbif_perc), 2),
+         gbif_outside_range = round(as.numeric(gbif_outside_range), 2),
+         detection_perc = round(as.numeric(detection_perc), 2),
+         trapping_outside_range = round(as.numeric(trapping_outside_range), 2),
+         non_detection_perc = round(as.numeric(non_detection_perc), 2),
+         combined_perc = round(as.numeric(combined_perc), 2)) %>%
   select(species, range_area, gbif_perc, gbif_outside_range, detection_perc, trapping_outside_range, non_detection_perc, combined_perc)
 
-Table_1 <- flextable(table_1) %>%
+Table_1_pixel <- flextable(table_1_pixel) %>%
   bg(j = 2, bg = "grey", part = "all") %>%
   bg(j = 5:7, bg = "grey", part = "all") %>%
   set_header_labels(values = list(species = "Species",
@@ -242,4 +233,4 @@ Table_1 <- flextable(table_1) %>%
   add_header_row(top = TRUE, values = c("", "IUCN", "GBIF", "Trapping studies", "Combined"), colwidths = c(1, 1, 2, 3, 1)) %>%
   align(part = "header", align = "center")
 
-write_rds(Table_1, here("tables", "Table_1_updated.rds"))
+write_rds(Table_1_pixel, here("tables", "Table_1_updated_pixel.rds"))

@@ -17,6 +17,8 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
 
   level_2 <- bind_rows(level_2, non_trapped)
 
+  studies <- read_rds(here("data_clean", "studies.rds"))
+
   zoonotic_studies <- studies %>%
     filter(str_detect(aim, "Zoonoses")) %>%
     pull(unique_id)

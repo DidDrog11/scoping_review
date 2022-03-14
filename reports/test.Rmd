@@ -1,0 +1,21 @@
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      crop = knitr::hook_pdfcrop)
+source(here::here("scripts", "manuscript_library.R"))
+```
+
+```{r table-1}
+
+read_rds(here("tables", "Table_1_updated.rds")) %>%
+  set_caption(caption = "Table 1: Regional")
+
+```
+
+```{r table-1-pixel}
+
+read_rds(here("tables", "Table_1_updated_pixel.rds")) %>%
+  set_caption(caption = "Table 1: Pixel")
+
+```
