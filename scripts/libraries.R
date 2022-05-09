@@ -11,6 +11,7 @@ pkgs =
     "countrycode",
     "ggimage",
     "ggspatial",
+    "janitor",
     "corrplot",
     "sf",
     "OpenStreetMap",

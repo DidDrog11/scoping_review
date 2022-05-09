@@ -135,16 +135,16 @@ utm_q <- utm %>%
   filter(zone == "28Q") %>%
   st_as_sf(coords = c("easting", "northing"), crs = "+proj=utm +zone=28Q +datum=WGS84") %>%
   st_transform(crs = "+proj=longlat +datum=WGS84") %>%
-  dplyr::select(all_of(retain_columns))
+  dplyr::select(any_of(retain_columns))
 
 utm_p <- utm %>%
   filter(zone == "28P") %>%
   st_as_sf(coords = c("easting", "northing"), crs = "+proj=utm +zone=28P +datum=WGS84") %>%
   st_transform(crs = "+proj=longlat +datum=WGS84") %>%
-  dplyr::select(all_of(retain_columns))
+  dplyr::select(any_of(retain_columns))
 
 rodent_gps <- bind_rows(dms, dd) %>%
-  dplyr::select(all_of(retain_columns)) %>%
+  dplyr::select(any_of(retain_columns)) %>%
   bind_rows(utm_q, utm_p)
 
 st_crs(rodent_gps) = 4326
@@ -155,7 +155,7 @@ no_gps <- rodent_data %>%
          lat_dms = as.double(lat_dms))
 
 all_rodent <- bind_rows(rodent_gps, no_gps) %>%
-  dplyr::select(all_of(c(retain_columns, "long_dms", "lat_dms"))) %>%
+  dplyr::select(any_of(c(retain_columns, "long_dms", "lat_dms"))) %>%
   rename("longitude" = long_dms,
          "latitude" = lat_dms)
 
