@@ -75,7 +75,9 @@ rodent_classifications <- rodent_data %>%
   full_join(., species %>%
               rename("species_gbif" = gbif_id), by = "classification") %>%
   mutate(gbif_id = ifelse(is.na(species_gbif), genus_gbif, species_gbif),
-         iso3c = countrycode(as.character(country), "country.name", "iso3c"))
+         iso3c = countrycode(as.character(country), "country.name", "iso3c")) %>%
+  distinct() %>%
+  drop_na(number)
 
 rodent_classifications %>%
   drop_na(species_gbif) %>%

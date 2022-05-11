@@ -32,11 +32,11 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
     filter(trap_night_data != "Imputed") %>%
     distinct(unique_id, year_trapping, month_trapping, country, region, town_village, habitat, trap_nights, trap_night_data, geometry)
 
-  sites_2 <- st_intersection(x = level_2, y = trapping_effort)
+  sites_in_2 <-  st_join(x = trapping_effort, y = level_2, join = st_within)
 
-  sites_2_sensitivity <- st_intersection(x = level_2, y = trapping_effort_sensitivity)
+  sites_in_2_sensitivity <- st_join(x = trapping_effort_sensitivity, y = level_2, join = st_within)
 
-  trap_nights_region <- tibble(sites_2) %>%
+  trap_nights_region <- tibble(sites_in_2) %>%
     group_by(NAME_2, GID_2, unique_id, year_trapping, month_trapping, region, town_village, habitat) %>%
     summarise(total_trap_nights = sum(trap_nights)) %>%
     group_by(GID_2, NAME_2) %>%
@@ -52,16 +52,16 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
     left_join(., trap_nights_region, by = c("GID_2", "NAME_2")) %>%
     mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
                                           TRUE ~ region_trap_nights))  %>%
-    mutate(area_m2 = st_area(.),
-           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
+    mutate(area_km2 = set_units(st_area(.), "km^2"),
+           tn_density = region_trap_nights/as.numeric(area_km2),
            tn_density = ifelse(is.na(tn_density), NA, tn_density))
 
   sites_2_sensitivity <- level_2 %>%
     left_join(., trap_nights_region_sensitivity, by = c("GID_2", "NAME_2")) %>%
     mutate(region_trap_nights = case_when(is.na(region_trap_nights) ~ 0,
                                           TRUE ~ region_trap_nights))  %>%
-    mutate(area_m2 = st_area(.),
-           tn_density = region_trap_nights/(as.numeric(area_m2)/1000000),
+    mutate(area_km2 = set_units(st_area(.), "km^2"),
+           tn_density = region_trap_nights/as.numeric(area_km2),
            tn_density = ifelse(is.na(tn_density), NA, tn_density))
 
   write_rds(sites_2, here("data_clean", "traps_level_2_zoonoses.rds"))
@@ -72,6 +72,7 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
   vect_sites <- vect(sites_2)
 
   crop_pop <- crop(human_pop, vect_sites)
+
   wa_pop <- writeRaster(crop_pop, here("data_download", "pop_2005","wa_pop_2005.tif"), overwrite = TRUE)
 
   region_pop <- terra::extract(crop_pop, vect_sites, fun = "median", method = "simple", na.rm = TRUE, touches = TRUE)
@@ -133,11 +134,14 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
     pivot_wider(names_from = habitat, values_from = percentage) %>%
     replace_na(replace = list(cropland = 0, shrubland = 0, tree_cover = 0, urban = 0))
 
-  region_pop_hab_sf <- left_join(region_pop_sf, wa_perc_habitat)
+  region_pop_hab_sf <- left_join(region_pop_sf, wa_perc_habitat) %>%
+    mutate(area_km2 = as.numeric(area_km2))
 
   region_pop_hab_sf_sens <- region_pop_hab_sf %>%
     select(-tn_density) %>%
     add_column(tn_density = sites_2_sensitivity$tn_density)
+
+  prediction_raster <-
 
   write_rds(region_pop_hab_sf, here("data_clean", "pop_habitat_tn_analysis.rds"))
   write_rds(region_pop_hab_sf_sens, here("data_clean", "pop_habitat_tn_analysis_sensitivity.rds"))
@@ -147,53 +151,101 @@ if(!file.exists(here("data_clean", "pop_tn_analysis.rds"))) {
   region_pop_hab_sf_sens <- read_rds(here("data_clean", "pop_habitat_tn_analysis_sensitivity.rds"))
 }
 
-tn_simple_model <- gam(tn_density ~ s(x, y, k = 540),
-                       family = "tw",
-                       data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+if(!file.exists(here("models", "tn_simple_model.rds"))) {
 
-tn_pop_model <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(x, y, k = 540),
-                    family = "tw",
-                    data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+  dir.create(here("models"))
 
-tn_pop_habitat_model <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(cropland) + s(x, y, k = 540),
-                            family = "tw",
-                            data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+  tn_simple_model <- bam(tn_density ~ s(x, y, bs = "ts"),
+                         family = "tw",
+                         data = region_pop_hab_sf %>% filter(GID_0 != "CPV"),
+                         select = TRUE)
 
-tn_habitat_model <- gam(tn_density ~ s(cropland) + s(shrubland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
-                            family = "tw",
-                            data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+  tn_pop_model <- bam(tn_density ~ s(pop_2005, k = 40) + s(x, y, k = 540),
+                      family = "tw",
+                      select = TRUE,
+                      data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
-tn_habitat_model_2 <- gam(tn_density ~ s(cropland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
+  tn_pop_model_2 <- bam(tn_density ~ s(pop_2005, k = 40, bs = "cs") + s(area_km2, bs = "cs") + s(x, y, k = 540, bs = "ts"),
+                        select = TRUE,
                         family = "tw",
                         data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
-tn_habitat_model_3 <- gam(tn_density ~ s(tree_cover, k = 15) + s(urban) + s(x, y, k = 540),
+  tn_pop_habitat_model <- bam(tn_density ~ s(log(pop_2005), k = 9) + s(cropland) + s(x, y, k = 540),
+                              family = "tw",
+                              data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+
+  tn_habitat_model <- bam(tn_density ~ s(cropland) + s(shrubland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
                           family = "tw",
                           data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
 
+  tn_habitat_model_2 <- bam(tn_density ~ s(cropland) + s(tree_cover) +s(urban) + s(x, y, k = 540),
+                            family = "tw",
+                            data = region_pop_hab_sf %>% filter(GID_0 != "CPV"))
+
+  tn_habitat_model_3 <- bam(tn_density ~ s(tree_cover, bs = "cs") + s(urban, bs = "cs") + s(x, y, bs = "ts"),
+                            family = "tw",
+                            data = region_pop_hab_sf %>% filter(GID_0 != "CPV"),
+                            select = TRUE)
+
+  write_rds(tn_simple_model, here("models", "tn_simple_model.rds"))
+  write_rds(tn_pop_model, here("models", "tn_pop_model.rds"))
+  write_rds(tn_pop_habitat_model, here("models", "tn_pop_habitat_model.rds"))
+  write_rds(tn_habitat_model, here("models", "tn_habitat_model.rds"))
+  write_rds(tn_habitat_model_2, here("models", "tn_habitat_model_2.rds"))
+  write_rds(tn_habitat_model_3, here("models", "tn_habitat_model_3.rds"))
+
+} else {
+
+  tn_simple_model <- read_rds(here("models", "tn_simple_model.rds"))
+  tn_pop_model <- read_rds(here("models", "tn_pop_model.rds"))
+  tn_pop_habitat_model <- read_rds(here("models", "tn_pop_habitat_model.rds"))
+  tn_habitat_model <- read_rds(here("models", "tn_habitat_model.rds"))
+  tn_habitat_model_2 <- read_rds(here("models", "tn_habitat_model_2.rds"))
+  tn_habitat_model_3 <- read_rds(here("models", "tn_habitat_model_3.rds"))
+
+}
+
 summary(tn_simple_model)
-gam.check(tn_simple_model)
-plot(tn_simple_model, all.terms = TRUE)
+AIC(tn_simple_model)
+model_1_areal <- getViz(tn_simple_model)
+check(model_1_areal)
+plot(model_1_areal, all.terms = TRUE)
 
 summary(tn_pop_model)
-gam.check(tn_pop_model)
-plot(tn_pop_model, all.terms = TRUE)
+AIC(tn_pop_model)
+model_2_areal <- getViz(tn_pop_model)
+check(model_2_areal)
+plot(model_2_areal, all.terms = TRUE)
+
+summary(tn_pop_model_2)
+AIC(tn_pop_model_2)
+model_3_areal <- getViz(tn_pop_model_2)
+check(model_3_areal)
+plot(model_3_areal, all.terms = TRUE)
 
 summary(tn_pop_habitat_model)
-gam.check(tn_pop_habitat_model)
-plot(tn_pop_habitat_model, all.terms = TRUE)
+AIC(tn_pop_habitat_model)
+model_3_areal <- getViz(tn_pop_habitat_model)
+check(model_3_areal)
+plot(model_3_areal, all.terms = TRUE)
 
 summary(tn_habitat_model)
-gam.check(tn_habitat_model)
-plot(tn_habitat_model, all.terms = TRUE)
+AIC(tn_habitat_model)
+model_4_areal <- getViz(tn_habitat_model)
+check(model_4_areal)
+plot(model_4_areal, all.terms = TRUE)
 
 summary(tn_habitat_model_2)
-gam.check(tn_habitat_model_2)
-plot(tn_habitat_model_2, all.terms = TRUE)
+AIC(tn_habitat_model_2)
+model_5_areal <- getViz(tn_habitat_model_2)
+check(model_5_areal)
+plot(model_5_areal, all.terms = TRUE)
 
 summary(tn_habitat_model_3)
-gam.check(tn_habitat_model_3)
-plot(tn_habitat_model_3, all.terms = TRUE)
+AIC(tn_habitat_model_3)
+model_6_areal <- getViz(tn_habitat_model_3)
+check(model_6_areal)
+plot(model_6_areal, all.terms = TRUE)
 
 as_flextable(tn_simple_model) %>%
   set_caption(caption = "Supplementary Table 3.1: GAM model Trap night density ~ Tweedie(coordinates)") %>%

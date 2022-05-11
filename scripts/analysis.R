@@ -237,6 +237,13 @@ rodent_data %>%
   group_by(unique_id, trap_night_data) %>%
   summarise(total_trap_nights = sum(trap_nights))
 
+# The total number of trap nights
+
+rodent_data %>%
+  distinct(unique_id, year_trapping, month_trapping, town_village, habitat, trap_nights, .keep_all = T) %>%
+  group_by(trap_night_data) %>%
+  summarise(tn = sum(trap_nights, na.rm = TRUE))
+
 ggplot(sense_check %>%
          arrange(-total_trap_nights)) +
   geom_histogram(aes(x = total_trap_nights, fill = trap_night_data)) +
@@ -418,18 +425,29 @@ wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
 genus_data <- read_rds(here("data_clean", "genus_hierarchy.rds"))
 species_data <- read_rds(here("data_clean", "species_data.rds"))
 
+total_number <- sum(rodent_data$number)
+
 count_species <- species_data %>%
   filter(iso3c %in% wa_countries) %>%
-  group_by(species_gbif, classification) %>%
+  group_by(species_gbif) %>%
   drop_na(species_gbif) %>%
   summarise(number = sum(number)) %>%
   mutate(percent = round(number/sum(.$number)*100, 2)) %>%
   arrange(-percent) %>%
+  left_join(., species %>%
+              drop_na(gbif_id) %>%
+              filter(!str_detect(classification, "/")),
+            by = c("species_gbif" = "gbif_id")) %>%
   rename(`GBIF ID` = "species_gbif",
          "Classification" = "classification",
          "Number of individuals" = "number",
          "Percent (%)" = "percent") %>%
+  filter(`Number of individuals` > 0) %>%
+  distinct(`GBIF ID`, `Number of individuals`, .keep_all = T) %>%
   mutate(Classification = snakecase::to_sentence_case(Classification)) # the number of individuals trapped identified to species level
+
+total_species_level <- sum(count_species$`Number of individuals`)
+total_genus_level <- sum(species_data$number[is.na(species_data$species_gbif) & !str_detect(species_data$classification, "rodent*")])
 
 speciation <- count_species %>%
   mutate(`GBIF ID` = as.character(`GBIF ID`)) %>%
@@ -445,7 +463,8 @@ speciation <- count_species %>%
 speciation %>%
   group_by(order, family) %>%
   count() %>%
-  arrange(order, -n)
+  arrange(order, -n) %>%
+  drop_na()
 
 write_rds(count_species, here("tables", "sup_table3.rds"))
 

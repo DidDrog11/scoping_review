@@ -149,20 +149,20 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
     area_gbif_outside_iucn <- mask(gbif_r, iucn_v, inverse = TRUE) %>%
       expanse(unit = "km")
 
-    prop_gbif_coverage <- (mask(gbif_r, iucn_v) %>%
-                             expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
+    prop_gbif_coverage <- round((mask(gbif_r, iucn_v) %>%
+                             expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
 
     area_trapping_detection_in_iucn <- mask(trap_r_detection, iucn_v) %>%
       expanse(unit = "km")
 
-    prop_detection_coverage <- (mask(trap_r_detection, iucn_v) %>%
-                                  expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
+    prop_detection_coverage <- round((mask(trap_r_detection, iucn_v) %>%
+                                  expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
 
     area_trapping_non_detection_in_iucn <- mask(trap_r_non_detection, iucn_v) %>%
       expanse(unit = "km")
 
-    prop_non_detection_coverage <- (mask(trap_r_non_detection, iucn_v) %>%
-                                      expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
+    prop_non_detection_coverage <- round((mask(trap_r_non_detection, iucn_v) %>%
+                                      expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
 
     area_detection_outside_iucn <- mask(trap_r_detection, iucn_v, inverse = TRUE) %>%
       expanse(unit = "km")
@@ -170,14 +170,16 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
     area_combined_in_iucn <- mask(combined_r, iucn_v) %>%
       expanse(unit = "km")
 
-    prop_combined_coverage <- (mask(combined_r, iucn_v) %>%
-                                 expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100
+    prop_combined_coverage <- round((mask(combined_r, iucn_v) %>%
+                                 expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
 
     results = tibble(species = str_to_sentence(species_name), range_area = expanse(iucn_r, unit = "km")/1000,
-                     gbif_perc = prop_gbif_coverage, gbif_outside_range = area_gbif_outside_iucn/1000,
-                     detection_perc = prop_detection_coverage, trapping_outside_range = area_detection_outside_iucn/1000,
-                     non_detection_perc = prop_non_detection_coverage,
-                     combined_perc = prop_combined_coverage)
+                     gbif_detection_range = paste(round(area_gbif_in_iucn/1000, 2), paste0("(", prop_gbif_coverage, "%)")),
+                     gbif_outside_range = round(area_gbif_outside_iucn/1000, 2),
+                     detection_range = paste(round(area_trapping_detection_in_iucn/1000, 2), paste0("(", prop_detection_coverage, "%)")),
+                     trapping_outside_range = round(area_detection_outside_iucn/1000, 2),
+                     non_detection_range = paste(round(area_trapping_non_detection_in_iucn/1000, 2), paste0("(", prop_non_detection_coverage, "%)")),
+                     combined_range = paste(round(area_combined_in_iucn/1000, 2), paste0("(", prop_combined_coverage, "%)")))
 
   } else {
 

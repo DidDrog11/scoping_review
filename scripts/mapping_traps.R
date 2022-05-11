@@ -338,7 +338,7 @@ tn_pop_map <- read_rds(here("data_clean", "tn_pop_model.rds"))
 
 map_1 <- getViz(tn_pop_map)
 
-m1 <- plot(sm(a, 5), n = 150, too.far = 0.02) +
+m1 <- plot(sm(model_3_areal, 3), n = 150, too.far = 0.02) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
   geom_sf(data = included_countries %>% filter(GID_0 != "CPV"), alpha = 0.1, lwd = 0.1, inherit.aes = FALSE) +
   scale_fill_viridis_c(na.value = "#ffffff00") +
@@ -350,7 +350,9 @@ m1 <- plot(sm(a, 5), n = 150, too.far = 0.02) +
   annotation_north_arrow(height = unit(1, "cm"),
                          style = north_arrow_minimal(text_size = 8)) +
   annotation_scale(height = unit(0.1, "cm"),
-                   location = "tr")
+                   location = "tr") +
+  geom_sf(data = st_as_sf(region_pop_hab_sf %>%
+                            mutate(log_region = log(region_trap_nights + 1)), coords = c("x", "y"), crs = crs(habitat_2005)), aes(colour = log_region), inherit.aes = FALSE)
 
 tn_pop_map_sens <- read_rds(here("data_clean", "tn_pop_model_sens.rds"))
 
