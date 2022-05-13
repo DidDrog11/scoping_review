@@ -1,5 +1,5 @@
 source(here::here("scripts", "libraries.R"))
-source(here("scripts", "update_data.R"))
+source(here("scripts", "1_update_data.R"))
 
 # Studies -----------------------------------------------------------------
 

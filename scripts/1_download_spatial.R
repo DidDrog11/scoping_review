@@ -54,9 +54,9 @@ DZA_0 <- getData("GADM", country = "Algeria", level = 0, path = here("data_downl
   st_as_sf()
 
 level_zero <- ls(pattern = "_0")
-countries_level_0 <- do.call("list", mget(level_zero))
+countries_level_zero <- do.call("list", mget(level_zero))
 
-write_rds(bind_rows(countries_level_0), here("data_download", "admin_spatial", "level_0_admin.rds"))
+write_rds(bind_rows(countries_level_zero), here("data_download", "admin_spatial", "level_0_admin.rds"))
 
 # Level 1 -------------------------------------------------
 
@@ -89,9 +89,9 @@ SLE_1 <- getData(name = "GADM", country ="SLE", level = 1, path = here("data_dow
 CPV_1 <- getData("GADM", country = "CPV", level = 1, path = here("data_download", "admin_spatial")) %>%
   st_as_sf()
 
-level_one <- ls(pattern = "_1")
-countries_level_1 <- do.call("list",mget(level_one))
-write_rds(bind_rows(countries_level_1), here("data_download", "admin_spatial", "level_1_admin.rds"))
+level_one <- ls(pattern = "_1$")
+countries_level_one <- do.call("list",mget(level_one))
+write_rds(bind_rows(countries_level_one), here("data_download", "admin_spatial", "level_1_admin.rds"))
 
 # Level 2 -------------------------------------------------
 
@@ -125,8 +125,8 @@ CPV_2 <- CPV_1 %>%
   st_as_sf()
 
 level_two <- ls(pattern = "_2")
-countries_level_2 <- do.call("list",mget(level_two))
-write_rds(bind_rows(countries_level_2), here("data_download", "admin_spatial", "level_2_admin.rds"))
+countries_level_two <- do.call("list",mget(level_two))
+write_rds(bind_rows(countries_level_two), here("data_download", "admin_spatial", "level_2_admin.rds"))
 
 
 # Non-trapped level 2 -----------------------------------------------------
