@@ -29,7 +29,7 @@ source(here("scripts", "2_5_imputing_trapnights.R"))
 
 # Descriptive analysis which mirrors the presentation of the manuscript
 
-source(here("scripts", "3_1_descriptive_analysis.R"))
+source(here("scripts", "3_1_descriptive.R"))
 
 # Statistical analysis which mirrors the presentation of the manuscript
 
