@@ -38,6 +38,10 @@ long_pathogen <- read_rds(here("data_clean", "long_pathogen.rds"))
 species_gbif <- read_rds(here("data_clean", "species_data.rds")) %>%
   distinct(genus, species, gbif_id, genus_gbif, species_gbif)
 
+# This is the list of ISO3 codes for the countries of West Africa
+wa_countries <- c("BEN", "BFA", "CIV", "CPV", "ESH", "GHA",
+                  "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
+                  "NER", "NGA", "SEN", "SLE", "TGO")
 
 # Summary table of included studies ---------------------------------------
 # This is not presented in the manuscript but is included here for interest
@@ -133,18 +137,29 @@ ggsave(plot = study_timings, filename = here("figures", "Fig_1_Panel_A.png"), dp
 write_rds(study_timings, here("plots", "study_timings.rds"))
 
 # Median year of study starts
+median(study_start$year_start)
+summary(study_start$year_start)
 
 # Length of studies
+summary(study_start$year_end - study_start$year_start)
 
 # Number of countries
-
-# Number of trap nights for actual/estimated and imputed
-
-# Number of trap sites
 rodent_data %>%
-  dplyr::select(unique_id, country, region, town_village, all_of(habitat_split)) %>%
-  distinct()
+  distinct(unique_id, iso3c) %>%
+  filter(iso3c %in% wa_countries) %>%
+  tabyl(iso3c)
 
+# Number of trapping sites based on timing, habitat and coordinates
+rodent_data %>%
+  distinct(unique_id, year_trapping, month_trapping, town_village, habitat, longitude, latitude)
+
+# Number of trap nights by classification
+rodent_data %>%
+  group_by(trap_night_data) %>%
+  distinct(unique_id, year_trapping, month_trapping, town_village, habitat, trap_nights, trap_night_unit) %>%
+  summarise(total_trap_nights = sum(trap_nights))
+
+# Number of trap sites by study
 rodent_data %>%
   dplyr::select(unique_id, country, region, town_village, all_of(habitat_split)) %>%
   distinct() %>%
@@ -153,14 +168,194 @@ rodent_data %>%
   table(n)
 
 # Number of small rodents
+rodent_data %>%
+  summarise(n_small_mammals = sum(number))
 
 # Number of each species
+genus_data <- read_rds(here("data_clean", "genus_hierarchy.rds"))
+species_data <- read_rds(here("data_clean", "species_data.rds"))
 
-# Number of assays for pathogens
+count_species <- species_data %>%
+  filter(iso3c %in% wa_countries) %>%
+  group_by(species_gbif) %>%
+  drop_na(species_gbif) %>%
+  summarise(number = sum(number)) %>%
+  mutate(percent = round(number/sum(.$number)*100, 2)) %>%
+  arrange(-percent) %>%
+  left_join(., species %>%
+              drop_na(gbif_id) %>%
+              filter(!str_detect(classification, "/")),
+            by = c("species_gbif" = "gbif_id")) %>%
+  rename(`GBIF ID` = "species_gbif",
+         "Classification" = "classification",
+         "Number of individuals" = "number",
+         "Percent (%)" = "percent") %>%
+  filter(`Number of individuals` > 0) %>%
+  distinct(`GBIF ID`, `Number of individuals`, .keep_all = T) %>%
+  mutate(Classification = snakecase::to_sentence_case(Classification)) # the number of individuals trapped identified to species level
 
-# Pathogen species assayed
+total_species_level <- sum(count_species$`Number of individuals`)
 
+# Number identified to genus level
+total_genus_level <- sum(species_data$number[is.na(species_data$species_gbif) & !str_detect(species_data$classification, "rodent*")])
+
+# How many species were identified within each order
+species_identification <- count_species %>%
+  mutate(`GBIF ID` = as.character(`GBIF ID`)) %>%
+  left_join(.,
+            species_data %>%
+              rename(`GBIF ID` = "gbif_id") %>%
+              dplyr::select(`GBIF ID`, genus),
+            by = "GBIF ID") %>%
+  distinct() %>%
+  mutate(genus = snakecase::to_sentence_case(genus)) %>%
+  left_join(., genus_data, by = "genus")
+
+species_identification %>%
+  group_by(order, family) %>%
+  count() %>%
+  arrange(order, -n) %>%
+  drop_na()
+
+# Number of studies investigating pathogens
+length(unique(long_pathogen$unique_id))
+
+# Number of unique pathogens tested for
+length(unique(long_pathogen$pathogen_tested))
+
+# Number of pathogens tested for within a study
+long_pathogen %>%
+  distinct(unique_id, pathogen_tested) %>%
+  group_by(unique_id) %>%
+  summarise(n_pathogens = n()) %>%
+  tabyl(n_pathogens)
+
+# Number of studies by pathogen
+long_pathogen %>%
+  distinct(pathogen_tested, unique_id) %>%
+  group_by(pathogen_tested) %>%
+  summarise(n_studies = n()) %>%
+  arrange(-n_studies)
+
+# Number of studies by method
+pathogen_tested <- c("path_1", "path_2", "path_3", "path_4", "path_5", "path_6")
+pcr_test <- c("pcr_path_1_positive", "pcr_path_2_positive", "pcr_path_3_positive", "pcr_path_4_positive", "pcr_path_5_positive", "pcr_path_6_positive")
+ab_ag_test <- c("ab_ag_path_1_positive", "ab_ag_path_2_positive", "ab_ag_path_3_positive", "ab_ag_path_4_positive", "ab_ag_path_5_positive")
+culture_test <- c("culture_path_1_positive", "culture_path_1_positive", "culture_path_1_positive")
+direct_visualisation <- c("histo_path_1_positive", "histo_path_2_positive", "histo_path_3_positive", "histo_path_4_positive", "histo_path_5_positive", "histo_path_6_positive")
+
+# PCR
+pathogen %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(pcr_test))) %>%
+  drop_na(pcr_path_1_positive) %>%
+  distinct(unique_id) %>% # studies using PCR
+  nrow(.)
+
+# serology
+pathogen %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(ab_ag_test))) %>%
+  drop_na(ab_ag_path_1_positive) %>%
+  distinct(unique_id) %>%
+  nrow(.)
+
+bind_rows(pathogen %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(culture_test))) %>%
+  drop_na(culture_path_1_positive) %>%
+  distinct(unique_id),
+  pathogen %>%
+  distinct(unique_id, across(all_of(pathogen_tested)), across(all_of(direct_visualisation))) %>%
+  drop_na(histo_path_1_positive) %>%
+  distinct(unique_id)) %>%
+  nrow(.)
+
+# Number individuals tested
+long_pathogen %>%
+  filter(str_detect(assay, regex("path_1_tested"))) %>%
+  summarise(individuals_tested = sum(number))
+
+
+# Host-pathogen pairs assessed
+long_pathogen %>%
+  filter(str_detect(assay, regex("tested"))) %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_tested = sum(number)) %T>%
+  assign(x = "tested", value = ., pos = 1) %>%
+  summarise(n_pathogen_tested = n()) %T>%
+  ungroup() %>%
+  arrange(-n_pathogen_tested) %>%
+  summarise(n_host_pathogen = sum(n_pathogen_tested))
+
+# The number of distinct pathogens tested for by rodent species
+long_pathogen %>%
+  filter(str_detect(assay, regex("tested"))) %>%
+  group_by(classification, pathogen_tested) %>%
+  summarise(n_pathogen_tested = sum(number)) %T>%
+  assign(x = "tested", value = ., pos = 1) %>%
+  summarise(n_pathogen_tested = n()) %T>%
+  ungroup() %>%
+  arrange(-n_pathogen_tested)
 
 # Map of study sites ------------------------------------------------------
+all_countries <- c("BEN", "BFA", "CIV", "CMR", "CPV", "DZA", "ESH", "GHA",
+                   "GIN", "GMB", "GNB", "LBR", "MAR", "MLI", "MRT", "NER",
+                   "NGA", "SEN", "SLE", "TCD", "TGO")
+continental_countries <- c("BEN", "BFA", "CIV", "ESH", "GHA",
+                           "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
+                           "NER", "NGA", "SEN", "SLE", "TGO")
+no_data_countries <- c("GMB", "TGO")
+
+level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
+
+level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
+
+level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+
+non_trapped <- read_rds(here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
+
+included_countries <- level_0 %>%
+  filter(GID_0 %in% continental_countries)
+
+contiguous_boundary <- included_countries %>%
+  filter(!GID_0 == "CPV") %>%
+  st_union()
+
+rodent_spatial <- rodent_data %>%
+  drop_na(longitude, latitude) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = crs(contiguous_boundary))
+
+trap_site_mapping <- rodent_spatial[st_within(rodent_spatial, included_countries) %>% lengths > 0,]  %>%
+  select(unique_id, year_trapping, month_trapping, region, town_village, habitat, geometry) %>%
+  distinct() %>%
+  left_join(., imputed_tn) %>%
+  mutate(trap_nights_cat = cut(trap_nights, c(0, 100, 300, 500, 1000, 2000, 5000, 60000)))
+
+fig_1a_updated <- trap_site_mapping %>%
+  ggplot() +
+  geom_sf(aes(colour = trap_nights_cat)) +
+  geom_sf(data = included_countries, alpha = 0) +
+  scale_colour_viridis_d(direction = -1) +
+  labs(colour = "Trap nights") +
+  theme_minimal() +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr") +
+  guides(colour = guide_coloursteps(show.limits = TRUE, ticks = TRUE))
+
+fig_1b_updated <- trap_site_mapping %>%
+  drop_na(trap_nights_cat) %>%
+  ggplot() +
+  geom_bar(aes(x = trap_nights_cat, fill = trap_nights_cat)) +
+  scale_fill_viridis_d(direction = -1) +
+  scale_x_discrete(labels = c("0-100", "101-300", "301-500", "501-1,000", "1,000-2,000", "2,001-5000", "5,001-50,320")) +
+  theme_minimal() +
+  labs(x = "Trap nights",
+       y = "Sites (n)") +
+  guides(fill = "none")
 
 
+save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
+                    ncol = 1, rel_heights = c(1, 0.2), labels = c("A", "B")),
+          filename = here("figures", "Figure_1_updated.png"), dpi = 320, base_height = 9, base_width = 10)
+
+summary(trap_site_mapping$trap_nights)

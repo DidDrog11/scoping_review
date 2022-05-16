@@ -145,12 +145,31 @@ save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
 
 tn_final_model <- read_rds(here("data_clean", "tn_final_model.rds"))
 
-model_1 <- getViz(tn_final_model)
+model_1 <- getViz(all_models$combined_model_1)
 
-fig_2_updated <- plot(sm(model_1, 3), n = 150, too.far = 0.02) +
+model_1_raster <- plot(sm(model_1, 4), n = 150, too.far = 0.08) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
-  geom_sf(data = included_countries %>% filter(GID_0 != "CPV"), fill = NA, alpha = 1, lwd = 0.5, inherit.aes = FALSE) +
-  scale_fill_viridis_c(option = "inferno", na.value = "#ffffff00", direction = -1) +
+  l_fitContour() +
+  coord_cartesian(expand = FALSE)
+
+rect_border <- tibble(x = c(-17.64, -17.64, 15.995642, 15.995642),
+                      y = c(4.2, 27.683098, 4.2, 27.683098)) %>%
+  st_as_sf(coords = c("x", "y"), crs = crs(included_countries)) %>%
+  summarise() %>%
+  st_cast("POLYGON")
+
+country_border <- included_countries %>%
+  summarise()
+
+inverse_country <- st_difference(rect_border, country_border)
+
+# Reduce the opacity of the grid lines: Default is 255
+col_grid <- rgb(235, 235, 235, 100, maxColorValue = 255)
+
+fig_2_updated <- model_1_raster +
+  geom_sf(data = inverse_country, fill = "white", colour = "white", inherit.aes = FALSE) +
+  geom_sf(data = included_countries, fill = NA, alpha = 1, lwd = 0.5, inherit.aes = FALSE) +
+  scale_fill_viridis_c(option = "inferno", na.value = "#ffffff00", direction = 1) +
   theme_minimal() +
   labs(title = element_blank(),
        x = element_blank(),
@@ -159,7 +178,9 @@ fig_2_updated <- plot(sm(model_1, 3), n = 150, too.far = 0.02) +
   annotation_north_arrow(height = unit(1, "cm"),
                          style = north_arrow_minimal(text_size = 8)) +
   annotation_scale(height = unit(0.1, "cm"),
-                   location = "tr")
+                   location = "tr") +
+  theme(panel.ontop = TRUE,
+        panel.grid = element_line(color = col_grid))
 
 save_plot(plot = as.grob(fig_2_updated$ggObj),
           filename = here("figures", "Figure_2_updated.png"), dpi = 320, base_height = 10, base_width = 12)

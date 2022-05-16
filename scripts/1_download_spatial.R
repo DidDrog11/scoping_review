@@ -6,6 +6,8 @@ countries <- rodent_spatial %>%
   mutate(iso3 = countrycode(as.character(country), "country.name", "iso3c"))
 countries <- unique(countries$iso3)
 
+if(!file.exists(here("data_download", "admin_spatial", "level_0_admin.rds"))) {
+
 # Level 0 -----------------------------------------------------------------
 #WA
 BEN_0 <- getData("GADM", country = "Benin", level = 0, path = here("data_download", "admin_spatial")) %>%
@@ -138,3 +140,5 @@ nt_GMB <- getData(name = "GADM", country ="GMB", level = 2, path = here("data_do
   st_as_sf()
 
 write_rds(bind_rows(nt_GMB, nt_TGO), here("data_download", "admin_spatial", "level_2_TGOGMB.rds"))
+
+}

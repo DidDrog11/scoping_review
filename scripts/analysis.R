@@ -670,6 +670,7 @@ long_pathogen %>%
   summarise(n_pathogen_tested = sum(number)) %T>%
   assign(x = "tested", value = ., pos = 1) %>%
   summarise(n_pathogen_tested = n()) %T>%
+  ungroup() %>%
   arrange(-n_pathogen_tested) # The number of distinct pathogens tested for by rodent species
 
 long_pathogen %>%

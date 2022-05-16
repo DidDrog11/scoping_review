@@ -159,7 +159,9 @@ no_gps <- rodent_data %>%
 all_rodent <- bind_rows(rodent_gps, no_gps) %>%
   dplyr::select(any_of(c(retain_columns, "long_dms", "lat_dms"))) %>%
   rename("longitude" = long_dms,
-         "latitude" = lat_dms)
+         "latitude" = lat_dms) %>%
+  mutate(longitude = st_coordinates(geometry)[, 1],
+         latitude = st_coordinates(geometry)[, 2])
 
 write_rds(rodent_gps, here("data_clean", "rodent_spatial.rds"))
 write_rds(no_gps, here("data_clean", "rodent_missing_spatial.rds"))
