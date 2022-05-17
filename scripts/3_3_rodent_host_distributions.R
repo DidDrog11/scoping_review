@@ -322,7 +322,7 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
                      gbif_outside_range = round(area_gbif_outside_iucn/1000, 2),
                      detection_range = as.character(NA),
                      trapping_outside_range = round(area_detection_outside_iucn/1000, 2),
-                     non_detection_range = as.character(round(area_trapping_non_detection_in_iucn/1000, 2)),
+                     non_detection_range = as.character(NA),
                      combined_range = as.character(round(area_combined/1000, 2)))
 
   }

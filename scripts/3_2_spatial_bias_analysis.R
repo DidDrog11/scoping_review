@@ -294,6 +294,9 @@ ggplot(test, aes(x = prediction, y = tn_density, group = model)) +
   geom_smooth() +
   facet_wrap(~ model)
 
+
+# Model tables ------------------------------------------------------------
+
 as_flextable(tn_simple_model) %>%
   set_caption(caption = "Supplementary Table 3.1: GAM model Trap night density ~ Tweedie(coordinates)") %>%
   write_rds(here("tables", "supplementary_table_3_1.rds"))
@@ -372,6 +375,9 @@ fig_2_updated <- model_1_raster +
 
 save_plot(plot = as.grob(fig_2_updated$ggObj),
           filename = here("figures", "Figure_2_updated.png"), dpi = 320, base_height = 10, base_width = 12)
+
+
+# Supplementary figure model sensitivity ----------------------------------
 
 tn_pop_habitat_model_sens <- read_rds(here("data_clean", "tn_pop_habitat_model_sens.rds"))
 

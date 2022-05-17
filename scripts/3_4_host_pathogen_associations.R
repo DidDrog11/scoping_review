@@ -7,6 +7,17 @@ species_data <- read_rds(here("data_clean", "species_data.rds")) %>%
   filter(!is.na(species_gbif)) %>%
   distinct(classification, species_gbif)
 
+test <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
+  select(-any_of(contains("habitat"))) %>%
+  select(-geometry) %>%
+  pivot_wider(names_from = assay, values_from = number) %>%
+  mutate(record_id = row_number()) %>%
+  group_by(record_id) %>%
+  mutate(tested_pcr = case_when(!is.na(pcr_path_1_positive) ~ path_1_tested,
+                                !is.na(pcr_path_2_positive) ~ path_2_tested))
+  mutate(tested_pcr = case_when(!is.na(pcr_path_1_positive) & is.na(ab_ag_path_1_positive)),
+         tested_ab_ag)
+
 pathogen <- read_rds(here("data_clean", "long_pathogen.rds")) %>%
   select(record_id, classification, assay, number, pathogen_tested, geometry) %>%
   mutate(assay = case_when(str_detect(assay, "tested") ~ "n_tested",
@@ -36,9 +47,11 @@ all_pathogens[["lassa_mammarenavirus"]] <- all_pathogens[["lassa_mammarenavirus"
   unnest_wider(n_positive_pcr, names_sep = "_") %>%
   unnest_wider(n_positive_ab_ag, names_sep = "_") %>%
   unnest_wider(n_positive_culture, names_sep = "_") %>%
-  rowwise(record_id) %>%
+  group_by(record_id) %>%
   mutate(n_tested = max(n_tested_1, n_tested_2, na.rm = TRUE),
          n_positive_ab_ag = case_when(!is.na(n_positive_ab_ag_1) & !is.na(n_positive_ab_ag_2) ~ max(n_positive_ab_ag_1, n_positive_ab_ag_2, na.rm = TRUE),
+                                      is.na(n_positive_ab_ag_1) & !is.na(n_positive_ab_ag_2) ~ n_positive_ab_ag_2,
+                                      !is.na(n_positive_ab_ag_1) & is.na(n_positive_ab_ag_2) ~ n_positive_ab_ag_1,
                                       TRUE ~ as.numeric(NA))) %>%
   rename("n_positive_pcr" = n_positive_pcr_1,
          "n_positive_culture" = n_positive_culture_1) %>%
@@ -180,16 +193,19 @@ length(unique(negative_pathogen_host$classification))
 length(unique(negative_pathogen_host$pathogen_name))
 
 # Join the negative dataset to clover to look for discrepancies
-negative_clover <- negative_pathogen_host %>%
-  left_join(., clover$combined, by = c("classification", "pathogen_name"))
+positive_clover_negative_trapping <- negative_pathogen_host %>%
+  left_join(., clover$combined, by = c("classification", "pathogen_name")) %>%
+  filter(source == "CLOVER")
 
-# Positive host-pathogen associations not in CLOVER
+# Positive host-pathogen associations in CLOVER
+matched_hp_pairs <- left_join(confirmed_pathogen_host, clover$combined) %>%
+  filter(source == "CLOVER")
+
+nrow(matched_hp_pairs)/nrow(confirmed_pathogen_host)
+
 non_matched_hp_pairs <- anti_join(confirmed_pathogen_host, clover$combined)
 
 (nrow(confirmed_pathogen_host) - nrow(non_matched_hp_pairs))/nrow(confirmed_pathogen_host)
-
-# Negative host-pathogen associations reported as positive in CLOVER
-a <- left_join(negative_pathogen_host, clover$combined)
 
 
 # Family based data
@@ -215,10 +231,6 @@ write_rds(confirmed_pathogen_family, here("data_clean", "host_pathogen_family_po
 
 # Figure 4 ----------------------------------------------------------------
 
-confirmed_pathogen_host <- read_rds(here("data_clean", "host_pathogen_positive_plot_data.rds"))
-confirmed_pathogen_family_host <- read_rds(here("data_clean", "host_pathogen_family_positive_plot_data.rds"))
-negative_pathogen_host <- read_rds(here("data_clean", "host_pathogen_negative_plot_data.rds"))
-
 plot_4_df <- confirmed_pathogen_host %>%
   rowwise() %>%
   mutate(prop_acute = acute_infection/n_tested * 100,
@@ -230,7 +242,7 @@ plot_4_df <- confirmed_pathogen_host %>%
          pathogen_name = factor(pathogen_name, levels = c("lassa mammarenavirus", "usutu virus", "toxoplasma gondii", "coxiella burnetii",
                                                           "escherichia coli", "klebsiella pneumoniae")),
          pathogen_name = factor(str_wrap(str_to_sentence(pathogen_name), width = 10)),
-         percent = paste(round(value, 1), "%"),
+         lab = paste0(round(value, 1), "%"),
          name = case_when(name == "prop_acute" ~ "Acute infection",
                           name == "prop_prior" ~ "Serology"),
          source = factor(source, labels = c("CLOVER")))
@@ -238,9 +250,9 @@ plot_4_df <- confirmed_pathogen_host %>%
 plot_4 <- plot_4_df %>%
   ggplot() +
   geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.95, height = 0.95), lwd = 1) +
-  geom_label(aes(x = pathogen_name, y = species, label = percent)) +
+  geom_label(aes(x = pathogen_name, y = species, label = lab)) +
   facet_wrap(~ name) +
-  scale_fill_viridis_c(option = "inferno", direction = -1) +
+  scale_fill_viridis_c(option = "mako", direction = -1) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
   theme_minimal() +
   labs(fill = "Infection (%)",
