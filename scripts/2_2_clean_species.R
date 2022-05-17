@@ -55,10 +55,10 @@ genera <- as_tibble(do.call(rbind,c(genera, make.row.names = T)), rownames = "ge
 
 # Link the species of trapped rodents to a gbif id
 if(!file.exists(here("data_clean", "species_gbif.rds"))){
-species <- tibble(rodent_data %>%
-                    filter(species != "-") %>%
-                    distinct(classification))
-  arrange(classification)
+  species <- tibble(rodent_data %>%
+                      filter(species != "-") %>%
+                      distinct(classification)) %>%
+    arrange(classification)
 species$gbif_id <- get_gbifid(species$classification, ask = T)
 write_rds(species, here("data_clean", "species_gbif.rds"))
 }

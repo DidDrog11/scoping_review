@@ -1,10 +1,4 @@
 source(here::here("scripts", "libraries.R"))
-rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds"))
-
-countries <- rodent_spatial %>%
-  drop_na(country) %>%
-  mutate(iso3 = countrycode(as.character(country), "country.name", "iso3c"))
-countries <- unique(countries$iso3)
 
 if(!file.exists(here("data_download", "admin_spatial", "level_0_admin.rds"))) {
 

@@ -55,6 +55,7 @@ non_building_study_site <- study_site %>%
   anti_join(., buildings_study_site,
             by = c("unique_id", "year_trapping", "month_trapping", "iso3c", "region", "town_village", "habitat", "habitat_1",
                    "habitat_2", "habitat_3", "habitat_4", "habitat_5", "habitat_6", "habitat_7", "trap_nights")) %>%
+  drop_na(habitat_1) %>%
   mutate(trap_success = round(total_captures/trap_nights, 2))
 
 summary(non_building_study_site$trap_success)
