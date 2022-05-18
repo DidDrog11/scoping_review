@@ -7,66 +7,101 @@ species_data <- read_rds(here("data_clean", "species_data.rds")) %>%
   filter(!is.na(species_gbif)) %>%
   distinct(classification, species_gbif)
 
-test <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
+tested_pcr <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
   select(-any_of(contains("habitat"))) %>%
   select(-geometry) %>%
   pivot_wider(names_from = assay, values_from = number) %>%
-  mutate(record_id = row_number()) %>%
+  filter(!is.na(pcr_path_1_positive) | !is.na(pcr_path_2_positive) | !is.na(pcr_path_3_positive) |
+           !is.na(pcr_path_4_positive) | !is.na(pcr_path_5_positive) | !is.na(pcr_path_6_positive)) %>%
+  select(-any_of(c(contains("ab_ag"), contains("culture"), contains("histo")))) %>%
+  mutate(record_id = row_number(),
+         assay = "PCR") %>%
   group_by(record_id) %>%
-  mutate(tested_pcr = case_when(!is.na(pcr_path_1_positive) ~ path_1_tested,
-                                !is.na(pcr_path_2_positive) ~ path_2_tested))
-  mutate(tested_pcr = case_when(!is.na(pcr_path_1_positive) & is.na(ab_ag_path_1_positive)),
-         tested_ab_ag)
+  mutate(tested = case_when(!is.na(pcr_path_1_positive) ~ path_1_tested,
+                                !is.na(pcr_path_2_positive) ~ path_2_tested,
+                                !is.na(pcr_path_3_positive) ~ path_3_tested,
+                                !is.na(pcr_path_4_positive) ~ path_4_tested,
+                                !is.na(pcr_path_5_positive) ~ path_5_tested,
+                                !is.na(pcr_path_6_positive) ~ path_6_tested),
+         positive = case_when(!is.na(path_1_tested) ~ pcr_path_1_positive,
+                                  !is.na(path_2_tested) ~ pcr_path_2_positive,
+                                  !is.na(path_3_tested) ~ pcr_path_3_positive,
+                                  !is.na(path_4_tested) ~ pcr_path_4_positive,
+                                  !is.na(path_5_tested) ~ pcr_path_5_positive,
+                                  !is.na(path_6_tested) ~ pcr_path_6_positive)) %>%
+  select(-any_of(contains("path_")))
 
-pathogen <- read_rds(here("data_clean", "long_pathogen.rds")) %>%
-  select(record_id, classification, assay, number, pathogen_tested, geometry) %>%
-  mutate(assay = case_when(str_detect(assay, "tested") ~ "n_tested",
-                           str_detect(assay, "pcr") ~ "n_positive_pcr",
-                           str_detect(assay, "ab_ag") ~ "n_positive_ab_ag",
-                           str_detect(assay, "histo") ~ "n_positive_histo",
-                           str_detect(assay, "culture") ~ "n_positive_culture")) %>%
-  group_by(pathogen_tested) %>%
-  group_split()
-
-# Split this dataframe into a list with one element for each pathogen
-
-all_pathogens <- lapply(pathogen, function(x) { x %>%
-    pivot_wider(names_from = assay, values_from = number) })
-
-names(all_pathogens) <- lapply(pathogen, function(x) {
-
-  pathogen_names <- x %>%
-    pull(pathogen_tested) %>%
-    unique(.) }) %>%
-  unlist()
-
-# The data for Lassa needs further cleaning as studies tested using both PCR and antibody
-
-all_pathogens[["lassa_mammarenavirus"]] <- all_pathogens[["lassa_mammarenavirus"]] %>%
-  unnest_wider(n_tested, names_sep = "_") %>%
-  unnest_wider(n_positive_pcr, names_sep = "_") %>%
-  unnest_wider(n_positive_ab_ag, names_sep = "_") %>%
-  unnest_wider(n_positive_culture, names_sep = "_") %>%
+tested_serology <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
+  select(-any_of(contains("habitat"))) %>%
+  select(-geometry) %>%
+  pivot_wider(names_from = assay, values_from = number) %>%
+  filter(!is.na(ab_ag_path_1_positive) | !is.na(ab_ag_path_2_positive) | !is.na(ab_ag_path_3_positive) |
+           !is.na(ab_ag_path_4_positive) | !is.na(ab_ag_path_5_positive)) %>%
+  select(-any_of(c(contains("pcr"), contains("culture"), contains("histo")))) %>%
+  mutate(record_id = row_number(),
+         assay = "Serology") %>%
   group_by(record_id) %>%
-  mutate(n_tested = max(n_tested_1, n_tested_2, na.rm = TRUE),
-         n_positive_ab_ag = case_when(!is.na(n_positive_ab_ag_1) & !is.na(n_positive_ab_ag_2) ~ max(n_positive_ab_ag_1, n_positive_ab_ag_2, na.rm = TRUE),
-                                      is.na(n_positive_ab_ag_1) & !is.na(n_positive_ab_ag_2) ~ n_positive_ab_ag_2,
-                                      !is.na(n_positive_ab_ag_1) & is.na(n_positive_ab_ag_2) ~ n_positive_ab_ag_1,
-                                      TRUE ~ as.numeric(NA))) %>%
-  rename("n_positive_pcr" = n_positive_pcr_1,
-         "n_positive_culture" = n_positive_culture_1) %>%
-  select(record_id, classification, pathogen_tested, geometry, n_tested, n_positive_pcr, n_positive_ab_ag, n_positive_culture)
+  mutate(tested = case_when(!is.na(ab_ag_path_1_positive) ~ path_1_tested,
+                                     !is.na(ab_ag_path_2_positive) ~ path_2_tested,
+                                     !is.na(ab_ag_path_3_positive) ~ path_3_tested,
+                                     !is.na(ab_ag_path_4_positive) ~ path_4_tested,
+                                     !is.na(ab_ag_path_5_positive) ~ path_5_tested),
+         positive = case_when(!is.na(path_1_tested) ~ ab_ag_path_1_positive,
+                                       !is.na(path_2_tested) ~ ab_ag_path_2_positive,
+                                       !is.na(path_3_tested) ~ ab_ag_path_3_positive,
+                                       !is.na(path_4_tested) ~ ab_ag_path_4_positive,
+                                       !is.na(path_5_tested) ~ ab_ag_path_5_positive)) %>%
+  select(-any_of(contains("path_")))
+
+tested_culture <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
+  select(-any_of(contains("habitat"))) %>%
+  select(-geometry) %>%
+  pivot_wider(names_from = assay, values_from = number) %>%
+  filter(!is.na(culture_path_1_positive)) %>%
+  select(-any_of(c(contains("pcr"), contains("ab_ag"), contains("histo")))) %>%
+  mutate(record_id = row_number(),
+         assay = "Culture") %>%
+  group_by(record_id) %>%
+  mutate(tested = case_when(!is.na(culture_path_1_positive) ~ path_1_tested),
+         positive = case_when(!is.na(path_1_tested) ~ culture_path_1_positive)) %>%
+  select(-any_of(contains("path_")))
+
+tested_histo <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
+  select(-any_of(contains("habitat"))) %>%
+  select(-geometry) %>%
+  pivot_wider(names_from = assay, values_from = number) %>%
+  filter(!is.na(histo_path_1_positive) | !is.na(histo_path_2_positive) | !is.na(histo_path_3_positive) |
+           !is.na(histo_path_4_positive) | !is.na(histo_path_5_positive) | !is.na(histo_path_6_positive)) %>%
+  select(-any_of(c(contains("pcr"), contains("culture"), contains("ab_ag")))) %>%
+  mutate(record_id = row_number(),
+         assay = "Histology") %>%
+  group_by(record_id) %>%
+  mutate(tested = case_when(!is.na(histo_path_1_positive) ~ path_1_tested,
+                            !is.na(histo_path_2_positive) ~ path_2_tested,
+                            !is.na(histo_path_3_positive) ~ path_3_tested,
+                            !is.na(histo_path_4_positive) ~ path_4_tested,
+                            !is.na(histo_path_5_positive) ~ path_5_tested,
+                            !is.na(histo_path_6_positive) ~ path_6_tested),
+         positive = case_when(!is.na(path_1_tested) ~ histo_path_1_positive,
+                              !is.na(path_2_tested) ~ histo_path_2_positive,
+                              !is.na(path_3_tested) ~ histo_path_3_positive,
+                              !is.na(path_4_tested) ~ histo_path_4_positive,
+                              !is.na(path_5_tested) ~ histo_path_5_positive,
+                              !is.na(path_6_tested) ~ histo_path_6_positive)) %>%
+  select(-any_of(contains("path_")))
+
+pathogen <- bind_rows(tested_pcr, tested_serology, tested_culture, tested_histo) %>%
+  mutate(class = case_when(test != "Serology" ~ "Acute infection",
+                           TRUE ~ "Serology"),
+         record_ID = row_number())
 
 # We can now bring this data together and reshape so we have a single row for each host-pathogen pair
 
-host_pathogen <- bind_rows(all_pathogens) %>%
-  filter(n_tested != 0) %>%
-  group_by(classification, pathogen_tested) %>%
-  summarise(n_tested = sum(n_tested, na.rm = TRUE),
-            n_positive_pcr = sum(n_positive_pcr, na.rm = TRUE),
-            n_positive_ab_ag = sum(n_positive_ab_ag, na.rm = TRUE),
-            n_positive_histo = sum(n_positive_histo, na.rm = TRUE),
-            n_positive_culture = sum(n_positive_culture, na.rm = TRUE)) %>%
+host_pathogen <- pathogen %>%
+  filter(tested != 0) %>%
+  group_by(classification, pathogen_tested, test) %>%
+  summarise(tested = sum(tested, na.rm = TRUE),
+            positive = sum(positive, na.rm = TRUE)) %>%
   group_by(classification) %>%
   mutate(n_pathogens_tested = n())
 

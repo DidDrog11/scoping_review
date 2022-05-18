@@ -27,12 +27,21 @@ source(here("scripts", "2_4_clean_pathogen.R"))
 
 source(here("scripts", "2_5_imputing_trapnights.R"))
 
-# Descriptive analysis which mirrors the presentation of the manuscript
+# Descriptive analysis which mirrors the presentation of the manuscript, mainly this is presented in the methods, data sources section.
 
 source(here("scripts", "3_1_descriptive.R"))
 
-# Statistical analysis which mirrors the presentation of the manuscript
+# Statistical analysis for question 1.
+# What is the extent of spatial bias in rodent trapping data?
 
-source(here("scripts", "3_2_statistical_analysis.R"))
+source(here("scripts", "3_2_spatial_bias_analysis.R"))
 
-# Finally figures are produced
+# Analysis for question 2.
+# What is the difference in rodent host distributions between curated datasets and rodent trapping studies?
+
+source(here("scripts", "3_3_rodent_host_distributions.R"))
+
+# Analysis for question 3.
+# Are rodent trapping derived host-pathogen associations present in a consolidated zoonoses dataset?
+
+source(here("scripts", "3_4_host_pathogen_associations.R"))
