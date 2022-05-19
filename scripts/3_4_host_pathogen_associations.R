@@ -91,7 +91,7 @@ tested_histo <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
   select(-any_of(contains("path_")))
 
 pathogen <- bind_rows(tested_pcr, tested_serology, tested_culture, tested_histo) %>%
-  mutate(class = case_when(test != "Serology" ~ "Acute infection",
+  mutate(class = case_when(assay != "Serology" ~ "Acute infection",
                            TRUE ~ "Serology"),
          record_ID = row_number())
 
@@ -99,7 +99,7 @@ pathogen <- bind_rows(tested_pcr, tested_serology, tested_culture, tested_histo)
 
 host_pathogen <- pathogen %>%
   filter(tested != 0) %>%
-  group_by(classification, pathogen_tested, test) %>%
+  group_by(classification, pathogen_tested, class) %>%
   summarise(tested = sum(tested, na.rm = TRUE),
             positive = sum(positive, na.rm = TRUE)) %>%
   group_by(classification) %>%
@@ -127,12 +127,7 @@ names(pathogen_clean) <- unique(host_pathogen$pathogen_tested)
 cleaned_pathogen <- host_pathogen %>%
   mutate(pathogen_family = recode_factor(pathogen_tested, !!!pathogen_family),
          pathogen_tested = recode_factor(pathogen_tested, !!!pathogen_clean)) %>%
-  arrange(pathogen_family, pathogen_tested) %>%
-  mutate(across(where(is.double), ~ replace_na(.x, 0))) %>%
-  group_by(classification, pathogen_tested) %>%
-  mutate(acute_infection = max(n_positive_pcr, n_positive_histo, n_positive_culture, na.rm = TRUE),
-         prior_infection = max(n_positive_ab_ag, na.rm = TRUE)) %>%
-  select(classification, pathogen_family, pathogen_name = pathogen_tested, n_tested, acute_infection, prior_infection, n_pathogens_tested)
+  arrange(pathogen_family, pathogen_tested)
 
 # Host-pathogen comparators ------------------------------------------
 clover <- list()
@@ -184,14 +179,14 @@ names(clover_by_host) <- clover$combined %>%
 
 # Use the CLOVER dataset to limit to pathogens identified to species level
 pathogen_species_taxa <- cleaned_pathogen %>%
-  mutate(pathogen_name = str_to_lower(pathogen_name),
+  mutate(pathogen_name = str_to_lower(pathogen_tested),
          pathogen_family = str_to_lower(pathogen_family)) %>%
   left_join(clover$pathogen_taxa_species, by = c("pathogen_name", "pathogen_family")) %>%
   drop_na()
 
 # Use the CLOVER dataset to limit to pathogens identified to family level
 pathogen_family_taxa <- cleaned_pathogen %>%
-  mutate(pathogen_name = str_to_lower(pathogen_name),
+  mutate(pathogen_name = str_to_lower(pathogen_tested),
          pathogen_family = str_to_lower(pathogen_family)) %>%
   filter(!pathogen_name %in% pathogen_species_taxa$pathogen_name) %>%
   left_join(clover$pathogen_taxa_family, by = "pathogen_family")
@@ -200,9 +195,10 @@ pathogen_host <- bind_rows(pathogen_species_taxa, pathogen_family_taxa)
 
 # Produce a table of confirmed host-pathogen pairs
 confirmed_pathogen_host <- pathogen_host %>%
-  filter(acute_infection > 0 | prior_infection > 0) %>%
+  filter(positive > 0) %>%
   filter(!str_ends(classification, "sp.") & !str_ends(pathogen_name, "sp.")) %>%
-  left_join(., clover$combined, by = c("classification", "pathogen_name", "pathogen_family"))
+  left_join(., clover$combined, by = c("classification", "pathogen_name", "pathogen_family")) %>%
+  distinct(classification, pathogen_tested, .keep_all = TRUE)
 
 # Number of host-pathogen pairs
 nrow(confirmed_pathogen_host)
@@ -215,8 +211,12 @@ length(unique(confirmed_pathogen_host$pathogen_name))
 
 # Produce a table of negative host-pathogen pairs
 negative_pathogen_host <- pathogen_host %>%
-  filter(acute_infection == 0 & prior_infection == 0) %>%
-  filter(!str_ends(classification, "sp.") & !str_detect(classification, "/") & !str_ends(pathogen_name, "sp."))
+  group_by(classification, pathogen_name) %>%
+  summarise(tested = sum(tested),
+            positive = sum(positive)) %>%
+  filter(positive == 0) %>%
+  filter(!str_ends(classification, "sp.") & !str_detect(classification, "/") & !str_ends(pathogen_name, "sp.")) %>%
+  distinct(classification, pathogen_name, .keep_all = TRUE)
 
 # Number of negative host-pathogen pairs
 nrow(negative_pathogen_host)
@@ -245,14 +245,13 @@ non_matched_hp_pairs <- anti_join(confirmed_pathogen_host, clover$combined)
 
 # Family based data
 confirmed_pathogen_family <- pathogen_host %>%
-  filter(acute_infection > 0 | prior_infection > 0) %>%
+  filter(positive > 0) %>%
   filter(!str_ends(classification, "sp.") & !str_detect(classification, "/")) %>%
   left_join(., clover$combined %>% distinct(classification, pathogen_family, source),
             by = c("classification", "pathogen_family"))
 
 confirmed_clover_family <- confirmed_pathogen_family %>%
-  left_join(., clover$combined %>%
-              distinct(classification, pathogen_family, source), by = c("classification", "pathogen_family"))
+  filter(source == "CLOVER")
 
 # Finally identify host-pathogen pairs we haven't observed
 clover_not_in_trapping <- clover$combined %>%
@@ -266,35 +265,68 @@ write_rds(confirmed_pathogen_family, here("data_clean", "host_pathogen_family_po
 
 # Figure 4 ----------------------------------------------------------------
 
-plot_4_df <- confirmed_pathogen_host %>%
+plot_4_df <- pathogen_host %>%
+  filter(!str_ends(classification, "sp.") & !str_ends(pathogen_name, "sp.")) %>%
+  left_join(., clover$combined, by = c("classification", "pathogen_name", "pathogen_family")) %>%
   rowwise() %>%
-  mutate(prop_acute = acute_infection/n_tested * 100,
-         prop_prior = prior_infection/n_tested * 100) %>%
-  select(classification, n_tested, prop_acute, prop_prior, pathogen_name, pathogen_family, source) %>%
-  pivot_longer(cols = c("prop_acute", "prop_prior")) %>%
+  mutate(prop = positive/tested * 100) %>%
+  select(classification, class, tested, positive, prop, pathogen_name, pathogen_family, source) %>%
+  pivot_longer(cols = c("prop")) %>%
   rowwise() %>%
   mutate(species = paste0(str_to_upper(str_sub(unlist(str_split(classification, " "))[1], 1, 1)), ". ", unlist(str_split(classification, " "))[2]),
-         pathogen_name = factor(pathogen_name, levels = c("lassa mammarenavirus", "usutu virus", "toxoplasma gondii", "coxiella burnetii",
+         pathogen_name = factor(pathogen_name, levels = c("lassa mammarenavirus", "usutu virus", "rift valley fever phlebovirus", "toxoplasma gondii", "coxiella burnetii",
                                                           "escherichia coli", "klebsiella pneumoniae")),
          pathogen_name = factor(str_wrap(str_to_sentence(pathogen_name), width = 10)),
-         lab = paste0(round(value, 1), "%"),
-         name = case_when(name == "prop_acute" ~ "Acute infection",
-                          name == "prop_prior" ~ "Serology"),
          source = factor(source, labels = c("CLOVER")))
 
-plot_4 <- plot_4_df %>%
+sum_species <- plot_4_df %>%
+  group_by(species, class) %>%
+  summarise(n_tested = sum(tested)) %>%
+  arrange(n_tested) %>%
+  ungroup() %>%
+  mutate(species = fct_inorder(species)) %>%
+  pull(species)
+
+plot_4_df$species <- fct_relevel(plot_4_df$species, levels(sum_species))
+
+plot_4_acute <- plot_4_df %>%
+  filter(tested > 1) %>%
+  filter(class == "Acute infection") %>%
+  mutate(lab = paste0(round(value, 1), "% \n N = ", tested)) %>%
   ggplot() +
-  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.95, height = 0.95), lwd = 1) +
-  geom_label(aes(x = pathogen_name, y = species, label = lab)) +
-  facet_wrap(~ name) +
-  scale_fill_viridis_c(option = "mako", direction = -1) +
+  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
+  geom_label(aes(x = pathogen_name, y = species, label = lab), size = 3.7) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
-  theme_minimal() +
-  labs(fill = "Infection (%)",
+  labs(title = "Acute infection",
+       fill = "Infection (%)",
        x = element_blank(),
        y = element_blank(),
        colour = element_blank()) +
-  theme(panel.border = element_rect(colour = "black", fill = NA),
-        strip.text.x = element_text(size = 14))
+  theme_minimal()
 
-save_plot(plot_4, filename = here("figures", "Figure_4_updated.png"), base_width = 12, base_height = 10)
+plot_4_serology <- plot_4_df %>%
+  filter(tested > 1) %>%
+  filter(class == "Serology") %>%
+  mutate(lab = paste0(round(value, 1), "% N = ", tested)) %>%
+  ggplot() +
+  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
+  geom_label(aes(x = pathogen_name, y = species, label = lab)) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
+  scale_colour_manual(na.translate = FALSE, values = "black") +
+  labs(title = "Serology",
+       fill = "Infection (%)",
+       x = element_blank(),
+       y = element_blank(),
+       colour = element_blank()) +
+  theme_minimal()
+
+save_plot(plot_grid(plot_4_acute, labels = "A"), filename = here("figures", "Figure_4a_updated.png"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_serology, labels = "B"), filename = here("figures", "Figure_4b_updated.png"), base_width = 12, base_height = 10)
+
+# Further results ---------------------------------------------------------
+
+# Positive CLOVER, not assessed in trapping
+not_assessed_trapping <- clover$combined %>%
+  anti_join(., pathogen_host, by = c("classification", "pathogen_name", "pathogen_family")) %>%
+  distinct(classification, pathogen_name, .keep_all = TRUE)
