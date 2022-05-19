@@ -114,7 +114,7 @@ pathogen_family <- c("Arenaviridae", "Borreliaceae", "Flaviviridae", "Hantavirid
                      "Enterobacteriaceae", "Mycobacteriaceae", "Coxiellaceae", "Ehrlichiaceae",
                      "Arenaviridae", "Mycoplasmataceae", "Rickettsiaceae", "Rickettsiaceae",
                      "Babesiidae", "Eimeriidae", "Plasmodiidae", "Strongyloididae")
-names(pathogen_family) <- unique(host_pathogen$pathogen_tested)
+names(pathogen_family) <- unique(pathogen$pathogen_tested)
 pathogen_clean <- c("Arenaviridae sp.", "Borrelia sp.", "Flavivirus sp.", "Hantavirus sp.",
                     "Phlebovirus sp.", "Rift valley fever phlebovirus", "Trypansoma sp.", "Lassa mammarenavirus",
                     "Leishmania sp.", "Anaplasma sp.", "Bartonella sp.", "Hydatigera sp.", "Leptospira sp.",
@@ -122,7 +122,7 @@ pathogen_clean <- c("Arenaviridae sp.", "Borrelia sp.", "Flavivirus sp.", "Hanta
                     "Orthopoxvirus sp.", "Escherichia coli", "Klebsiella pneumoniae", "Mycobacteria sp.", "Coxiella burnetii",
                     "Erhlichia sp.", "Mammarenavirus sp.", "Mycoplasma sp.", "Orentia sp.", "Ricketsia sp.", "Babesia sp.",
                     "Eimeria sp.", "Plasmodium sp.", "Strongyloides sp.")
-names(pathogen_clean) <- unique(host_pathogen$pathogen_tested)
+names(pathogen_clean) <- unique(pathogen$pathogen_tested)
 
 cleaned_pathogen <- pathogen %>%
   mutate(pathogen_family = recode_factor(pathogen_tested, !!!pathogen_family),
