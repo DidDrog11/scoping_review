@@ -141,7 +141,7 @@ We identified the proportion of a rodent's expected range in which detections an
 
 ```{r table-1}
 
-table_1 <- read_rds(here("tables", "Table_1_updated.rds")) %>%
+table_1 <- read_rds(here("tables", "Table_1_updated_pixel.rds")) %>%
   set_caption(caption = "Table 1: Comparison of IUCN, GBIF and rodent trapping ranges for the 7 species trapped at the most sites.") %>%
   autofit()
 
