@@ -101,12 +101,19 @@ if(!file.exists(here("models", "all_models.rds"))) {
     tibble() %>%
     dplyr::select(-geometry)
 
+  if(!file.exists(here("data_download", "habitat_2005", "wa_hab_2005.tif"))) {
   # Load in the habitat raster
   habitat_2005 <- rast(here("data_download", "habitat_2005", "habitat_2005.nc"))
   crop_habitat <- crop(habitat_2005[[1]], wa_pop)
   wa_hab <- writeRaster(crop_habitat, here("data_download", "habitat_2005", "wa_hab_2005.tif"))
 
-  all_regions <- lapply(1:nrow(sites_2), function(x) crop(crop_habitat, sites_2[x,]))
+  } else {
+
+    wa_hab <- rast(here("data_download", "habitat_2005", "wa_hab_2005.tif"))
+
+  }
+
+  all_regions <- lapply(1:nrow(sites_2), function(x) crop(wa_hab, sites_2[x,]))
   all_regions_hab <- lapply(1:length(all_regions), function(x) as.data.frame(freq(all_regions[[x]])) %>%
                               select(-layer))
   names(all_regions_hab) <- sites_2$GID_2
