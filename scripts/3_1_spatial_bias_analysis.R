@@ -301,27 +301,6 @@ ggplot(test, aes(x = prediction, y = tn_density, group = model)) +
   geom_smooth() +
   facet_wrap(~ model)
 
-
-# Model tables ------------------------------------------------------------
-
-as_flextable(tn_simple_model) %>%
-  set_caption(caption = "Supplementary Table 3.1: GAM model Trap night density ~ Tweedie(coordinates)") %>%
-  write_rds(here("tables", "supplementary_table_3_1.rds"))
-
-as_flextable(tn_pop_model) %>%
-  set_caption(caption = "Supplementary Table 3.2: GAM model Trap night density ~ Tweedie(log(population density) + coordinates)") %>%
-  write_rds(here("tables", "supplementary_table_3_2.rds"))
-
-as_flextable(tn_habitat_model) %>%
-  set_caption(caption = "Supplementary Table 3.3: GAM model Trap night density ~ Tweedie(proportion cropland + proportion shrubland + proportion tree cover + proportion urban + coordinates)") %>%
-  write_rds(here("tables", "supplementary_table_3_3.rds"))
-
-as_flextable(tn_habitat_model_3) %>%
-  set_caption(caption = "Supplementary Table 3.4: Final GAM model Trap night density ~ Tweedie(proportion tree cover + proportion urban + coordinates)") %>%
-  write_rds(here("tables", "supplementary_table_3_4.rds"))
-
-write_rds(tn_habitat_model_3, here("data_clean", "tn_final_model.rds"))
-
 # Sensitivity analysis
 tn_pop_model_sens <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
                          family = "tw",

@@ -105,6 +105,7 @@ host_pathogen <- pathogen %>%
   group_by(classification) %>%
   mutate(n_pathogens_tested = n())
 
+if(!file.exists(here("data_clean", "hp_associations_dictionary.rds"))) {
 # We harmonise pathogen family names and define harmonised names for pathogens tested
 pathogen_family <- c("Arenaviridae", "Borreliaceae", "Flaviviridae", "Hantaviridae",
                      "Phenuiviridae", "Phenuiviridae", "Trypanosomatidae", "Arenaviridae",
@@ -123,6 +124,16 @@ pathogen_clean <- c("Arenaviridae sp.", "Borrelia sp.", "Flavivirus sp.", "Hanta
                     "Erhlichia sp.", "Mammarenavirus sp.", "Mycoplasma sp.", "Orentia sp.", "Ricketsia sp.", "Babesia sp.",
                     "Eimeria sp.", "Plasmodium sp.", "Strongyloides sp.")
 names(pathogen_clean) <- unique(host_pathogen$pathogen_tested)
+
+list(pathogen_family, pathogen_clean) %>%
+  write_rds(here("data_clean", "hp_associations_dictionary.rds"))
+
+} else {
+
+  pathogen_family <- read_rds(here("data_clean", "hp_associations_dictionary.rds"))[[1]]
+  pathogen_clean <- read_rds(here("data_clean", "hp_associations_dictionary.rds"))[[2]]
+
+}
 
 cleaned_pathogen <- host_pathogen %>%
   mutate(pathogen_family = recode_factor(pathogen_tested, !!!pathogen_family),
@@ -166,6 +177,8 @@ clover$combined <- bind_rows(clover$bacteria, clover$virus, clover$other) %>%
   mutate(source = "CLOVER") %>%
   arrange(classification, pathogen_name) %>%
   group_by(classification)
+
+write_rds(clover, here("data_clean", "clover_cleaned.rds"))
 
 # We produce a list of pathogens associated with each species, where there is an element per species
 clover_by_host <- clover$combined %>%
@@ -262,6 +275,7 @@ clover_not_in_trapping <- clover$combined %>%
 write_rds(confirmed_pathogen_host, here("data_clean", "host_pathogen_positive_plot_data.rds"))
 write_rds(negative_pathogen_host, here("data_clean", "host_pathogen_negative_plot_data.rds"))
 write_rds(confirmed_pathogen_family, here("data_clean", "host_pathogen_family_positive_plot_data.rds"))
+write_rds(pathogen_host, here("data_clean", "host_pathogen_family_all_plot_data.rds"))
 
 # Figure 4 ----------------------------------------------------------------
 

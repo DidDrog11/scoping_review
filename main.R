@@ -50,3 +50,6 @@ source(here("scripts", "3_3_host_pathogen_associations.R"))
 # What is the spatial extent of pathogen testing within a host’s range?
 
 source(here("scripts", "3_4_host_pathogen_distributions.R"))
+
+# Supplementary material
+source(here("scripts", "4_0_supplementary.R"))

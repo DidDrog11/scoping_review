@@ -23,6 +23,6 @@ matched_ref <- left_join(tbl_3, bib,
 supplementary_table <- matched_ref %>%
   arrange(`Year publication`)
 
-write_rds(supplementary_table, here("data_clean", "supplementary_3.rds"))
+write_rds(supplementary_table, here("data_clean", "supplementary_table_2.rds"))
 
 

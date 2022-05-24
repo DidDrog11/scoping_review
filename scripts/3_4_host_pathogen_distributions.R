@@ -2,8 +2,12 @@
 
 contiguous_boundary <- read_rds(here("data_clean", "WA_continental_boundary.rds"))
 
+contiguous_boundary_v <- vect(contiguous_boundary)
+
 rodent_spatial <- read_rds(here("data_clean", "rodent_spatial.rds")) %>%
   dplyr::select(-trap_nights)
+
+rodent_iucn <- read_rds(here("data_clean", "rodent_iucn.rds"))
 
 tested_pcr <- tibble(read_rds(here("data_clean", "long_pathogen.rds"))) %>%
   select(-any_of(contains("habitat"))) %>%
@@ -105,24 +109,16 @@ pathogen <- bind_rows(tested_pcr, tested_serology, tested_culture, tested_histo)
   distinct(unique_id, year_trapping, month, country, iso3c, region, town_village, classification, geometry, pathogen_tested, tested, positive, class) %>%
   st_join(., contiguous_boundary, join = st_within, left = FALSE)
 
-# We harmonise pathogen family names and define harmonised names for pathogens tested
-pathogen_family <- c("Arenaviridae", "Borreliaceae", "Flaviviridae", "Hantaviridae",
-                     "Phenuiviridae", "Phenuiviridae", "Trypanosomatidae", "Arenaviridae",
-                     "Trypanosomatidae", "Anaplasmataceae", "Bartonellaceae", "Taeniidae",
-                     "Leptospiraceae", "Plagiorchiidae", "Schistosomatidae", "Sarcocystidae",
-                     "Trichuridae", "Flaviviridae", "Poxviridae", "Enterobacteriaceae",
-                     "Enterobacteriaceae", "Mycobacteriaceae", "Coxiellaceae", "Ehrlichiaceae",
-                     "Arenaviridae", "Mycoplasmataceae", "Rickettsiaceae", "Rickettsiaceae",
-                     "Babesiidae", "Eimeriidae", "Plasmodiidae", "Strongyloididae")
-names(pathogen_family) <- unique(pathogen$pathogen_tested)
-pathogen_clean <- c("Arenaviridae sp.", "Borrelia sp.", "Flavivirus sp.", "Hantavirus sp.",
-                    "Phlebovirus sp.", "Rift valley fever phlebovirus", "Trypansoma sp.", "Lassa mammarenavirus",
-                    "Leishmania sp.", "Anaplasma sp.", "Bartonella sp.", "Hydatigera sp.", "Leptospira sp.",
-                    "Plagiorchis sp.", "Schistosoma sp.", "Toxoplasma gondii", "Trichuria sp.", "Usutu virus",
-                    "Orthopoxvirus sp.", "Escherichia coli", "Klebsiella pneumoniae", "Mycobacteria sp.", "Coxiella burnetii",
-                    "Erhlichia sp.", "Mammarenavirus sp.", "Mycoplasma sp.", "Orentia sp.", "Ricketsia sp.", "Babesia sp.",
-                    "Eimeria sp.", "Plasmodium sp.", "Strongyloides sp.")
-names(pathogen_clean) <- unique(pathogen$pathogen_tested)
+if(!file.exists(here("data_clean", "hp_associations_dictionary.rds"))) {
+
+  source(here("scripts", "3_3_host_pathogen_associations.R"))
+
+} else {
+
+  pathogen_family <- read_rds(here("data_clean", "hp_associations_dictionary.rds"))[[1]]
+  pathogen_clean <- read_rds(here("data_clean", "hp_associations_dictionary.rds"))[[2]]
+
+}
 
 cleaned_pathogen <- pathogen %>%
   mutate(pathogen_family = recode_factor(pathogen_tested, !!!pathogen_family),
@@ -135,163 +131,173 @@ ref_rast <- rast(here("data_download", "habitat_2005", "wa_hab_2005.tif")) %>%
   aggregate(fact = 15) %>%
   cellSize(unit = "km")
 
-analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, iucn_data = rodent_iucn, gbif_data = rodent_gbif) {
+# Produce data for the extent of all hosts species trapped
+rodent_trap <- rodent_spatial %>%
+  filter(!str_detect(classification, "sp.")) %>%
+  group_by(classification) %>%
+  select(classification, number, geometry) %>%
+  mutate(presence = case_when(number > 0 ~ 1,
+                              TRUE ~ 0)) %>%
+  filter(presence != 0) %>%
+  select(classification, presence, geometry) %>%
+  group_split()
+names(rodent_trap)  <- lapply(rodent_trap, function(x) unique(x$classification))
 
-  # Produce a vector of detections and non-detections for each species
-  trap_v <- rodent_spatial %>%
-    filter(classification == species_name) %>%
-    select(number, geometry) %>%
-    mutate(pres_abs = case_when(number > 0 ~ 1,
-                                TRUE ~ 0)) %>%
-    select(pres_abs, geometry) %>%
-    vect()
+rodent_trap_v <- lapply(rodent_trap, function(x) vect(x))
 
-  # Convert this into a raster using the ref_rast with cell sizes of ~ 20km
-  trap_r_detection <- rasterize(subset(trap_v, trap_v$pres_abs == 1), ref_rast, fun = "max", field = "pres_abs")
+rodent_trap_r <- vector("list", length = length(rodent_trap_v))
+names(rodent_trap_r) <- names(rodent_trap_v)
+rodent_trap_r <- lapply(rodent_trap_v, function(x)  rasterize(x, ref_rast, fun = "max", field = "presence"))
 
-  trap_r_non_detection <- rasterize(subset(trap_v, trap_v$pres_abs == 0), ref_rast, fun = "max", field = "pres_abs")
+rodent_iucn_sf <- rodent_iucn %>%
+  filter(classification %in% unique(cleaned_pathogen$classification)) %>%
+  group_by(classification) %>%
+  mutate(presence = 1) %>%
+  group_split()
 
-  # Convert the IUCN data to a vector
-  iucn_v <- iucn_data %>%
-    filter(classification == species_name) %>%
-    mutate(pres_abs = 1) %>%
-    st_intersection(contiguous_boundary) %>%
-    select(pres_abs, geometry)
+rodent_iucn_v <- lapply(rodent_iucn_sf, function(x) vect(x))
+names(rodent_iucn_v) <- lapply(rodent_iucn_v, function(x) unique(x$classification))
 
-  # Convert the GBIF data to a vector
-  gbif_v <- rodent_gbif[[species_name]] %>%
-    mutate(pres_abs = 1) %>%
-    select(pres_abs, geometry) %>%
-    vect()
+rodent_iucn_r <- vector("list", length = length(rodent_iucn_sf))
+names(rodent_iucn_r) <- lapply(rodent_iucn_v, function(x) unique(x$classification))
+rodent_iucn_r <- lapply(rodent_iucn_v, function(x) rasterize(x, ref_rast, fun = "max", field = "presence"))
 
-  gbif_r <- rasterize(gbif_v, ref_rast, fun = "max", field = "pres_abs")
+# Function to analyse proportion of coveration for host-pathogen testing
+hp_analysis_proportion_pixel <- function(n_pathogens, n_species, trap_data = rodent_spatial, pathogen_data = cleaned_pathogen,
+                                         rodent_trap = rodent_trap_r, rodent_iucn = rodent_iucn_r) {
 
-  # Combine both sources of presence data as vector and raster
-  combined_v <- rbind(trap_v, gbif_v)
+  # Produce a vector of the pathogen names in order of number species assayed
+  pathogens <- tibble(cleaned_pathogen) %>%
+    tabyl(pathogen_tested) %>%
+    arrange(-n) %>%
+    head(n = n_pathogens) %>%
+    pull(pathogen_tested)
 
-  combined_r <- rasterize(combined_v, ref_rast, fun = "max", field = "pres_abs")
+  # Produce a vector of detections and non-detections for each pathogen
+  pathogen_list <- pathogen_data %>%
+    filter(pathogen_tested %in% pathogens) %>%
+    group_by(pathogen_tested) %>%
+    group_split()
 
-  combined_det_r <- rbind(subset(trap_v , trap_v$pres_abs == 1), gbif_v) %>%
-    rasterize(., ref_rast, fun = "max", field = "pres_abs")
+  # For each pathogen we want to identify the 5 most commonly tested rodent species
+  pathogen_r_detection <- vector("list", n_pathogens)
+  names(pathogen_r_detection) <- pathogens
+  pathogen_r_detection <- lapply(pathogen_r_detection, function(x) {x <- vector("list", n_species)})
 
-  # As Mus has no range we use this to separate out their analysis
-  if(nrow(iucn_v) > 0) {
+  area_tested <- tibble(pathogen_name = as.character(NULL),
+                        species_name = as.character(NULL),
+                        tested = as.numeric(NULL),
+                        positive = as.numeric(NULL),
+                        area_tested = as.numeric(NULL),
+                        perc_trapped = as.numeric(NULL),
+                        perc_iucn = as.numeric(NULL))
 
-    iucn_v <- iucn_v %>%
-      vect()
+  for(i in 1:n_pathogens) {
 
-    # Turn IUCN polygon into raster
-    iucn_r <- rasterize(iucn_v, ref_rast, fun = "max", field = "pres_abs")
+    species <- tibble(pathogen_list[[i]]) %>%
+      filter(!str_detect(classification, "sp.")) %>%
+      group_by(classification) %>%
+      summarise(n = sum(tested)) %>%
+      arrange(-n) %>%
+      head(n = n_species) %>%
+      pull(classification)
 
-    # Retain the GBIF presence within the IUCN range and calculate the area of the cells
-    area_gbif_in_iucn <- mask(gbif_r, iucn_v) %>%
-      expanse(unit = "km")
+    pathogen_list[[i]] <- pathogen_list[[i]] %>%
+      filter(classification %in% species) %>%
+      group_by(classification) %>%
+      group_split()
 
-    # Retain the GBIF presence outside the IUCN range and calculate the area of the cells
-    area_gbif_outside_iucn <- mask(gbif_r, iucn_v, inverse = TRUE) %>%
-      expanse(unit = "km")
+    # Produce a vector of tested locations for each species for each pathogen
+    for(j in 1:n_species) {
 
-    # Calculate the proportion of GBIF coverage within the entire IUCN range
-    prop_gbif_coverage <- round((mask(gbif_r, iucn_v) %>%
-                                   expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
+      pathogen_v <- pathogen_list[[i]][[j]] %>%
+        select(pathogen_tested, classification, tested, positive, geometry) %>%
+        vect()
 
-    # Repeat the same analysis steps for the trapping data
-    area_trapping_detection_in_iucn <- mask(trap_r_detection, iucn_v) %>%
-      expanse(unit = "km")
+      # Convert this into a raster using the ref_rast with cell sizes of ~ 20km
+      pathogen_r_detection[[i]][[j]] <- rasterize(pathogen_v, ref_rast, fun = "max", field = "tested")
+      names(pathogen_r_detection[[i]][[j]]) <- unique(pathogen_v$classification)
 
-    prop_detection_coverage <- round((mask(trap_r_detection, iucn_v) %>%
-                                        expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
+      rodent_trap_raster <- rodent_trap_r[grep(names(pathogen_r_detection[[i]][[j]]), names(rodent_trap))]
 
-    area_detection_outside_iucn <- mask(trap_r_detection, iucn_v, inverse = TRUE) %>%
-      expanse(unit = "km")
+      perc_trapped <- round(expanse(pathogen_r_detection[[i]][[j]], unit = "km")/
+                              expanse(rodent_trap_raster[[1]], unit = "km"), 4) * 100
 
-    # Additionally for trapping data we can calculate non-detection
-    area_trapping_non_detection_in_iucn <- mask(trap_r_non_detection, iucn_v) %>%
-      expanse(unit = "km")
+      if(names(pathogen_r_detection[[i]][[j]]) %in% c("mus musculus", "crocidura olivieri", "rattus norvegicus")) { perc_iucn = NA } else
+      {
+        rodent_iucn_raster <- rodent_iucn_r[grep(names(pathogen_r_detection[[i]][[j]]), names(rodent_iucn))]
 
-    prop_non_detection_coverage <- round((mask(trap_r_non_detection, iucn_v) %>%
-                                            expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
+        perc_iucn <- round(expanse(pathogen_r_detection[[i]][[j]], unit = "km")/
+                             expanse(rodent_iucn_raster[[1]], unit = "km"), 4) * 100 }
 
-    # Now repeat for a combined raster of both GBIF and trapping
-    area_combined_in_iucn <- mask(combined_r, iucn_v) %>%
-      expanse(unit = "km")
+      # Calculate the area for the pathogen tested within this species
+      area_tested <-  bind_rows(area_tested,
+                                tibble(pathogen_name = unique(pathogen_v$pathogen_tested),
+                                       species_name = unique(pathogen_v$classification),
+                                       tested = sum(pathogen_v$tested),
+                                       positive = sum(pathogen_v$positive),
+                                       area_tested = round(pathogen_r_detection[[i]][[j]] %>%
+                                                             expanse(unit = "km"), 2)/1000,
+                                       perc_trapped = perc_trapped,
+                                       perc_iucn = perc_iucn))
+    }
 
-    prop_combined_coverage <- round((mask(combined_det_r, iucn_v) %>%
-                                       expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
-
-    # These values can then be used to populate a table for each species
-    # Values are divided by 1,000
-    results = tibble(species = str_to_sentence(species_name),
-                     range_area = round(expanse(iucn_r, unit = "km")/1000, 2),
-                     gbif_detection_range = paste(round(area_gbif_in_iucn/1000, 2), paste0("(", prop_gbif_coverage, "%)")),
-                     gbif_outside_range = round(area_gbif_outside_iucn/1000, 2),
-                     detection_range = paste(round(area_trapping_detection_in_iucn/1000, 2), paste0("(", prop_detection_coverage, "%)")),
-                     trapping_outside_range = round(area_detection_outside_iucn/1000, 2),
-                     non_detection_range = paste(round(area_trapping_non_detection_in_iucn/1000, 2), paste0("(", prop_non_detection_coverage, "%)")),
-                     combined_range = paste(round(area_combined_in_iucn/1000, 2), paste0("(", prop_combined_coverage, "%)")))
-
-  } else {
-
-    area_gbif_outside_iucn <- expanse(gbif_r, unit = "km")
-
-    area_detection_outside_iucn <- expanse(trap_r_detection, unit = "km")
-
-    area_combined <- expanse(combined_det_r, unit = "km")
-
-    results = tibble(species = str_to_sentence(species_name),
-                     range_area = as.numeric(NA),
-                     gbif_detection_range = as.character(NA),
-                     gbif_outside_range = round(area_gbif_outside_iucn/1000, 2),
-                     detection_range = as.character(NA),
-                     trapping_outside_range = round(area_detection_outside_iucn/1000, 2),
-                     non_detection_range = as.character(NA),
-                     combined_range = as.character(round(area_combined/1000, 2)))
-
+    area_tested <- bind_rows(area_tested)
   }
 
-  return(results)
+  return(area_tested)
 }
 
-testing_coverage_pixel <- lapply(species_names, analysis_proportion_pixel)
+table_2_data <- hp_analysis_proportion_pixel(n_pathogens = 5, n_species = 5)
+table_2_sorted <- table_2_data %>%
+  group_by(pathogen_name) %>%
+  arrange(-tested, -positive, .by_group = TRUE)
 
-table_1_pixel <- bind_rows(testing_coverage_pixel)
+table_2_formated <- table_2_sorted %>%
+  mutate(species_name = str_to_sentence(species_name),
+         positive = paste0(positive, " (", round(positive/tested, 2) * 100, "%)"),
+         area_tested = round(area_tested, 2),
+         perc_trapped = paste0(perc_trapped, "%"),
+         perc_iucn = case_when(perc_iucn < 0.01 ~ paste0("<0.01%"),
+                               is.na(perc_iucn) ~ "*",
+                               TRUE ~ paste0(perc_iucn, "%"))) %>%
+  as_grouped_data(groups = "pathogen_name")
 
-Table_1_pixel <- flextable(table_1_pixel) %>%
+write_rds(table_2_sorted, here("data_clean", "table_2_pixel.rds"))
+
+Table_2_pixel <- flextable(table_2_formated) %>%
   bg(j = 2, bg = "grey", part = "all") %>%
-  bg(j = 5:7, bg = "grey", part = "all") %>%
-  set_header_labels(values = list(species = "Species",
-                                  range_area = "Range \n(1,000 km_2_)",
-                                  gbif_detection_range = "Area inside range \n(1,000 km_2_) \n(% of IUCN)",
-                                  gbif_outside_range = "Area outside range \n(1,000 km_2_)",
-                                  detection_range = "Detection area \ninside range (1,000 km_2_) \n(% of IUCN)",
-                                  trapping_outside_range = "Area outside range \n(1,000 km_2_)",
-                                  non_detection_range = "Non-detection area \ninside range \n(1,000 km_2_) \n(% of IUCN)",
-                                  combined_range = "Detection area \ninside range \n(1,000 km_2_) \n(% of IUCN)")) %>%
-  italic(j = "species", italic = TRUE, part = "body") %>%
-  compose(part = "header", j = 2, value = as_paragraph("Range \n (1,000 km", as_sup("2"), ")")) %>%
-  compose(part = "header", j = 3, value = as_paragraph("Area inside range (1,000 km", as_sup("2"), ") (% of IUCN)")) %>%
-  compose(part = "header", j = 4, value = as_paragraph("Area outside range \n (1,000 km", as_sup("2"), ")")) %>%
-  compose(part = "header", j = 5, value = as_paragraph("Detection area \ninside range (1,000 km", as_sup("2"), ") (% of IUCN)")) %>%
-  compose(part = "header", j = 6, value = as_paragraph("Area outside range \n (1,000 km", as_sup("2"), ") (% of IUCN)")) %>%
-  compose(part = "header", j = 7, value = as_paragraph("Non-detection area \ninside range (1,000 km", as_sup("2"), ") (% of IUCN)")) %>%
-  compose(part = "header", j = 8, value = as_paragraph("Detection area \ninside range (1,000 km", as_sup("2"), ") (% of IUCN)")) %>%
-  add_header_row(top = TRUE, values = c("", "IUCN", "GBIF", "Trapping studies", "Combined"), colwidths = c(1, 1, 2, 3, 1)) %>%
+  bg(j = 4, bg = "grey", part = "all") %>%
+  bg(j = 6, bg = "grey", part = "all") %>%
+  set_header_labels(values = list(pathogen_name = "Pathogen",
+                                  species_name = "Species",
+                                  tested = "Tested",
+                                  positive = "Positive",
+                                  area_tested = "Pathogen testing area \n(1,000 km_2_)",
+                                  perc_trapped = "Pathogen testing area \nwithin trapped area (%)",
+                                  perc_iucn = "Pathogen testing area \nwithin IUCN range (%)")) %>%
+  italic(j = "species_name", italic = TRUE, part = "body") %>%
+  compose(part = "header", j = 5, value = as_paragraph("Pathogen testing area \n(1,000 km", as_sup("2"), ")")) %>%
   align(part = "all", align = "center")
 
-# Effect of combining curated and rodent trapping
-combined <- tibble(species = species_names,
-                   gbif = c(0.21, 0.26, 0.12, NA, 0.09, 0.15, 0.2),
-                   combined = c(0.32, 0.48, 0.2, NA, 0.2, 0.22, 0.23),
-                   diff_per = combined/gbif)
+write_rds(Table_2_pixel, here("tables", "Table_2_updated_pixel.rds"))
 
-mean(combined$diff_per, na.rm = TRUE)
-sd(combined$diff_per, na.rm = TRUE)
+n_species_tested <- tibble(cleaned_pathogen) %>%
+  select(-geometry) %>%
+  group_by(pathogen_tested, classification) %>%
+  summarise(n_tested = sum(tested),
+            n_positive = sum(positive))
 
-# Proportion of range non-detection occurred in
-non_detection <- tibble(species = species_names,
-                        non_det_per = c(0.09, 0.13, 0.11, NA, 0.17, 0.1, 0.11))
+# Number of species tested
+tabyl(n_species_tested$pathogen_tested)
 
-mean(non_detection$non_det_per, na.rm = TRUE)
-sd(non_detection$non_det_per, na.rm = TRUE)
+# Number of positive species
+n_species_tested %>%
+  filter(n_positive > 0) %>%
+  tabyl(pathogen_tested)
 
-write_rds(Table_1_pixel, here("tables", "Table_1_updated_pixel.rds"))
+# Number of individuals positive for arenaviruses
+n_species_tested %>%
+  filter(str_detect(pathogen_tested, "renav")) %>%
+  filter(n_positive > 0) %>%
+  arrange(-n_positive)

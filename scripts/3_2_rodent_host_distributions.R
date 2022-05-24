@@ -55,6 +55,8 @@ rodent_iucn <- st_read(here("data_download", "iucn_data", "data_0.shp")) %>%
   group_by(classification) %>%
   summarise(geometry = st_union(geometry))
 
+write_rds(rodent_iucn, here("data_clean", "rodent_iucn.rds"))
+
 # GBIF data
 # We limit the figures to the top 7 most commonly trapped species
 
@@ -335,6 +337,8 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
 testing_coverage_pixel <- lapply(species_names, analysis_proportion_pixel)
 
 table_1_pixel <- bind_rows(testing_coverage_pixel)
+
+write_rds(table_1_pixel, here("data_clean", "table_1_pixel.rds"))
 
 Table_1_pixel <- flextable(table_1_pixel) %>%
   bg(j = 2, bg = "grey", part = "all") %>%
