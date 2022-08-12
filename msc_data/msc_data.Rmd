@@ -1,0 +1,87 @@
+---
+title: "Description of available datasets."
+date: "`r Sys.Date()`"
+author: 
+  - "David Simons"
+output: 
+  pdf_document
+always_allow_html: yes
+latex_engine: xelatex
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      crop = knitr::hook_pdfcrop)
+library(tidyverse)
+library(here)
+```
+
+# Data
+
+Data has been obtained from a systematic literature search of studies reporting rodent trapping across West Africa. Studies have been performed for various reasons and the quality of data obtained from each study differs. Where studies have been conducted to investigate zoonoses data on pathogens have also been extracted.
+
+The data has been divided into three datasets for you. First, a detection-non-detection dataset, second, an **abundance** dataset (not true ecological abundance), third a long-format pathogen dataset. In the following sections I will explain the variables.
+
+## Detection-non-detection
+
+If a study identified a rodent species at any of the trap sites this has been labelled a detection. If the species was not identified at another trap-site but was detected within the study (i.e. if it was there they would have reported it) it is termed a non-detection.
+
+```{r detection-non-detection}
+
+det_non_det <- read_csv(here("msc_data", "detection_non_detection.csv"))
+head(det_non_det, 5)
+```
+
+| Variable name | Interpretation |
+| --- | ---- |
+| unique_id | This is the identifier of the study in which the data came from. This can be crosschecked against the studies page [here](https://docs.google.com/spreadsheets/d/1rQYjHhk6uk1PoKZZVsgFlmuqWGicU2tTisk9ddfAwTM/edit?usp=drive_web&ouid=109198876678825407497) |
+| year_trapping | Where provided this is the period in which trapping occurred, this may have important implications due to land use change, population change, invasive rodents etc. |
+| month_trapping | Where provided this is the period in which trapping occurred, this may have important implications due to seasonality |
+| country & iso3c | The country in which trapping occurred with harmonised ISO3C codes |
+| region | Specified region in which trapping occurred |
+| town_village | If given the locations of the study site |
+| habitat | The described habitat type in which trapping occurred |
+| classification | The descriptor of the trapped rodent at the lowest taxonomic level available |
+| trap_nights | The number of trap nights that were surveyed at this location. This value gives a measure of the trapping effort. For some studies this has been imputed where not presented based on the number of trapped rodents within a habitat |
+| longitude and latitude | The GPS coordinates of the trapping location at the highest geographical resolution provided |
+| detection | Whether that species was detected or not-detected at that trapping location |
+
+## Abundance
+
+This reports the number of individuals from a single species that were trapped at the highest geographical and temporal resolution. If you are not interested in temporal changes these can be grouped by habitat type to give the total numbers of individuals trapped across all sessions within a study.
+
+```{r abundance}
+
+abundance <- read_csv(here("msc_data", "abundance.csv"))
+head(abundance, 5)
+```
+
+Only additional data to above is the number (abundance) variable
+
+## Pathogens
+
+I think you are less interested in this but perhaps this may help to focus on which rodent species you are interested in looking at in more depth. This data is in long format with each host-pathogen pair tested for separated out by study, geography, habitat and time.
+
+```{r pathogen}
+
+pathogen <- read_csv(here("msc_data", "pathogen.csv"))
+head(pathogen, 5)
+```
+
+| Variable name | Interpretation |
+| --- | ---- |
+| unique_id | This is the identifier of the study in which the data came from. This can be crosschecked against the studies page [here](https://docs.google.com/spreadsheets/d/1rQYjHhk6uk1PoKZZVsgFlmuqWGicU2tTisk9ddfAwTM/edit?usp=drive_web&ouid=109198876678825407497) |
+| year_trapping | Where provided this is the period in which trapping occurred, this may have important implications due to land use change, population change, invasive rodents etc. |
+| month_trapping | Where provided this is the period in which trapping occurred, this may have important implications due to seasonality |
+| country & iso3c | The country in which trapping occurred with harmonised ISO3C codes |
+| region | Specified region in which trapping occurred |
+| town_village | If given the locations of the study site |
+| habitat | The described habitat type in which trapping occurred |
+| classification | The descriptor of the trapped rodent at the lowest taxonomic level available |
+| record_id | As several tests can be performed on the same rodent this value links all the tests for that same rodent species within the study (geography, habitat and trapping session) with one row for the assay and one row for the result for each pathogen |
+| pathogen_tested | The lowest taxonomic name available for the pathogen tested as reported by the study |
+| assay | The type of assay used for the pathogen (i.e. PCR or Ab/Ag) |
+| number | The number of individuals tested or positive based on the value in the assay variable |
+| longitude and latitude | The GPS coordinates of the trapping location at the highest geographical resolution provided |
