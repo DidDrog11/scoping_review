@@ -175,7 +175,7 @@ if(!file.exists(here("models", "all_models.rds"))) {
   region_pop_hab_sf_sens <- read_rds(here("data_clean", "pop_habitat_tn_analysis_sensitivity.rds"))
 }
 
-if(!file.exists(here("models", "tn_simple_model.rds"))) {
+if(!file.exists(here("models", "all_models.rds"))) {
 
   # Run the models on the data with changes to number of knots of variables included
   dir.create(here("models"))

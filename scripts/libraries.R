@@ -14,7 +14,7 @@ pkgs =
     "janitor",
     "corrplot",
     "sf",
-    "OpenStreetMap",
+    "rosm",
     "tmap",
     "cowplot",
     "maptools",

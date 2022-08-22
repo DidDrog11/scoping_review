@@ -304,7 +304,7 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
     # These values can then be used to populate a table for each species
     # Values are divided by 1,000
     results = tibble(species = str_to_sentence(species_name),
-                     range_area = round(expanse(iucn_r, unit = "km")/1000, 2),
+                     range_area = round(expanse(iucn_r, unit = "km")/1000, 0),
                      gbif_detection_range = paste(round(area_gbif_in_iucn/1000, 2), paste0("(", prop_gbif_coverage, "%)")),
                      gbif_outside_range = round(area_gbif_outside_iucn/1000, 2),
                      detection_range = paste(round(area_trapping_detection_in_iucn/1000, 2), paste0("(", prop_detection_coverage, "%)")),

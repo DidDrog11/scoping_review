@@ -107,7 +107,9 @@ pathogen <- bind_rows(tested_pcr, tested_serology, tested_culture, tested_histo)
                            TRUE ~ "Serology"),
          record_ID = row_number()) %>%
   distinct(unique_id, year_trapping, month, country, iso3c, region, town_village, classification, geometry, pathogen_tested, tested, positive, class) %>%
-  st_join(., contiguous_boundary, join = st_within, left = FALSE)
+  vect(.) %>%
+  terra::intersect(., contiguous_boundary_v) %>%
+  st_as_sf()
 
 if(!file.exists(here("data_clean", "hp_associations_dictionary.rds"))) {
 
@@ -195,7 +197,7 @@ hp_analysis_proportion_pixel <- function(n_pathogens, n_species, trap_data = rod
   for(i in 1:n_pathogens) {
 
     species <- tibble(pathogen_list[[i]]) %>%
-      filter(!str_detect(classification, "sp.")) %>%
+      filter(!str_detect(classification, "sp.|crocidura")) %>%
       group_by(classification) %>%
       summarise(n = sum(tested)) %>%
       arrange(-n) %>%
