@@ -1,0 +1,270 @@
+---
+title: "Rodent trapping studies as an overlooked information source for understanding endemic and novel zoonotic spillover."
+date: "`r Sys.Date()`"
+author: 
+  - "David Simons"
+  - "Lauren A. Attfield"
+  - "Kate E. Jones"
+  - "Deborah Watson-Jones"
+  - "Richard Kock"
+output: 
+  officedown::rdocx_document:
+    tables:
+      caption:
+       style: false
+    plots:
+      caption:
+        style: false
+  # pdf_document
+always_allow_html: yes
+bibliography: citations/manuscript_citations.bib
+csl: harvard.csl
+latex_engine: xelatex
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      crop = knitr::hook_pdfcrop)
+source(here::here("scripts", "manuscript_library.R"))
+```
+
+# Abstract
+
+Rodents are important globally distributed reservoirs of known and novel zoonotic pathogens. Ongoing anthropogenic land use change is altering the composition of host species assemblages and modifying the risk of zoonoses spillover events. These changes mean that an understanding of the current distribution of rodent species is vital for accurately describing disease hazard and managing risk. However, available species distribution and host-pathogen association datasets (e.g. IUCN, GBIF, CLOVER) are often taxonomically and spatially biased. Here, we synthesise data from West Africa from 127 rodent trapping studies, published between 1964-2022, as an additional source of information to characterise the range and presence of important zoonotic pathogen host species in this region. We identify that these rodent trapping studies, although biased towards human dominated landscapes across West Africa, can usefully complement current rodent species distribution datasets and we calculate the discrepancies between these datasets. For five regionally important zoonotic pathogens (Arenaviridae spp., Borrelia spp., *Lassa mammarenavirus*, Leptospira spp. and *Toxoplasma gondii*), we identify host-pathogen associations that have not been previously reported in host-association datasets. These omissions have the potential for biasing estimates of current risk and drivers of zoonoses. Finally, for these five pathogen groups, we find that the proportion of a rodent hosts range that has been sampled remains small. A priority of future rodent trapping studies should be to sample rodent hosts across a greater geographic range to better characterise current and future risk. In the interim, future studies of spatial pathogen risk informed by rodent distributions must incorporate a measure of the current sampling biases. The current synthesis of contextually rich rodent trapping data enriches available information from IUCN, GBIF and CLOVER which can support a more complete understanding of the hazard of zoonotic spillover events.
+
+# Introduction
+
+There is increasing awareness of the global health and economic impacts of novel zoonotic pathogen spillover, evidenced by the ongoing SARS-CoV-2 pandemic and previous HIV/AIDs and Spanish Influenza pandemics [@bernstein_costs_2022]. The number of zoonotic disease spillover events and the frequency of the emergence of novel zoonotic pathogens from rodents are predicted to increase under intensifying anthropogenic pressure driven by increased human populations, urbanisation, intensification of agriculture, climate change and wildlife defaunation [@allen_global_2017; @hassell_urbanization_2017; @garcia-pena_land-use_2021; @mcmahon_ecosystem_2018]. The impact of endemic zoonoses meanwhile remains underestimated [@maudlin_neglected_2009]. Endemic zoonoses disproportionally affect those in the poorest sections of society, those living in close contact with their animals and those with limited access to healthcare [@halliday_endemic_2015; @molyneux_zoonoses_2011; @judson_zoonoses_2021].
+
+Rodents along with bats contribute the greatest number of predicted novel zoonotic pathogens and known zoonoses [@han_rodent_2015; @gibb_mammal_2021]. Of 2,220 extant rodent species, 244 (10.7%) are described as reservoirs of 85 zoonotic pathogens [@han_rodent_2015], although many species provide important and beneficial ecosystem services including pest regulation and seed dispersal [@fischer_ecosystem_2018]. Rodents typically demonstrate “fast” life histories [@dobson_fast_2007] with traits such as early maturation and short gestation times (<4 days) further associated with being zoonotic reservoirs [@han_rodent_2015; @albery_fast-lived_2021]. Rodent species with “fast” life histories thrive in human dominated landscapes, displacing species less likely to be reservoirs of zoonotic pathogens [@gibb_zoonotic_2020]. The widespread occurrence of reservoir species and their proximity to human activity make the description of rodent species assemblages and host-pathogen associations vitally important to understanding the hazard of zoonotic disease spillover and novel zoonotic pathogen emergence [@han_global_2016].
+
+Despite the importance of understanding these complex systems, current evidence on host-pathogen associations is considerably affected by taxonomic and geographical sampling biases [@gibb_ecosystem_2020; @gibb_mammal_2021]. Curated biodiversity datasets such as the Global Biodiversity Information Facility (GBIF) and resources produced by the International Union for Conservation of Nature suffer from well described spatial and temporal sampling biases [@boakes_distorted_2010; @bowler_temporal_2022]. These sampling biases can importantly distort produced species distribution models [@beck_spatial_2014]. Datasets on host-pathogen associations also can suffer from biases introduced from literature selection criteria and taxanomic discrepancies. These biases are important because identification of potential geographic hotspots of zoonotic disease spillover and novel pathogen emergence are often based on these types of host species distributions and host-pathogen associations [@plowright_sampling_2019; @carlson_future_2021]. For example, systematically increased sampling, over-representation of certain habitats and clustering around areas of high human population could lead to an apparent association between locations and hazard that is driven by these factors rather than underlying host-pathogen associations [@wille_how_2021; @redding_evaluating_2017; @gibb_mammal_2021]. Predictions of zoonotic disease spillover and novel zoonotic pathogen emergence must account for these biases to understand the future hazard of zoonotic diseases [@carlson_future_2021].
+
+West Africa has been identified as a region at increased risk for rodent-borne zoonotic disease spillover events, the probability of these events are predicted to increase under different projected future land-use change scenarios [@grace_mapping_2012; @garcia-pena_land-use_2021]. Currently within West Africa, rodents are involved in the transmission of multiple endemic zoonoses with large burdens on human health, these pathogens include, Lassa fever, Schistosomiasis, Leptospirosis and Toxoplasmosis [@meerburg_rodent-borne_2009; @galeh_global_2020]. Understanding of the distribution of these zoonoses are limited by biases in consolidated datasets. Rodent trapping studies provide contextually rich information on when, where and under what conditions rodents were trapped, potentially enriching consolidated datasets [@bovendorp_optimising_2017]. Studies have been conducted in West Africa to investigate the distribution of rodent species, their species assemblages, the prevalence of endemic zoonoses within rodent hosts (e.g., Lassa fever, Schistosomiasis) and to identify emerging and novel zoonotic pathogens [@fichet-calvet_diversity_2009; @catalano_multihost_2020; @usaid_one_2021]. However, individual level data from these studies have not previously been synthesised for inclusion in assessments of zoonotic disease spillover and novel zoonotic pathogen emergence.
+
+Here, we synthesise rodent trapping studies conducted across West Africa published between 1964-2022. First, we use this dataset to investigate the geographic sampling biases in relation to human population density and land use classification. Second, we compare this to curated host datasets (IUCN and GBIF) to understand differences in reported host geographic distributions. Third, we compare identified host-pathogen associations with a consolidated dataset (CLOVER) to explore discrepancies in rodent host-pathogen associations and report the proportion of positive assays for pathogens of interest. Finally, within our dataset we investigate the spatial extent of current host-pathogen sampling to identify areas of sparse sampling of pathogens within their host ranges. We expect that rodent trapping studies provide an important additional source of high-resolution data that can be used to enrich available consolidated datasets to better understand the hazard of zoonotic disease spillover and novel zoonotic pathogen emergence across West Africa. 
+
+# Methods
+
+## Data sources
+
+### Host and pathogen trapping data
+
+To identify relevant literature, we conducted a search in Ovid MEDLINE, Web of Science (Core collection and Zoological Record), JSTOR, BioOne, African Journals Online, Global Health and the pre-print servers, BioRxiv and EcoEvoRxiv for the following terms as exploded keywords: (1) Rodent OR Rodent trap* AND (2) West Africa, no date limits were set. We also searched other resources including the UN Official Documents System, Open Grey, AGRIS FAO and Google Scholar using combinations of the above terms. Searches were run on 2022-05-01, and returned studies conducted between 1964-2021. 
+
+We included studies for further analysis if they met all of the following inclusion criteria; i) reported findings from trapping studies where the target was a small mammal, ii) described the type of trap used or the length of trapping activity or the location of the trapping activity, iii) included trapping activity from at least one West African country, iv) recorded the genus or species of trapped individuals, and v) were published in a peer-reviewed journal or as a pre-print on a digital platform or as a report by a credible organisation. We excluded studies if they met any of the following exclusion criteria: i) reported data that were duplicated from a previously included study, ii) no full text available, iii) not available in English. One author screened titles, abstracts and full texts against the inclusion and exclusion criteria. At each stage; title screening, abstract screening and full text review, a random subset (10%) was reviewed by a second author.
+
+We extracted data from eligible studies using a standardised tool that was piloted on 5 studies (Supplementary Table 1.). Data was abstracted into a Google Sheets document, which was archived on completion of data extraction [ref to zenodo on finalised]. We identified the aims of included studies, for example, whether it was conducted as a survey of small mammal species or specifically to assess the risk of zoonotic disease spillover. we extracted data on study methodology, such as, the number of trap nights, the type of traps used and whether the study attempted to estimate abundance. For studies not reporting number of trap nights we used imputation based on the number of trapped individuals, stratified by the habitat type from which they were obtained. This was performed by multiplying the total number of trapped individuals within that study site by the median trap success for study sites with the same reported habitat type. Stratification was used as trap success varied importantly between traps placed in or around buildings (13%, IQR 6-24%) compared with other habitats (3%, IQR 1-9%)
+
+We also recorded how species were identified within a study and species identification was assumed to be accurate. The number of individuals of these species or genera was extracted with taxanomic names mapped to GBIF taxonomy [@gbif_the_global_biodiversity_information_facility_global_2021]. We expanded species detection and non-detection records by explicitly specifying non-detection at a trap site if a species was recorded as detected at other trapping locations within the same study.
+
+Geographic locations of trapping studies were extracted using GPS locations for the most precise location presented. Missing locations were found using the National Geospatial-Intelligence Agency GEOnet Names Server [@national_geospatial-intelligence_agency_nga_nodate] based on place-names and maps presented in the study. All locations were converted to decimal degrees. The year of rodent trapping was extracted alongside the length of the trapping activity to understand seasonal representativeness of trapping activity. The habitats of trapping sites were mapped to the IUCN Habitat Classification Scheme (Version 3.1). For studies reporting multiple habitat types for a single trap, trap-line or trapping grid, a higher order classification of habitat type was recorded.
+
+For relevant studies we extracted data on all microorganisms and zoonotic pathogens tested and the method used (e.g., molecular or serological diagnosis). Where assays were able to identify the microorganism to species level this was recorded, non-specific assays higher order attribution was used (e.g. to family level). We recorded the species of rodent host tested, the number of individuals tested and the number of positive and negative results. For studies reporting summary results all testing data were extracted, this may introduce double counting of individual rodents, for example, if a single rodent was tested using both molecular and serological assays. Where studies reported indeterminate results, these were also recorded. 
+
+Out of 4,692 relevant citations, we identified 127 rodent trapping studies (Supplementary Table 2.). The earliest trapping studies were conducted in 1964, with a trend of increasing numbers of studies being performed annually since 2000. The median year of first trapping activity was 2007, with the median length of trapping activity being 1 year (IQR 0-2 years) (Supplementary Figure 1.). Studies were conducted in 14 West African countries, with no studies reported from The Gambia or Togo, at 1,611 trap sites (Figure 1A.). 
+
+Included studies explicitly reported on 601,184 trap nights, a further 341,445 trap nights were imputed from studies with no recording of trapping effort based on trap success, leading to an estimate of 942,629 trap nights (Figure 1B.). A minority of studies trapped at a single study site (30, 24%), with 46 (36%) trapping at between two and five sites, the remaining 51 studies (40%) trapped at between six and 93 study sites.
+
+In total 76,275 small mammals were trapped with 65,628 (90%) identified to species level and 7,439 (10%)  identified to genus, with the remaining classified to higher taxonomic level. The majority of the 132 identified species were Rodentia (102, 78%), of which Muridae (73, 72%) were the most common family. Soricomorpha were the second most identified order of small mammals (28, 21%). 57 studies tested for 32 microorganisms, defined to species or genus level that are known or potential pathogens. Most studies tested for a single microorganism (48, 84%). The most frequently assayed microorganisms were *Lassa mammarenavirus* or Arenaviridae (21, 37%), *Borrelia sp.* (9, 16%), *Bartonella sp.* (4, 7%) and *Toxoplasma gondii* (4, 7%). Most studies used Polymerase Chain Reaction (PCR) to detect microorganisms (37, 65%), with fewer studies using serology-based tests (11, 19%) or histological or direct visualisation assays (11, 21%). From 32,920 individual rodent samples we produced 351 host-pathogen pairs. With *Rattus rattus*, *Mus musculus*, *Mastomys erythroleucus*, *Mastomys natalensis* and *Arvicanthis niloticus* being assayed for at least 18 microorganisms.
+
+![Figure 1: A) The location of trapping sites in West Africa. No sites were recorded from Togo or The Gambia. Heterogeneity is observed in the coverage of each country by trap night (colour) and location of sites. For example, Senegal, Mali and Sierra Leone have generally good coverage compared to Guinea and Burkina Faso. B) Histogram of trap nights performed at each study site, a median of 248 trap nights (IQR 116-500) was performed at each site](`r here("figures", "Figure_1_updated.png")`)
+
+## Analysis
+
+### What is the extent of spatial bias in the rodent trapping data?
+
+To investigate the extent of spatial bias in the rodent trapping data, we calculated trap-night (TN) density within each West African level-2 administrative region. The `sf` package in the R statistical language was used to manipulate geographic data, administrative boundaries were obtained from GADM 4.0.4 [@pebesma_simple_2018; @r_core_team_r_2020; @database_of_global_administrative_areas_gadm_2022].  Density ($\text{TN}_\text{density}$) was calculated by dividing the number of trap nights by the area of a level-2 administrative area ($\text{R}_\text{area}$). For studies not reporting trap nights imputation was used as previously described. Human population density was obtained for the closest year (2005) to the median year of trapping (2007) from Socioeconomic Data and Applications Center (SEDAC) gridded population of the world v4 at ~ 1km resolution ($\text{P}_\text{density}$) [@socioeconomic_data_and_applications_center_gridded_2021].  Median population density was then calculated for each level-2 administrative region. Land cover classification was obtained from the Copernicus climate change service at ~300m resolution [@european_space_agency_climate_change_initiative_land_2022]. The proportion of cropland, shrubland, tree cover (${\psi}_\text{tree}$) and urban land cover (${\psi}_\text{urban}$) within a level-2 administrative region in 2005 was calculated.
+
+We investigated the association between relative trapping effort, measured as TN density, and the proportion of urban, cropland, tree cover and human population density using Generalised Additive Models (GAM) incorporating a spatial interaction term (longitude and latitude) (@pedersen_hierarchical_2019). The models were constructed in the `mgcv` package (@wood_generalized_2017). Selection of the most parsimonious model was based on Deviance explained and the Akaike Information Criterion for each model (Equations 1-5 below).  Relative trapping effort was then predicted across West Africa using these covariates. We performed two sensitivity analyses, first, by removing sites with imputed trapping effort. Second rather than associating trap locations to level-2 administrative areas we assigned them to ~ 1km pixels. 
+
+$$
+\text{TN}_\text{density} \sim \text{Tweedie}(X * Y)
+$$
+$$
+\text{TN}_\text{density} \sim \text{Tweedie}(\text{P}_\text{density} + (X * Y))
+$$
+
+
+$$
+\text{TN}_\text{density} \sim \text{Tweedie}(\text{P}_\text{density} + \text{R}_\text{area} + (X * Y))
+$$
+
+$$
+\text{TN}_\text{density} \sim \text{Tweedie}(\text{P}_\text{density} + {\psi}_\text{tree} + {\psi}_\text{urban} + (X * Y))
+$$
+
+$$
+\text{TN}_\text{density} \sim \text{Tweedie}(\text{Pop}_\text{density} + \text{R}_\text{area} + {\psi}_\text{urban} + (X * Y))
+$$
+
+### What is the difference in rodent host distributions between curated datasets and rodent trapping studies?
+
+We assessed the concordance of curated rodent host distributions from IUCN and GBIF with observed rodent presence and absence from rodent trapping studies for seven species with the most trap locations (*M. natalensis*, *R. rattus*, *M. erythroleucus*, *M. musculus*, *A. niloticus*, *Praomys daltoni* and *Cricetomys gambianus*). We obtained rodent species distribution maps as shapefiles from the IUCN red list and translated these to a ~20km resolution raster [@iucn_iucn_2021]. Distributions were cropped to the study region for globally distributed rodent species. We obtained rodent presence locations from GBIF as point data limited to the study region [@gbif_the_global_biodiversity_information_facility_occurrence_2021]. Presence locations were associated to cells of raster with a ~20km resolution produced for the study region.
+
+For each of the seven species, we first calculated the area of the IUCN expected range, and then the percentage of this range covered by presence detections in GBIF, and from presence detections in the rodent trapping data. We then calculated the area of both types of detections outside of the IUCN expected range. For rodent trapping data, we calculated the area of non-detections within the IUCN expected area. Finally, we calculated the combined area of detection from both GBIF and rodent trapping data.
+
+### Are rodent trapping derived host-pathogen associations present in a consolidated zoonoses dataset?
+
+To examine the usefulness of rodent trapping studies as an additional source of data we compared identified host-pathogen associations from trapping studies investigating zoonoses with a consolidated zoonoses dataset (CLOVER) [@gibb_mammal_2021l @gibb_viralemergenceclover_2021]. CLOVER is a synthesis of four host-pathogen datasets (GMPD2, EID2, HP3 and Shaw, 2020) and was released in 2021, it contains more than 25,000 host-pathogen associations for Bacteria, Viruses, Helminth, Protozoa and Fungi. We compared the host-pathogen networks across the two datasets, where the CLOVER data was subset for host species present in the rodent trapping datta.
+
+For host-pathogen pairs with assay results consistent with acute or prior infection, we calculated the proportion positive and identify those absent from CLOVER. We expand the analysis to host-pathogen pairs with pathogens identified to genus level in Supplementary Figure 4. 
+
+### What is the spatial extent of pathogen testing within host ranges?
+
+We use the sampled area of three pathogen groups and two pathogens (Arenaviridae, Borreliaceae, Leptospiraceae, *Lassa mammarenavirus* and *Toxoplasma gondii*) to quantify the bias of sampling within their hosts ranges. For each pathogen, we first describe the number of host species assated, for the five most commonly tested species we associate the locations of sampled indivuals to ~20km pixels and calculate the proportion of the IUCN range of the host in which sampling has occurred. We compare this figure to the total area in which the host has been detected to produce a measure of relative completeness of sampling within the included rodent trapping studies.
+
+All data and code to reproduce these analyses are available in an archived Zenodo repository [ref_zenodo].
+
+# Results
+
+## What is the extent of spatial bias in the rodent trapping data?
+
+We found a non-random spatial distribution of rodent trapping locations across the study region, suggestive of underlying bias in the sampling or rodents across West Africa. Trap sites were situated in 256 of 1,450 (17.6%) level-2 administrative regions in 14 West African nations. The regions with highest TN density included the capitals and large cities of Niger (Niamey), Nigeria (Ibadan), Ghana (Accra), Senegal (Dakar), Ghana (Accra) and Benin (Cotonou). Outside of these cities, regions in, Northern Senegal, Southern Guinea, Edo and Ogun States in Nigeria and Eastern Sierra Leone had the greatest TN density (Figure 1A.).
+
+The most parsimonious GAM model (adjusted R2 = 0.3, Deviance explained = 48.7%) reported significant non-linear associations between relative trapping effort bias and human population densities (Effective Degrees of Freedom (EDF) = 7.13, *p* < 0.001), proportion of urban landscape (EDF = 1.92, *p* < 0.002) and region area (EDF = 3.63, *p* < 0.001), alongside significant spatial associations (EDF = 27.3, *p* < 0.001) (Supplementary table 3.1). Greatest trapping effort bias peaked at population densities between 5,000-7,500 individuals/km^2^, urban landscape >10% and region areas < 1,000km^2^. Increased trapping effort was found in North West Senegal, North and East Sierra Leone, Central Guinea and coastal regions of Nigeria, Benin and Ghana; in contrast South East Nigeria, Northern Nigeria and Burkina Faso had an observed bias towards a reduced trapping effort (Figure 2). In sensitivity analysis, excluding sites with imputed trap nights, Mauritania, Northern Senegal and Sierra Leone remained as regions trapped at higher rates, with Nigeria being trapped at lower than expected rates (Supplementary Figure 3a.). In pixel based sensitivity analysis spatial coverage was reduced with similar patterns of bias observed to the primary analysis (Supplementary Figure 3b.).
+
+![Figure 2. Relative trapping effort bias across West Africa from included studies adjusted for human population density, proportion urban land cover and area of the administrative region. Uncertainty in the point estimate of relative trapping effort bias is represented by colour transparency/pallor (e.g., Eastern Liberia and Central Mali). Yellow regions represent areas with a bias towards increased trapping effort (e.g., North West Senegal), purple regions represent areas with a bias towards reduced trapping effort (e.g., Northern Nigeria).](`r here("figures", "Figure_2_updated.png")`)
+
+## What is the difference in rodent host distributions between curated datasets and rodent trapping studies?
+
+We found that for six of the seven rodent (*M. natalensis*, *R. rattus*, *M. erythroleucus*, *M. musculus*, *A. niloticus* and *P. daltoni*), trapping studies provided more distinct locations of detection and non-detection than were available from GBIF. For the endemic rodent species (*M. natalensis*, *M. erythroleucus*, *A. niloticus*, *P. daltoni* and *C. gambianus*) IUCN ranges had good concordance to both trapping studies and GBIF, however, individuals of *A. niloticus* and *P. daltoni* were detected outside of IUCN ranges. In contrast, the non-native species *R. rattus* and *M. musculus* were detected across much greater ranges than were expected from IUCN distributions. Comparisons for *M. natalensis*, *R. rattus* and *M. musculus* are shown in Figure 3A, the remaining species are shown in Supplementary Figure 4.
+
+![Figure 3. Each row corresponds to a single rodent species. L) Presence recorded in GBIF overlaid on IUCN species range (red-shaded area). R) Detection and non-detection from rodent trapping studies overlaid on IUCN species ranges. M. musculus has no IUCN West African range.](`r here("figures", "Figure_3_updated.png")`)
+
+Comparison of proportion of a species IUCN range in which detections and non-detections occurred showed that sampling locations of these seven species within GBIF covered between 0.09-0.26% of expected ranges (Table 1.). Detections occurred outside IUCN ranges for all species, most noticeably for *A. niloticus* and *R. rattus*. Sampling locations within rodent trapping data covered 0.03-0.24% of expected ranges with detections occurring outside IUCN ranges most noticeably for *A. niloticus* and *R. rattus*. Combining GBIF and rodent trapping data increased the sampled area by a mean of 1.65 times, suggesting limited overlap between the locations sampled. Non-detection of species occurred across species ranges (mean = 0.11%, SD = 0.03%), suggestive of spatial heterogeneity of presence within IUCN ranges.
+
+```{r table-1}
+
+table_1 <- read_rds(here("tables", "Table_1_updated_pixel.rds")) %>%
+  set_caption(caption = "Table 1: Comparison of IUCN, GBIF and rodent trapping ranges for the 7 species trapped at the most sites.") %>%
+  autofit()
+
+table_1
+
+```
+
+
+## Are rodent trapping derived host-pathogen associations present in a consolidated zoonoses dataset?
+
+We found potentially important differences between the host-pathogen networks produced from included rodent trapping studies and the consolidated CLOVER dataset. When limited to taxonomic classification of both pathogen and host to species level we identified 25 host-pathogen pairs among 14 rodent and 6 pathogen species (Figure 4.). We identified negative associations (non-detection through specific assays) for 45 host-pathogen pairs among 35 rodent and 7 pathogen species. CLOVER contained 10 (40%) of our identified host-pathogen associations, the remaining 15 (60%) were not found to be present in CLOVER, additionally CLOVER recorded positive associations for 4 (9%) of the negative associations produced from the rodent trapping data.
+
+![](`r here("figures", "Figure_4a_updated.png")`)
+
+![Figure 4. A) Identified species level host-pathogen associations through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset. B) Identified species level host-pathogen associations through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Figure_4b_updated.png")`)
+
+CLOVER included an additional 492 host-pathogen associations we do not observe in rodent trapping studies. The majority of these 392 (80%) pairs are from species with global distributions (*M. musculus*, *R. rattus* and *R. norvegicus*), or from those with wide ranging distributions in sub-Saharan Africa (38, 8%) (i.e., *A. niloticus*, *M. natalensis* and *Atelerix albiventris*).
+
+For pathogens not identified to species level (i.e. family or higher taxa only), we identified 148 host-pathogen pairs among 32 rodent species and 25 pathogen families (Supplementary Figure 4.), with CLOVER containing 66 (45%) of these associations.
+
+Rodent trapping studies identified additional rodent host species for six pathogens; *Lassa mammarenavirus* (5), *Toxoplasma gondii* (4), Usutu virus (2), *Coxiella burnetii* (2), *Escherichia coli* and *Klebsiella pneumoniae* (both 1), that were not present in this consolidated host-pathogen association dataset.
+
+## What is the spatial extent of pathogen testing within a host’s range?
+
+The five most widely sampled pathogen species/families in included studies were Arenaviridae, Borreliaceae, *Lassa mammarenavirus*, Leptospiraceae and *Toxoplasma gondii* (Table 2.). Assays to identify Arenaviridae infection were performed in 44 rodent species with evidence of viral infection in 15 species. *Lassa mammarenavirus* was specifically tested for in 43 species with 10 showing evidence of viral infection. The most commonly infected species for both Arenaviridae, generally, and *Lassa mammarenavirus* specifically, were *M. natalensis* and *M. erythroleucus*. These species were assayed across between 10-20% of their trapped area, equating to ~0.02% of their IUCN range (Table 2.).
+
+Infection with species of Borreliaceae was assessed in 42 species, with evidence of infection in 17 rodent species. The greatest rates of infection were among *A. niloticus* (16%), *Mastomys huberti* (11%) and *M. erythroleucus* (9%). Testing was more widespread than for Arenviruses with coverage between 15-34% of their trapped area, however, this remains a small area in relation to their IUCN ranges (<0.05%). Leptospiraceae and *Toxoplasma gondii* was assessed in 8 species, with evidence of infection in 5 and 6 rodent species respectively. The spatial coverage of testing for these pathogens was more limited within IUCN host species ranges (~0.01%). 
+
+```{r table-2}
+
+table_2 <- read_rds(here("tables", "Table_2_updated_pixel.rds"))%>%
+  set_caption(caption = "Table 2: Comparison of pathogen sampling ranges for the 5 most widely sampled pathogens and the 5 most sampled rodent host species. * no IUCN range in West African") %>%
+  autofit()
+
+table_2
+
+```
+
+# Discussion
+
+Endemic rodent zoonoses and novel pathogen emergence from rodent hosts are predicted to have an increasing burden in West Africa and globally (@han_rodent_2015). Here we have synthesised data from 126 rodent trapping studies containing information on more than 72,000 rodents across 1,611 trap sites producing an estimated 942,669 trap nights across 14 West African countries. Locations studie are complementary to curated datasets (e.g. IUCN, GBIF), incorporation of our synthesised dataset when assessing zoonosis risk based on host distributions could counteract some of the biases inherent to these curated datasets [@boakes_distorted_2010]. We identified 25 host-pathogen pairs reported from included studies, 15 of these were not included in a consolidated host-pathogen dataset. Generally, the number of different species tested for a pathogen and the spatial extent of these sampling locations were limited. These findings highlight a further component of sampling bias, supporting calls for further pathogen sampling across diverse species in zoonotic hotspots [@harvey_diversity_2022]. 
+
+We found that rodent trapping data, similar to biodiversity data, showed important spatial biases [@beck_spatial_2014]. Relative trapping effort bias was greater in Benin, Guinea, Senegal and Sierra Leone driven by long-standing research collaborations investigating the invasion non-native rodent species (*M. musculus* and *R. rattus*) and the hazard of endemic zoonosis outbreaks (e.g., *Lassa mammarenavirus*). Much of the region remains relatively undersampled, particularly Burkina Faso, Côte d’Ivoire, Ghana and Nigeria, despite these countries facing many of the same challenges. For example, annual outbreaks of Lassa fever are reported in Nigeria and there are potentially 60,000 unrecognised cases of Lassa fever every year in Côte d’Ivoire and Ghana [@basinski_bridging_2021]. Rodent sampling should be targeted towards currently under sampled regions to reduce this bias and improve our understanding of the risk from endemic and novel zoonoses.
+
+Rodent trapping studies provide geographic and temporally contextualised data on both species detection and non-detection which are not available from curated datasets. Non-detection data can improve models of species distributions, unfortunately, high levels of missing data on trapping effort will continue to confound the allocations of non-detections as true absences [@vaclavik_invasive_2009]. Models of host species occurrence and abundance, improved by incorporating species absence, are important to assess the effect of land use and climate change on endemic zoonosis spillover to human populations and direct limited public health resources towards regions at greatest risk [@zeimes_modelling_2012; @judson_translating_2018].
+
+Currently available consolidated datasets on host-pathogen associations (e.g. CLOVER, EID2 and GMPD2) do not include spatial or temporal components [@gibb_data_2021]. The current synthesis of rodent trapping studies has highlighted that pathogens have been sparsely sampled within a hosts range. Current zoonosis risk models dependent on these sources of data are therefore not able to incorporate spatial heterogeneity in pathogen prevalence across the host range. Additional uncertainty in current models of zoonotic disease risk arises from host-pathogen associations that have not been reported in these consolidated datasets. For example *Hylomyscus pamfi* infected with *Lassa mammarenavirus* and *R. rattus* infected with *Coxiella burnetii*, will not be included when solely dependent consolidated host-pathogen datasets. Further, detection of zoonotic pathogens in multiple co-occurring host species supports the adoption of multi-species to better understand the potential range of endemic zoonoses [@wilkinson_comparison_2019].
+
+Few studies stratified detection and non-detection of hosts or pathogen prevalence by time, therefore limiting inference of changes in host and pathogen dynamics. This limitation prevents calculation of incidence of infection and the abundance of infectious rodents which potentially varies by both time and space [@fichet-calvet_spatial_2016]. Understanding of temporal changes in viral burden and shedding for endemic zoonoses is required to accurately predict current and future risk of pathogen spillover.
+
+Finally, due to data sparsity, we were unable to account for temporal change over the six decades of rodent trapping studies. Land use change and population density have changed dramatically over this period in West Africa [@herrmann_accelerating_2020]. We attempted to mitigate against this by using the median year of trapping to understand the spatial and land use biases in trapping activity. It is possible that land use and population density at trapping sites varied importantly between when rodent trapping was conducted and the conditions in 2005. Despite this limitation, the finding that trapping is biased towards high density, human dominated landscapes is unlikely to substantially change.
+
+We have shown that synthesis of rodent trapping studies to supplement curated rodent distributions can counteract some of the inherent biases in these data and that they can add further contextual data to host-pathogen association data. Together this supports their inclusion in efforts to model endemic zoonotic risk and novel pathogen emergence. Contribution of rodent trapping studies as data sources can be improved by adopting reporting standards and practices consistent with Open Science, namely sharing of disaggregated datasets alongside publication [@foster_open_2017].
+
+Future rodent trapping studies should be targeted towards regions that are currently under-studied. Further information on rodent presence and abundance across West Africa will assist in modelling changing endemic zoonosis risk and the potential for novel pathogen emergence. Sharing of disaggregated data alongside research publications should be supported with adoption of data standards to support further data synthesis. Inclusion of exact locations of trapping sites, trapping effort and the dates at which trapping occurred would support more detailed understanding of the spatio-temporal dynamics of host populations and the risk of endemic zoonosis spillover events. Despite these challenges we propose that rodent trapping studies can provide an important source of data to supplement curated datasets on rodent distributions to quantify the risk of endemic zoonosis spillover events and the hazard of novel pathogen emergence.
+
+# References
+
+<div id="refs"></div>
+
+# Supplementary
+<!---BLOCK_LANDSCAPE_START--->
+## Supplementary Table 1
+
+```{r supplementary-table-1}
+
+read_rds(here("tables", "supplementary_table_1.rds")) %>%
+  set_caption(caption = "Supplementary Table 1: Data extraction tool for studies meeting inclusion criteria")
+
+```
+
+## Supplementary Table 2
+
+```{r supplementary-table-2}
+
+read_rds(here("tables", "supplementary_table_2.rds"))
+
+```
+<!---BLOCK_LANDSCAPE_STOP--->
+## Supplementary Table 3
+
+```{r supplementary-table-3-1}
+
+read_rds(here("tables", "supplementary_table_3_1.rds"))
+
+```
+
+```{r supplementary-table-3-2}
+
+read_rds(here("tables", "supplementary_table_3_2.rds"))
+
+```
+
+```{r supplementary-table-3-3}
+
+read_rds(here("tables", "supplementary_table_3_3.rds"))
+
+```
+
+```{r supplementary-table-3-4}
+
+read_rds(here("tables", "supplementary_table_3_4.rds"))
+
+```
+
+```{r supplementary-table-3-5}
+
+read_rds(here("tables", "supplementary_table_3_5.rds"))
+
+```
+
+## Supplementary Figure 1
+
+![Supplementary Figure 1. Green points represent the start date of rodent trapping studies, blue points representing the final trapping activity. Red points indicate the publication of studies. Increasing numbers of studies have been published since 2000 with more studies being conducted over repeated visits.](`r here("figures", "Supplementary_figure_1.png")`)
+
+## Supplementary Figure 2
+
+![Supplementary Figure 2. Comparison between proportion of land use between regions trapped and all land use in West Africa. Cropland, Shrubland and Grassland were trapped at than representative rates while Bare habitats, Forested regions and Urban landscapes were trapped at lower than representative rates.](`r here("figures", "Supplementary_figure_2.png")`)
+
+## Supplementary Figure 3
+
+![Supplementary Figure 3A. Relative trapping effort bias across West Africa from the subset of included studies reporting trapping effort adjusted for proportion urban land cover and proportion tree cover. Predictions are limited to areas around trap sites (coloured areas), uncertainty in the estimate of bias is represented by colour transparency/pallor. Purple regions represent areas with higher than expected trapping effort, yellow regions represent areas lower than expected trapping effort](`r here("figures", "Figure_2_sensitivity.png")`)
+
+![](`r here("figures", "Figure_2_ss.png")`)
+
+## Supplementary Figure 4
+![](`r here("figures", "Supp_4a_updated.png")`)
+
+![Supplementary Figure 4. A) Identified host-pathogen associations at pathogen family level through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset. B) Identified host-pathogen associations at pathogen family level through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Supp_4b_updated.png")`)
