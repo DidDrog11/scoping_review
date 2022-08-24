@@ -63,3 +63,6 @@ plots
 
 coauthors_comments
 reports/nul
+
+# Large sensitivity models
+/models/sensitivity_models.rds

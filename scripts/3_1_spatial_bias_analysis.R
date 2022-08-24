@@ -1,5 +1,9 @@
 source(here::here("scripts", "libraries.R"))
 
+
+# Prepare data for model --------------------------------------------------
+# The below section imports the data, the covariates (as rasters) and saves them as dataframes
+
 if(!file.exists(here("models", "all_models.rds"))) {
 
   habitat_split <- c("habitat_1", "habitat_2", "habitat_3", "habitat_4", "habitat_5", "habitat_6", "habitat_7")
@@ -175,6 +179,11 @@ if(!file.exists(here("models", "all_models.rds"))) {
   region_pop_hab_sf_sens <- read_rds(here("data_clean", "pop_habitat_tn_analysis_sensitivity.rds"))
 }
 
+
+# Run the models on data --------------------------------------------------
+# The below section runs the models on the data
+# The simplest model runs in about a minute, others may take quite a bit longer
+
 if(!file.exists(here("models", "all_models.rds"))) {
 
   # Run the models on the data with changes to number of knots of variables included
@@ -244,7 +253,7 @@ if(!file.exists(here("models", "all_models.rds"))) {
 
 }
 
-# Calculate model metrics for each model run
+# Calculate model metrics for each model
 all_models_metrics <- list()
 all_models_metrics <- lapply(all_models, function(x) {
 
@@ -280,7 +289,7 @@ for(i in 1:length(all_models_metrics)) {
 # Produce a table to compare model metrics
 model_table
 
-test <- region_pop_hab_sf %>%
+compare_predictions <- region_pop_hab_sf %>%
   select(ID, GID_0, GID_2, NAME_2, x, y, region_trap_nights, tn_density, area_km2, pop_2005, cropland, shrubland, tree_cover, urban) %>%
   mutate(null_model = exp(as.numeric(predict(all_models$null_model, newdata = region_pop_hab_sf))),
          null_increased_k_model = exp(as.numeric(predict(all_models$null_increased_k, newdata = region_pop_hab_sf))),
@@ -296,35 +305,57 @@ test <- region_pop_hab_sf %>%
                names_to = "model") %>%
   mutate(model = fct_inorder(model))
 
-ggplot(test, aes(x = prediction, y = tn_density, group = model)) +
+ggplot(compare_predictions, aes(x = prediction, y = tn_density, group = model)) +
   geom_point() +
   geom_smooth() +
   facet_wrap(~ model)
 
 # Sensitivity analysis
-tn_pop_model_sens <- gam(tn_density ~ s(x, y, k = 540) + s(log(pop_2005), k = 9),
-                         family = "tw",
-                         data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
+# BAM does not converge, so GAM needs to be used for these.
+# As the number of data points has shrunk we need to increase the number of knots for the spatial component to support the model to converge
 
-tn_pop_habitat_model_sens <- gam(tn_density ~ s(log(pop_2005), k = 9) + s(cropland) + s(tree_cover, k = 15) +s(urban) + s(x, y, k = 540),
-                                 family = "tw",
-                                 data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
+if(!file.exists(here("models", "sensitivity_models.rds"))) {
+  tn_final_model_sens <- gam(tn_density ~ s(pop_2005, k = 12) + s(area_km2, bs = "cs") + s(urban, bs = "cs") + s(x, y, k = 540),
+                             family = "tw",
+                             data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
 
-tn_habitat_model_3_sens <- gam(tn_density ~  s(tree_cover, k = 15) + s(urban) + s(x, y, k = 540),
-                               family = "tw",
-                               data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
+  tn_pop_area_sens <- gam(tn_density ~ s(x, y, k = 540) + s(pop_2005, k = 12) + s(area_km2, bs = "cs"),
+                          family = "tw",
+                          data = region_pop_hab_sf_sens %>% filter(GID_0 != "CPV"))
 
-summary(tn_habitat_model_3_sens)
-gam.check(tn_habitat_model_3_sens)
-plot(tn_habitat_model_3_sens, all.terms = TRUE)
+  sensitivity_models <- list(final_sens = tn_final_model_sens,
+                             pop_area_sens = tn_pop_area_sens)
 
-write_rds(tn_habitat_model_3_sens, here("data_clean", "tn_pop_habitat_model_sens.rds"))
+  write_rds(sensitivity_models, here("models", "sensitivity_models.rds"))
+
+} else {
+
+  sensitivity_models <- read_rds(here("models", "sensitivity_models.rds"))
+
+}
+
+sens_models_metrics <- list()
+sens_models_metrics <- lapply(sensitivity_models, function(x) {
+
+  name = names(x)
+  summary = summary(x)
+  AIC = AIC(x)
+  viz = getViz(x)
+  check_x = check(viz)
+  plot_x = plot(viz, all_terms = TRUE)
+
+  return(name = list(summary = summary,
+                     AIC = AIC,
+                     check = check_x,
+                     plot = plot_x))
+
+})
 
 # Figure 2 ----------------------------------------------------------------
 
 model_1 <- getViz(all_models$combined_model_1)
 
-model_1_raster <- plot(sm(model_1, 4), n = 150, too.far = 0.08) +
+model_1_raster <- plot(sm(model_1, 4), n = 300, too.far = 0.08) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
   l_fitContour() +
   coord_cartesian(expand = FALSE)
@@ -343,45 +374,55 @@ inverse_country <- st_difference(rect_border, country_border)
 # Reduce the opacity of the grid lines: Default is 255
 col_grid <- rgb(235, 235, 235, 100, maxColorValue = 255)
 
+# Diverging palette
+brbg_hcl <- colorspace::diverging_hcl(11,
+                                      h = c(180, 50), c = 80, l = c(20, 95), power = c(0.7, 1.3),
+                                      register = "diverging_map")
+
 fig_2_updated <- model_1_raster +
   geom_sf(data = inverse_country, fill = "white", colour = "white", inherit.aes = FALSE) +
   geom_sf(data = included_countries, fill = NA, alpha = 1, lwd = 0.5, inherit.aes = FALSE) +
-  scale_fill_viridis_c(option = "inferno", na.value = "#ffffff00", direction = 1) +
+  scale_fill_continuous_diverging(palette = "diverging_map", na.value = "#ffffff00", limits = c(-4, 4)) +
   theme_minimal() +
   labs(title = element_blank(),
        x = element_blank(),
        y = element_blank(),
        fill = "Relative \ntrapping effort \nbias") +
-  annotation_north_arrow(height = unit(1, "cm"),
-                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_north_arrow(height = unit(2, "cm"),
+                         style = north_arrow_minimal(text_size = 10)) +
   annotation_scale(height = unit(0.1, "cm"),
                    location = "tr") +
   theme(panel.ontop = TRUE,
         panel.grid = element_line(color = col_grid))
 
 save_plot(plot = as.grob(fig_2_updated$ggObj),
-          filename = here("figures", "Figure_2_updated.png"), dpi = 320, base_height = 10, base_width = 12)
+          filename = here("figures", "Figure_2_updated.pdf"), base_height = 10, base_width = 12)
 
 
 # Supplementary figure model sensitivity ----------------------------------
 
-tn_pop_habitat_model_sens <- read_rds(here("data_clean", "tn_pop_habitat_model_sens.rds"))
+model_1_s <- getViz(sensitivity_models$final_sens)
 
-model_1_s <- getViz(tn_pop_habitat_model_sens)
-
-supplementary_fig_2_updated <- plot(sm(model_1_s, 5), n = 150, too.far = 0.02) +
+model_1_s_raster <- plot(sm(model_1_s, 4), n = 150, too.far = 0.02) +
   l_fitRaster(pTrans = zto1(0.05, 2, 0.1)) +
-  geom_sf(data = included_countries %>% filter(GID_0 != "CPV"), fill = NA, alpha = 0.4, lwd = 0.1, inherit.aes = FALSE) +
-  scale_fill_viridis_c(option = "inferno", na.value = "#ffffff00", direction = -1) +
+  l_fitContour() +
+  coord_cartesian(expand = FALSE)
+
+supplementary_fig_2_updated <- model_1_s_raster +
+  geom_sf(data = inverse_country, fill = "white", colour = "white", inherit.aes = FALSE) +
+  geom_sf(data = included_countries, fill = NA, alpha = 1, lwd = 0.5, inherit.aes = FALSE) +
+  scale_fill_continuous_diverging(palette = "diverging_map", na.value = "#ffffff00", limits = c(-12, 12)) +
   theme_minimal() +
   labs(title = element_blank(),
        x = element_blank(),
        y = element_blank(),
        fill = "Relative \ntrapping effort \nbias") +
-  annotation_north_arrow(height = unit(1, "cm"),
-                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_north_arrow(height = unit(2, "cm"),
+                         style = north_arrow_minimal(text_size = 10)) +
   annotation_scale(height = unit(0.1, "cm"),
-                   location = "tr")
+                   location = "tr") +
+  theme(panel.ontop = TRUE,
+        panel.grid = element_line(color = col_grid))
 
 save_plot(plot = as.grob(supplementary_fig_2_updated$ggObj),
-          filename = here("figures", "Figure_3_updated_sensitivity.png"), dpi = 320, base_height = 10, base_width = 12)
+          filename = here("figures", "Supplementary_Figure_2.pdf"), base_height = 10, base_width = 12)

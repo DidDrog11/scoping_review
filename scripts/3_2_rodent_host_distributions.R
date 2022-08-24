@@ -180,31 +180,50 @@ plot_fig_3 <- function(species_name, iucn = rodent_iucn, gbif = rodent_gbif, rod
               legend = legend))
 }
 
-produced_plots <- list()
+# Three species will be shown in the main manuscript
+fig_3_species <- c("mastomys natalensis", "rattus rattus", "mus musculus")
+
+fig_3_plots <- list()
 legend <- list()
 
-for(i in 1:length(species_names)) {
+for(i in 1:length(fig_3_species)) {
 
   output <- plot_fig_3(species_names[[i]])
 
-  produced_plots[[i]] <- output[["combined_plot"]]
+  fig_3_plots[[i]] <- output[["combined_plot"]]
 
   legend <- output[["legend"]]
 
 }
 
-names(produced_plots) <- species_names
+fig_3_plots_grid <- plot_grid(fig_3_plots[[1]], fig_3_plots[[2]], fig_3_plots[[3]], legend,
+                              ncol = 1, labels = c("Mastomys natalensis", "Rattus rattus", "Mus musculus", ""),
+                              hjust = c(-0.1, -0.2, -0.165),
+                              label_size = 12, rel_heights = c(1, 1, 1, 0.4))
 
-test_plots_a <- plot_grid(produced_plots[[1]], produced_plots[[2]], produced_plots[[3]], produced_plots[[4]],
-                          legend, ncol = 1, labels = c("Mastomys natalensis", "Rattus rattus", "Mastomys erythroleucus", "Mus musculus", ""),
-                          hjust = c(-0.2, -0.32, -0.17, -0.29), label_size = 12, rel_heights = c(1, 1, 1, 1, 0.6))
-test_plots_b <- plot_grid(produced_plots[[5]], produced_plots[[6]], produced_plots[[7]],
-                          legend, ncol = 1, labels = c("Arvicanthis niloticus", "Praomys daltoni", "Cricetomys gambianus", ""),
-                          hjust = c(-0.2, -0.25, -0.165), label_size = 12, rel_heights = c(1, 1, 1, 0.6))
+save_plot(plot = fig_3_plots_grid, filename = here("figures", "Figure_3_updated.pdf"), base_height = 12, base_width = 8)
 
-save_plot(plot = test_plots_a, filename = here("figures", "Figure_3_a_updated.png"), base_height = 12, base_width = 8)
-save_plot(plot = test_plots_b, filename = here("figures", "Figure_3_b_updated.png"), base_height = 12, base_width = 8)
+# Remaining species will go as Supplementary
+s_fig_4_species <- species_names[!species_names %in% fig_3_species]
 
+s_fig_4_plots <- list()
+legend <- list()
+
+for(i in 1:length(s_fig_4_species)) {
+
+  output <- plot_fig_3(s_fig_4_species[[i]])
+
+  s_fig_4_plots[[i]] <- output[["combined_plot"]]
+
+  legend <- output[["legend"]]
+
+}
+
+s_fig_4_plots_grid <- plot_grid(s_fig_4_plots[[1]], s_fig_4_plots[[2]], s_fig_4_plots[[3]], s_fig_4_plots[[4]],
+                          legend, ncol = 1, labels = c("Mastomys erythroleucus", "Arvicanthis niloticus", "Praomys daltoni", "Cricetomys gambianus", ""),
+                          hjust = c(-0.1, -0.14, -0.165, -0.1), label_size = 12, rel_heights = c(1, 1, 1, 1, 0.4))
+
+save_plot(plot = s_fig_4_plots_grid, filename = here("figures", "Supplementary_Figure_4.pdf"), base_height = 12, base_width = 8)
 
 # Proportion of range trapped ---------------------------------------------
 # Reference raster from pop_density

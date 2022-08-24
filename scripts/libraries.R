@@ -28,6 +28,7 @@ pkgs =
     "distill",
     "leaflet",
     "RColorBrewer",
+    "colorspace",
     "lubridate",
     "gt",
     "gtsummary",

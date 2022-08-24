@@ -306,37 +306,37 @@ plot_4_df$species <- fct_relevel(plot_4_df$species, levels(sum_species))
 plot_4_acute <- plot_4_df %>%
   filter(tested > 1) %>%
   filter(class == "Acute infection") %>%
-  mutate(lab = paste0(round(value, 1), "% \n N = ", tested)) %>%
+  mutate(lab = paste0(round(value, 1), "%, N = ", tested)) %>%
   ggplot() +
-  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
+  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1.2) +
   geom_label(aes(x = pathogen_name, y = species, label = lab), size = 3.7) +
-  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1, limits = c(0, 50)) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
   labs(title = "Acute infection",
        fill = "Infection (%)",
        x = element_blank(),
        y = element_blank(),
        colour = element_blank()) +
-  theme_minimal()
+  theme_bw()
 
 plot_4_serology <- plot_4_df %>%
   filter(tested > 1) %>%
   filter(class == "Serology") %>%
-  mutate(lab = paste0(round(value, 1), "% N = ", tested)) %>%
+  mutate(lab = paste0(round(value, 1), "%, N = ", tested)) %>%
   ggplot() +
-  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
+  geom_tile(aes(x = pathogen_name, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1.2) +
   geom_label(aes(x = pathogen_name, y = species, label = lab)) +
-  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1, limits = c(0, 20)) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
   labs(title = "Serology",
        fill = "Infection (%)",
        x = element_blank(),
        y = element_blank(),
        colour = element_blank()) +
-  theme_minimal()
+  theme_bw()
 
-save_plot(plot_grid(plot_4_acute, labels = "A"), filename = here("figures", "Figure_4a_updated.png"), base_width = 12, base_height = 10)
-save_plot(plot_grid(plot_4_serology, labels = "B"), filename = here("figures", "Figure_4b_updated.png"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_acute, labels = "A"), filename = here("figures", "Figure_4a_updated.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_serology, labels = "B"), filename = here("figures", "Figure_4b_updated.pdf"), base_width = 12, base_height = 10)
 
 # Further results ---------------------------------------------------------
 

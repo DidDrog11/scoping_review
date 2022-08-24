@@ -94,7 +94,7 @@ tibble(
   flextable() %>%
   autofit() %>%
   set_caption(caption = "Supplementary Table 1: Data extraction tool and variable description") %>%
-  write_rds(here("tables", "supplementary_table_1.rds"))
+  write_rds(here("tables", "Supplementary_Table_1.rds"))
 
 # Supplementary 2
 # Included studies
@@ -102,26 +102,24 @@ tbl_2 <- readRDS(here("data_clean", "studies.rds")) %>%
   filter(!is.na(reference_uid))
 
 bib <- bib2df(here("citations", "include_final.bib")) %>%
-  select(BIBTEXKEY, DOI, DOI.1, PMID, PMCID, ISSN, ISBN, URL) %>%
+  select(TITLE, JOURNALTITLE, SERIES, BIBTEXKEY, DOI, DOI.1, PMID, PMCID, ISSN, ISBN, URL) %>%
   mutate(reference = as.character(coalesce(DOI, PMID, ISSN, ISBN)))
 
 matched_ref <- left_join(tbl_2, bib,
                          by = c("reference_uid" = "reference")) %>%
-  select(year_publication, first_author, unique_id, reference_uid, BIBTEXKEY, DOI.1, PMID, PMCID, URL, link) %>%
-  mutate(year_publication = as_date(year_publication, format = "%Y"),
-         reference = paste("@", BIBTEXKEY, sep = "")) %>%
-  select(-c(BIBTEXKEY, DOI.1, PMID, PMCID, reference_uid, link)) %>%
-  select(reference, year_publication, first_author, unique_id, URL) %>%
-  rename("Reference" = reference,
-         "Year publication" = year_publication,
+  select(year_publication, first_author, TITLE, journal_name) %>%
+  mutate(year_publication = as_date(year_publication, format = "%Y")) %>%
+  select(year_publication, first_author, TITLE, journal_name) %>%
+  rename("Year publication" = year_publication,
          "Author" = first_author,
-         "Study unique identifier" = unique_id,
-         "Link" = URL)
-
-supplementary_table_2 <- matched_ref %>%
-  arrange(`Year publication`)
-
-write_rds(supplementary_table_2, here("data_clean", "supplementary_table_2.rds"))
+         "Title" = TITLE,
+         "Journal/Publication" = journal_name) %>%
+  arrange(`Year publication`, `Author`) %>%
+  flextable() %>%
+  autofit() %>%
+  set_caption(caption = "Supplementary Table 2: Included studies") %>%
+  colformat_date(j = 1, fmt_date = "%Y") %>%
+  write_rds(here("tables", "Supplementary_Table_2.rds"))
 
 # Supplementary 3
 # Model tables

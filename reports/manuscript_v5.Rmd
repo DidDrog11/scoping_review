@@ -64,13 +64,13 @@ Geographic locations of trapping studies were extracted using GPS locations for 
 
 For relevant studies we extracted data on all microorganisms and zoonotic pathogens tested and the method used (e.g., molecular or serological diagnosis). Where assays were able to identify the microorganism to species level this was recorded, non-specific assays higher order attribution was used (e.g. to family level). We recorded the species of rodent host tested, the number of individuals tested and the number of positive and negative results. For studies reporting summary results all testing data were extracted, this may introduce double counting of individual rodents, for example, if a single rodent was tested using both molecular and serological assays. Where studies reported indeterminate results, these were also recorded. 
 
-Out of 4,692 relevant citations, we identified 127 rodent trapping studies (Supplementary Table 2.). The earliest trapping studies were conducted in 1964, with a trend of increasing numbers of studies being performed annually since 2000. The median year of first trapping activity was 2007, with the median length of trapping activity being 1 year (IQR 0-2 years) (Supplementary Figure 1.). Studies were conducted in 14 West African countries, with no studies reported from The Gambia or Togo, at 1,611 trap sites (Figure 1A.). 
+Out of 4,692 relevant citations, we identified 127 rodent trapping studies (Supplementary Table 2.). The earliest trapping studies were conducted in 1964, with a trend of increasing numbers of studies being performed annually since 2000. The median year of first trapping activity was 2007, with the median length of trapping activity being 1 year (IQR 0-2 years) (Supplementary Fig 1.). Studies were conducted in 14 West African countries, with no studies reported from The Gambia or Togo, at 1,611 trap sites (Fig 1A.). 
 
-Included studies explicitly reported on 601,184 trap nights, a further 341,445 trap nights were imputed from studies with no recording of trapping effort based on trap success, leading to an estimate of 942,629 trap nights (Figure 1B.). A minority of studies trapped at a single study site (30, 24%), with 46 (36%) trapping at between two and five sites, the remaining 51 studies (40%) trapped at between six and 93 study sites.
+Included studies explicitly reported on 601,184 trap nights, a further 341,445 trap nights were imputed from studies with no recording of trapping effort based on trap success, leading to an estimate of 942,629 trap nights (Fig 1B.). A minority of studies trapped at a single study site (30, 24%), with 46 (36%) trapping at between two and five sites, the remaining 51 studies (40%) trapped at between six and 93 study sites.
 
 In total 76,275 small mammals were trapped with 65,628 (90%) identified to species level and 7,439 (10%)  identified to genus, with the remaining classified to higher taxonomic level. The majority of the 132 identified species were Rodentia (102, 78%), of which Muridae (73, 72%) were the most common family. Soricomorpha were the second most identified order of small mammals (28, 21%). 57 studies tested for 32 microorganisms, defined to species or genus level that are known or potential pathogens. Most studies tested for a single microorganism (48, 84%). The most frequently assayed microorganisms were *Lassa mammarenavirus* or Arenaviridae (21, 37%), *Borrelia sp.* (9, 16%), *Bartonella sp.* (4, 7%) and *Toxoplasma gondii* (4, 7%). Most studies used Polymerase Chain Reaction (PCR) to detect microorganisms (37, 65%), with fewer studies using serology-based tests (11, 19%) or histological or direct visualisation assays (11, 21%). From 32,920 individual rodent samples we produced 351 host-pathogen pairs. With *Rattus rattus*, *Mus musculus*, *Mastomys erythroleucus*, *Mastomys natalensis* and *Arvicanthis niloticus* being assayed for at least 18 microorganisms.
 
-![Figure 1: A) The location of trapping sites in West Africa. No sites were recorded from Togo or The Gambia. Heterogeneity is observed in the coverage of each country by trap night (colour) and location of sites. For example, Senegal, Mali and Sierra Leone have generally good coverage compared to Guinea and Burkina Faso. B) Histogram of trap nights performed at each study site, a median of 248 trap nights (IQR 116-500) was performed at each site](`r here("figures", "Figure_1_updated.png")`)
+![Fig 1: A) The location of trapping sites in West Africa. No sites were recorded from Togo or The Gambia. Heterogeneity is observed in the coverage of each country by trap night (colour) and location of sites. For example, Senegal, Mali and Sierra Leone have generally good coverage compared to Guinea and Burkina Faso. B) Histogram of trap nights performed at each study site, a median of 248 trap nights (IQR 116-500) was performed at each site](`r here("figures", "Figure_1_updated.pdf")`)
 
 ## Analysis
 
@@ -110,7 +110,7 @@ For each of the seven species, we first calculated the area of the IUCN expected
 
 To examine the usefulness of rodent trapping studies as an additional source of data we compared identified host-pathogen associations from trapping studies investigating zoonoses with a consolidated zoonoses dataset (CLOVER) [@gibb_mammal_2021; @gibb_viralemergenceclover_2021]. CLOVER is a synthesis of four host-pathogen datasets (GMPD2, EID2, HP3 and Shaw, 2020) and was released in 2021, it contains more than 25,000 host-pathogen associations for Bacteria, Viruses, Helminth, Protozoa and Fungi. We compared the host-pathogen networks across the two datasets, where the CLOVER data was subset for host species present in the rodent trapping datta.
 
-For host-pathogen pairs with assay results consistent with acute or prior infection, we calculated the proportion positive and identify those absent from CLOVER. We expand the analysis to host-pathogen pairs with pathogens identified to genus level in Supplementary Figure 4. 
+For host-pathogen pairs with assay results consistent with acute or prior infection, we calculated the proportion positive and identify those absent from CLOVER. We expand the analysis to host-pathogen pairs with pathogens identified to genus level in Supplementary Fig 4. 
 
 ### What is the spatial extent of pathogen testing within host ranges?
 
@@ -122,17 +122,17 @@ All data and code to reproduce these analyses are available in an archived Zenod
 
 ## What is the extent of spatial bias in the rodent trapping data?
 
-We found a non-random spatial distribution of rodent trapping locations across the study region, suggestive of underlying bias in the sampling or rodents across West Africa. Trap sites were situated in 256 of 1,450 (17.6%) level-2 administrative regions in 14 West African nations. The regions with highest TN density included the capitals and large cities of Niger (Niamey), Nigeria (Ibadan), Ghana (Accra), Senegal (Dakar), Ghana (Accra) and Benin (Cotonou). Outside of these cities, regions in, Northern Senegal, Southern Guinea, Edo and Ogun States in Nigeria and Eastern Sierra Leone had the greatest TN density (Figure 1A.).
+We found a non-random spatial distribution of rodent trapping locations across the study region, suggestive of underlying bias in the sampling or rodents across West Africa. Trap sites were situated in 256 of 1,450 (17.6%) level-2 administrative regions in 14 West African nations. The regions with highest TN density included the capitals and large cities of Niger (Niamey), Nigeria (Ibadan), Ghana (Accra), Senegal (Dakar), Ghana (Accra) and Benin (Cotonou). Outside of these cities, regions in, Northern Senegal, Southern Guinea, Edo and Ogun States in Nigeria and Eastern Sierra Leone had the greatest TN density (Fig 1A.).
 
-The most parsimonious GAM model (adjusted R2 = 0.3, Deviance explained = 48.7%) reported significant non-linear associations between relative trapping effort bias and human population densities (Effective Degrees of Freedom (EDF) = 7.13, *p* < 0.001), proportion of urban landscape (EDF = 1.92, *p* < 0.002) and region area (EDF = 3.63, *p* < 0.001), alongside significant spatial associations (EDF = 27.3, *p* < 0.001) (Supplementary table 3.1). Greatest trapping effort bias peaked at population densities between 5,000-7,500 individuals/km^2^, urban landscape >10% and region areas < 1,000km^2^. Increased trapping effort was found in North West Senegal, North and East Sierra Leone, Central Guinea and coastal regions of Nigeria, Benin and Ghana; in contrast South East Nigeria, Northern Nigeria and Burkina Faso had an observed bias towards a reduced trapping effort (Figure 2). In sensitivity analysis, excluding sites with imputed trap nights, Mauritania, Northern Senegal and Sierra Leone remained as regions trapped at higher rates, with Nigeria being trapped at lower than expected rates (Supplementary Figure 3a.). In pixel based sensitivity analysis spatial coverage was reduced with similar patterns of bias observed to the primary analysis (Supplementary Figure 3b.).
+The most parsimonious GAM model (adjusted R2 = 0.3, Deviance explained = 48.7%) reported significant non-linear associations between relative trapping effort bias and human population densities (Effective Degrees of Freedom (EDF) = 7.13, *p* < 0.001), proportion of urban landscape (EDF = 1.92, *p* < 0.002) and region area (EDF = 3.63, *p* < 0.001), alongside significant spatial associations (EDF = 27.3, *p* < 0.001) (Supplementary table 3.1). Greatest trapping effort bias peaked at population densities between 5,000-7,500 individuals/km^2^, urban landscape >10% and region areas < 1,000km^2^. Increased trapping effort was found in North West Senegal, North and East Sierra Leone, Central Guinea and coastal regions of Nigeria, Benin and Ghana; in contrast South East Nigeria, Northern Nigeria and Burkina Faso had an observed bias towards a reduced trapping effort (Fig 2). In sensitivity analysis, excluding sites with imputed trap nights, Mauritania, Northern Senegal and Sierra Leone remained as regions trapped at higher rates, with Nigeria being trapped at lower than expected rates (Supplementary Fig 3a.). In pixel based sensitivity analysis spatial coverage was reduced with similar patterns of bias observed to the primary analysis (Supplementary Fig 3b.).
 
-![Figure 2. Relative trapping effort bias across West Africa from included studies adjusted for human population density, proportion urban land cover and area of the administrative region. Uncertainty in the point estimate of relative trapping effort bias is represented by colour transparency/pallor (e.g., Eastern Liberia and Central Mali). Yellow regions represent areas with a bias towards increased trapping effort (e.g., North West Senegal), purple regions represent areas with a bias towards reduced trapping effort (e.g., Northern Nigeria).](`r here("figures", "Figure_2_updated.png")`)
+![Fig 2. Relative trapping effort bias across West Africa from included studies adjusted for human population density, proportion urban land cover and area of the administrative region. Yellow regions represent areas with a bias towards increased trapping effort (e.g., North West Senegal), purple regions represent areas with a bias towards reduced trapping effort (e.g., Northern Nigeria).](`r here("figures", "Figure_2_updated.pdf")`)
 
 ## What is the difference in rodent host distributions between curated datasets and rodent trapping studies?
 
-We found that for six of the seven rodent (*M. natalensis*, *R. rattus*, *M. erythroleucus*, *M. musculus*, *A. niloticus* and *P. daltoni*), trapping studies provided more distinct locations of detection and non-detection than were available from GBIF. For the endemic rodent species (*M. natalensis*, *M. erythroleucus*, *A. niloticus*, *P. daltoni* and *C. gambianus*) IUCN ranges had good concordance to both trapping studies and GBIF, however, individuals of *A. niloticus* and *P. daltoni* were detected outside of IUCN ranges. In contrast, the non-native species *R. rattus* and *M. musculus* were detected across much greater ranges than were expected from IUCN distributions. Comparisons for *M. natalensis*, *R. rattus* and *M. musculus* are shown in Figure 3A, the remaining species are shown in Supplementary Figure 4.
+We found that for six of the seven rodent (*M. natalensis*, *R. rattus*, *M. erythroleucus*, *M. musculus*, *A. niloticus* and *P. daltoni*), trapping studies provided more distinct locations of detection and non-detection than were available from GBIF. For the endemic rodent species (*M. natalensis*, *M. erythroleucus*, *A. niloticus*, *P. daltoni* and *C. gambianus*) IUCN ranges had good concordance to both trapping studies and GBIF, however, individuals of *A. niloticus* and *P. daltoni* were detected outside of IUCN ranges. In contrast, the non-native species *R. rattus* and *M. musculus* were detected across much greater ranges than were expected from IUCN distributions. Comparisons for *M. natalensis*, *R. rattus* and *M. musculus* are shown in Fig 3, the remaining species are shown in Supplementary Fig 4.
 
-![Figure 3. Each row corresponds to a single rodent species. L) Presence recorded in GBIF overlaid on IUCN species range (red-shaded area). R) Detection and non-detection from rodent trapping studies overlaid on IUCN species ranges. M. musculus has no IUCN West African range.](`r here("figures", "Figure_3_updated.png")`)
+![Fig 3. Each row corresponds to a single rodent species. L) Presence recorded in GBIF overlaid on IUCN species range (red-shaded area). R) Detection and non-detection from rodent trapping studies overlaid on IUCN species ranges. M. musculus has no IUCN West African range.](`r here("figures", "Figure_3_updated.pdf")`)
 
 Comparison of proportion of a species IUCN range in which detections and non-detections occurred showed that sampling locations of these seven species within GBIF covered between 0.09-0.26% of expected ranges (Table 1.). Detections occurred outside IUCN ranges for all species, most noticeably for *A. niloticus* and *R. rattus*. Sampling locations within rodent trapping data covered 0.03-0.24% of expected ranges with detections occurring outside IUCN ranges most noticeably for *A. niloticus* and *R. rattus*. Combining GBIF and rodent trapping data increased the sampled area by a mean of 1.65 times, suggesting limited overlap between the locations sampled. Non-detection of species occurred across species ranges (mean = 0.11%, SD = 0.03%), suggestive of spatial heterogeneity of presence within IUCN ranges.
 
@@ -149,15 +149,15 @@ table_1
 
 ## Are rodent trapping derived host-pathogen associations present in a consolidated zoonoses dataset?
 
-We found potentially important differences between the host-pathogen networks produced from included rodent trapping studies and the consolidated CLOVER dataset. When limited to taxonomic classification of both pathogen and host to species level we identified 25 host-pathogen pairs among 14 rodent and 6 pathogen species (Figure 4.). We identified negative associations (non-detection through specific assays) for 45 host-pathogen pairs among 35 rodent and 7 pathogen species. CLOVER contained 10 (40%) of our identified host-pathogen associations, the remaining 15 (60%) were not found to be present in CLOVER, additionally CLOVER recorded positive associations for 4 (9%) of the negative associations produced from the rodent trapping data.
+We found potentially important differences between the host-pathogen networks produced from included rodent trapping studies and the consolidated CLOVER dataset. When limited to taxonomic classification of both pathogen and host to species level we identified 25 host-pathogen pairs among 14 rodent and 6 pathogen species (Fig 4.). We identified negative associations (non-detection through specific assays) for 45 host-pathogen pairs among 35 rodent and 7 pathogen species. CLOVER contained 10 (40%) of our identified host-pathogen associations, the remaining 15 (60%) were not found to be present in CLOVER, additionally CLOVER recorded positive associations for 4 (9%) of the negative associations produced from the rodent trapping data.
 
-![](`r here("figures", "Figure_4a_updated.png")`)
+![Fig 4. A) Identified species level host-pathogen associations through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive, the number of individuals tested for the pathogen is labelled N. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Figure_4a_updated.pdf")`)
 
-![Figure 4. A) Identified species level host-pathogen associations through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset. B) Identified species level host-pathogen associations through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Figure_4b_updated.png")`)
+![Fig 4. B) Identified species level host-pathogen associations through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive, the number of individuals tested for the pathogen is labelled N. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Figure_4b_updated.pdf")`)
 
 CLOVER included an additional 492 host-pathogen associations we do not observe in rodent trapping studies. The majority of these 392 (80%) pairs are from species with global distributions (*M. musculus*, *R. rattus* and *R. norvegicus*), or from those with wide ranging distributions in sub-Saharan Africa (38, 8%) (i.e., *A. niloticus*, *M. natalensis* and *Atelerix albiventris*).
 
-For pathogens not identified to species level (i.e. family or higher taxa only), we identified 148 host-pathogen pairs among 32 rodent species and 25 pathogen families (Supplementary Figure 4.), with CLOVER containing 66 (45%) of these associations.
+For pathogens not identified to species level (i.e. family or higher taxa only), we identified 148 host-pathogen pairs among 32 rodent species and 25 pathogen families (Supplementary Fig 4.), with CLOVER containing 66 (45%) of these associations.
 
 Rodent trapping studies identified additional rodent host species for six pathogens; *Lassa mammarenavirus* (5), *Toxoplasma gondii* (4), Usutu virus (2), *Coxiella burnetii* (2), *Escherichia coli* and *Klebsiella pneumoniae* (both 1), that were not present in this consolidated host-pathogen association dataset.
 
@@ -205,7 +205,7 @@ Future rodent trapping studies should be targeted towards regions that are curre
 
 ```{r supplementary-table-1}
 
-read_rds(here("tables", "supplementary_table_1.rds")) %>%
+read_rds(here("tables", "Supplementary_Table_1.rds")) %>%
   set_caption(caption = "Supplementary Table 1: Data extraction tool for studies meeting inclusion criteria")
 
 ```
@@ -214,7 +214,7 @@ read_rds(here("tables", "supplementary_table_1.rds")) %>%
 
 ```{r supplementary-table-2}
 
-read_rds(here("tables", "supplementary_table_2.rds"))
+read_rds(here("tables", "Supplementary_Table_2.rds"))
 
 ```
 <!---BLOCK_LANDSCAPE_STOP--->
@@ -250,21 +250,21 @@ read_rds(here("tables", "supplementary_table_3_5.rds"))
 
 ```
 
-## Supplementary Figure 1
+## Supplementary Fig 1
 
-![Supplementary Figure 1. Green points represent the start date of rodent trapping studies, blue points representing the final trapping activity. Red points indicate the publication of studies. Increasing numbers of studies have been published since 2000 with more studies being conducted over repeated visits.](`r here("figures", "Supplementary_figure_1.png")`)
+![Supplementary Fig 1. Green points represent the start date of rodent trapping studies, blue points representing the final trapping activity. Red points indicate the publication of studies. Increasing numbers of studies have been published since 2000 with more studies being conducted over repeated visits.](`r here("figures", "Supplementary_Figure_1.pdf")`)
 
-## Supplementary Figure 2
+## Supplementary Fig 2
 
-![Supplementary Figure 2. Comparison between proportion of land use between regions trapped and all land use in West Africa. Cropland, Shrubland and Grassland were trapped at than representative rates while Bare habitats, Forested regions and Urban landscapes were trapped at lower than representative rates.](`r here("figures", "Supplementary_figure_2.png")`)
+![Supplementary Fig 2.](`r here("figures", "Supplementary_Figure_2.pdf")`)
 
-## Supplementary Figure 3
+## Supplementary Fig 3
 
-![Supplementary Figure 3A. Relative trapping effort bias across West Africa from the subset of included studies reporting trapping effort adjusted for proportion urban land cover and proportion tree cover. Predictions are limited to areas around trap sites (coloured areas), uncertainty in the estimate of bias is represented by colour transparency/pallor. Purple regions represent areas with higher than expected trapping effort, yellow regions represent areas lower than expected trapping effort](`r here("figures", "Figure_2_sensitivity.png")`)
+![Supplementary Fig 3A. Relative trapping effort bias across West Africa from the subset of included studies reporting trapping effort adjusted for proportion urban land cover and proportion tree cover. Predictions are limited to areas around trap sites (coloured areas), uncertainty in the estimate of bias is represented by colour transparency/pallor. Purple regions represent areas with higher than expected trapping effort, yellow regions represent areas lower than expected trapping effort](`r here("figures", "Figure_2_sensitivity.png")`)
 
 ![](`r here("figures", "Figure_2_ss.png")`)
 
-## Supplementary Figure 4
-![](`r here("figures", "Supp_4a_updated.png")`)
+## Supplementary Fig 4
+![](`r here("figures", "Supplementary_Figure_4.pdf")`)
 
-![Supplementary Figure 4. A) Identified host-pathogen associations at pathogen family level through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset. B) Identified host-pathogen associations at pathogen family level through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Supp_4b_updated.png")`)
+![Supplementary Fig 4. A) Identified host-pathogen associations at pathogen family level through detection of acute infection (i.e. PCR, culture). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset. B) Identified host-pathogen associations at pathogen family level through serological assays (i.e. ELISA). Percentages and colour relate to the proportion of all assays that were positive. Associations with a black border are present in the CLOVER dataset.](`r here("figures", "Supp_4b_updated.png")`)
