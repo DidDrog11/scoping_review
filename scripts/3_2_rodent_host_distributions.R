@@ -188,7 +188,7 @@ legend <- list()
 
 for(i in 1:length(fig_3_species)) {
 
-  output <- plot_fig_3(species_names[[i]])
+  output <- plot_fig_3(fig_3_species[[i]])
 
   fig_3_plots[[i]] <- output[["combined_plot"]]
 
@@ -202,6 +202,7 @@ fig_3_plots_grid <- plot_grid(fig_3_plots[[1]], fig_3_plots[[2]], fig_3_plots[[3
                               label_size = 12, rel_heights = c(1, 1, 1, 0.4))
 
 save_plot(plot = fig_3_plots_grid, filename = here("figures", "Figure_3_updated.pdf"), base_height = 12, base_width = 8)
+save_plot(plot = fig_3_plots_grid, filename = here("figures", "Figure_3_updated.png"), base_height = 12, base_width = 8)
 
 # Remaining species will go as Supplementary
 s_fig_4_species <- species_names[!species_names %in% fig_3_species]
@@ -224,6 +225,7 @@ s_fig_4_plots_grid <- plot_grid(s_fig_4_plots[[1]], s_fig_4_plots[[2]], s_fig_4_
                           hjust = c(-0.1, -0.14, -0.165, -0.1), label_size = 12, rel_heights = c(1, 1, 1, 1, 0.4))
 
 save_plot(plot = s_fig_4_plots_grid, filename = here("figures", "Supplementary_Figure_4.pdf"), base_height = 12, base_width = 8)
+save_plot(plot = s_fig_4_plots_grid, filename = here("figures", "Supplementary_Figure_4.png"), base_height = 12, base_width = 8)
 
 # Proportion of range trapped ---------------------------------------------
 # Reference raster from pop_density

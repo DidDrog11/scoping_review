@@ -397,6 +397,8 @@ fig_2_updated <- model_1_raster +
 
 save_plot(plot = as.grob(fig_2_updated$ggObj),
           filename = here("figures", "Figure_2_updated.pdf"), base_height = 10, base_width = 12)
+save_plot(plot = as.grob(fig_2_updated$ggObj),
+          filename = here("figures", "Figure_2_updated.png"), base_height = 10, base_width = 12)
 
 
 # Supplementary figure model sensitivity ----------------------------------
@@ -426,3 +428,5 @@ supplementary_fig_2_updated <- model_1_s_raster +
 
 save_plot(plot = as.grob(supplementary_fig_2_updated$ggObj),
           filename = here("figures", "Supplementary_Figure_2.pdf"), base_height = 10, base_width = 12)
+save_plot(plot = as.grob(supplementary_fig_2_updated$ggObj),
+          filename = here("figures", "Supplementary_Figure_2.png"), base_height = 10, base_width = 12)

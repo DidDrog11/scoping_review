@@ -134,6 +134,7 @@ study_timings <- ggplot(study_start) +
        alpha = "Study dates reported")
 
 save_plot(plot = study_timings, filename = here("figures", "Supplementary_Figure_1.pdf"), base_height = 8, base_width = 10)
+save_plot(plot = study_timings, filename = here("figures", "Supplementary_Figure_1.png"), base_height = 8, base_width = 10)
 write_rds(study_timings, here("plots", "study_timings.rds"))
 
 # Median year of study starts
@@ -400,4 +401,7 @@ fig_1b_updated <- trap_site_mapping %>%
 save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
                     ncol = 1, rel_heights = c(1, 0.2), labels = c("A", "B")),
           filename = here("figures", "Figure_1_updated.pdf"), base_height = 9, base_width = 10)
+save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
+                    ncol = 1, rel_heights = c(1, 0.2), labels = c("A", "B")),
+          filename = here("figures", "Figure_1_updated.png"), base_height = 9, base_width = 10)
 

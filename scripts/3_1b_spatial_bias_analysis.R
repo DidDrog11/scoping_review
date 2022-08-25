@@ -163,7 +163,8 @@ rect_border <- tibble(x = c(-17.64, -17.64, 15.995642, 15.995642),
                       y = c(4.2, 27.683098, 4.2, 27.683098)) %>%
   st_as_sf(coords = c("x", "y"), crs = crs(included_countries)) %>%
   summarise() %>%
-  st_cast("POLYGON")
+  st_cast("POLYGON") %>%
+  st_buffer(dist = 10)
 
 country_border <- included_countries %>%
   summarise()
@@ -203,3 +204,5 @@ supplementary_fig_3_updated <- model_1_p_raster +
 
 save_plot(plot = as.grob(supplementary_fig_3_updated$ggObj),
           filename = here("figures", "Supplementary_Figure_3.pdf"), dpi = 320, base_height = 10, base_width = 12)
+save_plot(plot = as.grob(supplementary_fig_3_updated$ggObj),
+          filename = here("figures", "Supplementary_Figure_3.png"), dpi = 320, base_height = 10, base_width = 12)

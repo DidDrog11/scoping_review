@@ -335,8 +335,10 @@ plot_4_serology <- plot_4_df %>%
        colour = element_blank()) +
   theme_bw()
 
-save_plot(plot_grid(plot_4_acute, labels = "A"), filename = here("figures", "Figure_4a_updated.pdf"), base_width = 12, base_height = 10)
-save_plot(plot_grid(plot_4_serology, labels = "B"), filename = here("figures", "Figure_4b_updated.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_acute), filename = here("figures", "Figure_4_updated.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_acute), filename = here("figures", "Figure_4_updated.png"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_serology), filename = here("figures", "Figure_5_updated.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_4_serology), filename = here("figures", "Figure_5_updated.png"), base_width = 12, base_height = 10)
 
 # Further results ---------------------------------------------------------
 

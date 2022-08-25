@@ -126,23 +126,23 @@ matched_ref <- left_join(tbl_2, bib,
 all_models <- read_rds(here("models", "all_models.rds"))
 
 as_flextable(all_models$null_increased_k) %>%
-  set_caption(caption = "Supplementary Table 3.1: GAM model Trap night density ~ Tweedie(Longitdue * Latitude)") %>%
+  set_caption(caption = "Supplementary Table 3.2: GAM model TN_density ~ Tweedie(X * Y)") %>%
   write_rds(here("tables", "supplementary_table_3_1.rds"))
 
 as_flextable(all_models$pop_model_increased_k) %>%
-  set_caption(caption = "Supplementary Table 3.2: GAM model Trap night density ~ Tweedie(Population density + (Longitdue * Latitude))") %>%
+  set_caption(caption = "Supplementary Table 3.3: GAM model TN_density ~ Tweedie(P_density + (X * Y))") %>%
   write_rds(here("tables", "supplementary_table_3_2.rds"))
 
 as_flextable(all_models$pop_area_model) %>%
-  set_caption(caption = "Supplementary Table 3.3: GAM model Trap night density ~ Tweedie(Population density + Region area + (Longitdue * Latitude))") %>%
+  set_caption(caption = "Supplementary Table 3.4: GAM model TN_density ~ Tweedie(P_density + R_area + (X * Y))") %>%
   write_rds(here("tables", "supplementary_table_3_3.rds"))
 
 as_flextable(all_models$all_hab_model) %>%
-  set_caption(caption = "Supplementary Table 3.4: GAM model Trap night density ~ Tweedie(Proportion cropland + Proportion shrubland + Proportion tree cover + Proportion urban + (Longitdue * Latitude))") %>%
+  set_caption(caption = expression(paste("Supplementary Table 3.5: GAM model TN_density ~ Tweedie(P_density +", psi, "_tree", psi, "_urban + (X * Y)))"))) %>%
   write_rds(here("tables", "supplementary_table_3_4.rds"))
 
 as_flextable(all_models$combined_model_1) %>%
-  set_caption(caption = "Supplementary Table 3.5: Final GAM model Trap night density ~ Tweedie(Population density + Region area + Proportion urban + (Longitdue * Latitude))") %>%
+  set_caption(caption = expression(paste("Supplementary Table 3.1: Final GAM model TN_density ~ Tweedie(P_density + R_area +", psi, "_urban + (X * Y)"))) %>%
   write_rds(here("tables", "supplementary_table_3_5.rds"))
 
 
@@ -186,41 +186,41 @@ sum_species<- supp_4_df %>%
   mutate(species = fct_inorder(species)) %>%
   pull(species)
 
-supp_4_df$species <- fct_relevel(supp_3_df$species, levels(sum_species))
+supp_4_df$species <- fct_relevel(supp_4_df$species, levels(sum_species))
 
 plot_supp_4_acute <- supp_4_df %>%
   filter(tested > 5) %>%
   filter(class == "Acute infection") %>%
-  mutate(lab = paste0(round(value, 1), "% \n N = ", tested)) %>%
   ggplot() +
-  geom_tile(aes(x = pathogen_family, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
-  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
+  geom_tile(aes(x = pathogen_family, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1.2) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1, limits = c(0, 100)) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
   labs(title = "Acute infection",
        fill = "Infection (%)",
        x = element_blank(),
        y = element_blank(),
        colour = element_blank()) +
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 plot_supp_4_serology <- supp_4_df %>%
   filter(tested > 5) %>%
   filter(class == "Serology") %>%
-  mutate(lab = paste0(round(value, 1), "% N = ", tested)) %>%
   ggplot() +
-  geom_tile(aes(x = pathogen_family, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1) +
-  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1) +
+  geom_tile(aes(x = pathogen_family, y = species, fill = value, colour = source, width = 0.9, height = 0.9), lwd = 1.2) +
+  scale_fill_viridis_c(option = "viridis", direction = -1, begin = 0.3, end = 1, limits = c(0, 20)) +
   scale_colour_manual(na.translate = FALSE, values = "black") +
   labs(title = "Serology",
        fill = "Infection (%)",
        x = element_blank(),
        y = element_blank(),
        colour = element_blank()) +
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
-save_plot(plot_grid(plot_supp_4_acute, labels = "A"), filename = here("figures", "Supp_4a_updated.png"), base_width = 12, base_height = 10)
-save_plot(plot_grid(plot_supp_4_serology, labels = "B"), filename = here("figures", "Supp_4b_updated.png"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_supp_4_acute, labels = "A"), filename = here("figures", "Supplementary_Figure_4a.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_supp_4_acute, labels = "A"), filename = here("figures", "Supplementary_Figure_4a.png"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_supp_4_serology, labels = "B"), filename = here("figures", "Supplementary_Figure_4b.pdf"), base_width = 12, base_height = 10)
+save_plot(plot_grid(plot_supp_4_serology, labels = "B"), filename = here("figures", "Supplementary_Figure_4b.png"), base_width = 12, base_height = 10)
 
 
