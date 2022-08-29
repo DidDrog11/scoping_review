@@ -316,7 +316,7 @@ analysis_proportion_pixel <- function(species_name, trap_data = rodent_spatial, 
                                             expanse(unit = "km")/expanse(iucn_r, unit = "km")) * 100, 2)
 
     # Now repeat for a combined raster of both GBIF and trapping
-    area_combined_in_iucn <- mask(combined_r, iucn_v) %>%
+    area_combined_in_iucn <- mask(combined_det_r, iucn_v) %>%
       expanse(unit = "km")
 
     prop_combined_coverage <- round((mask(combined_det_r, iucn_v) %>%
