@@ -24,7 +24,8 @@ included_countries <- level_0 %>%
 
 contiguous_boundary <- included_countries %>%
   filter(!GID_0 == "CPV") %>%
-  summarise()
+  summarise() %>%
+  st_buffer(dist = 0.001)
 
 write_rds(contiguous_boundary, here("data_clean", "WA_continental_boundary.rds"))
 
@@ -117,11 +118,11 @@ plot_fig_3 <- function(species_name, iucn = rodent_iucn, gbif = rodent_gbif, rod
 
   rodents <- rodents %>%
     filter(classification == species_name) %>%
-    select(classification, number, geometry) %>%
+    select(classification, number, town_village, geometry) %>%
     mutate(pres_abs = case_when(number == 0 ~ factor("Non-detection", levels = c("Detection", "Non-detection")),
                                 TRUE ~ factor("Detection", levels = c("Detection", "Non-detection")))) %>%
     st_intersection(., contiguous_boundary) %>%
-    distinct(classification, pres_abs, geometry)
+    distinct(classification, pres_abs, town_village, geometry)
 
   rodent_presence <- rodents %>%
     filter(pres_abs == "Detection")

@@ -223,4 +223,55 @@ save_plot(plot_grid(plot_supp_4_acute, labels = "A"), filename = here("figures",
 save_plot(plot_grid(plot_supp_4_serology, labels = "B"), filename = here("figures", "Supplementary_Figure_4b.pdf"), base_width = 12, base_height = 10)
 save_plot(plot_grid(plot_supp_4_serology, labels = "B"), filename = here("figures", "Supplementary_Figure_4b.png"), base_width = 12, base_height = 10)
 
+# Supplementary 5 WA map
+all_countries <- c("BEN", "BFA", "CIV", "CMR", "CPV", "DZA", "ESH", "GHA",
+                   "GIN", "GMB", "GNB", "LBR", "MAR", "MLI", "MRT", "NER",
+                   "NGA", "SEN", "SLE", "TCD", "TGO")
+continental_countries <- c("BEN", "BFA", "CIV", "ESH", "GHA",
+                           "GIN", "GMB", "GNB", "LBR", "MLI", "MRT",
+                           "NER", "NGA", "SEN", "SLE", "TGO")
+no_data_countries <- c("GMB", "TGO")
 
+level_0 <- read_rds(here("data_download", "admin_spatial", "level_0_admin.rds"))
+
+level_1 <- read_rds(here("data_download", "admin_spatial", "level_1_admin.rds"))
+
+level_2 <- read_rds(here("data_download", "admin_spatial", "level_2_admin.rds"))
+
+capital_cities <- c("Nouakchott", "Dakar", "Conakry", "Western Urban", "Bamako", "Greater Monrovia", "Abidjan", "Kadiogo", "Accra", "Porto-Novo", "Cotonou", "Niamey", "AbujaMun", "IbadanNorth")
+
+countries_capitals <- level_0 %>%
+  filter(GID_0 %in% continental_countries) %>%
+  bind_rows(level_2 %>%
+              filter(GID_0 %in% continental_countries) %>%
+              filter(NAME_2 %in% capital_cities) %>%
+              mutate(`Capital city` = case_when(NAME_2 == "Kadiogo" ~ "Ougadougou",
+                                                NAME_2 == "Greater Monrovia" ~ "Monrovia",
+                                                NAME_2 == "AbujaMun" ~ "Abuja",
+                                                NAME_2 == "IbadanNorth" ~ "Ibadan",
+                                                NAME_2 == "Western Urban" ~ "Freetown",
+                                                TRUE ~ NAME_2)) %>%
+              st_centroid())
+
+plot_5_supp <- ggplot(countries_capitals %>%
+         filter(is.na(`Capital city`))) +
+  geom_sf() +
+  geom_sf(data = countries_capitals %>%
+            filter(!is.na(`Capital city`)),
+          alpha = 0.5, fill = "purple") +
+  geom_sf_text(aes(label = NAME_0)) +
+  geom_sf_label_repel(data = countries_capitals %>%
+                  filter(!is.na(`Capital city`)),
+                aes(label = `Capital city`),
+                force = 100, nudge_x = -2, nudge_y = -1, seed = 10) +
+  theme_minimal() +
+  labs(x = element_blank(),
+       y = element_blank()) +
+  annotation_north_arrow(height = unit(1, "cm"),
+                         style = north_arrow_minimal(text_size = 8)) +
+  annotation_scale(height = unit(0.1, "cm"),
+                   location = "tr") +
+  guides(colour = guide_coloursteps(show.limits = TRUE, ticks = TRUE))
+
+save_plot(plot_5_supp, filename = here("figures", "Supplementary_Figure_5.png"), base_width = 12, base_height = 10)
+save_plot(plot_5_supp, filename = here("figures", "Supplementary_Figure_5.pdf"), base_width = 12, base_height = 10)
