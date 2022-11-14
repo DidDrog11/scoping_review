@@ -206,27 +206,27 @@ save_plot(plot = fig_3_plots_grid, filename = here("figures", "Figure_3_updated.
 save_plot(plot = fig_3_plots_grid, filename = here("figures", "Figure_3_updated.png"), base_height = 12, base_width = 8)
 
 # Remaining species will go as Supplementary
-s_fig_4_species <- species_names[!species_names %in% fig_3_species]
+s_fig_6_species <- species_names[!species_names %in% fig_3_species]
 
-s_fig_4_plots <- list()
+s_fig_6_plots <- list()
 legend <- list()
 
-for(i in 1:length(s_fig_4_species)) {
+for(i in 1:length(s_fig_6_species)) {
 
-  output <- plot_fig_3(s_fig_4_species[[i]])
+  output <- plot_fig_3(s_fig_6_species[[i]])
 
-  s_fig_4_plots[[i]] <- output[["combined_plot"]]
+  s_fig_6_plots[[i]] <- output[["combined_plot"]]
 
   legend <- output[["legend"]]
 
 }
 
-s_fig_4_plots_grid <- plot_grid(s_fig_4_plots[[1]], s_fig_4_plots[[2]], s_fig_4_plots[[3]], s_fig_4_plots[[4]],
+s_fig_6_plots_grid <- plot_grid(s_fig_6_plots[[1]], s_fig_6_plots[[2]], s_fig_6_plots[[3]], s_fig_6_plots[[4]],
                           legend, ncol = 1, labels = c("Mastomys erythroleucus", "Arvicanthis niloticus", "Praomys daltoni", "Cricetomys gambianus", ""),
                           hjust = c(-0.1, -0.14, -0.165, -0.1), label_size = 12, rel_heights = c(1, 1, 1, 1, 0.4))
 
-save_plot(plot = s_fig_4_plots_grid, filename = here("figures", "Supplementary_Figure_4.pdf"), base_height = 12, base_width = 8)
-save_plot(plot = s_fig_4_plots_grid, filename = here("figures", "Supplementary_Figure_4.png"), base_height = 12, base_width = 8)
+save_plot(plot = s_fig_6_plots_grid, filename = here("figures", "Supplementary_Figure_6.pdf"), base_height = 12, base_width = 8)
+save_plot(plot = s_fig_6_plots_grid, filename = here("figures", "Supplementary_Figure_6.png"), base_height = 12, base_width = 8)
 
 # Proportion of range trapped ---------------------------------------------
 # Reference raster from pop_density
