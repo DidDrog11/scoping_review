@@ -66,3 +66,6 @@ reports/nul
 
 # Large sensitivity models
 /models/sensitivity_models.rds
+
+#nul files
+nul

@@ -36,6 +36,9 @@ source(here("scripts", "3_0_descriptive.R"))
 
 source(here("scripts", "3_1_spatial_bias_analysis.R"))
 
+# Perform the sensitivity analysis with a pixel based approach
+source(here("scripts", "3_1b_spatial_bias_analysis.R"))
+
 # Analysis for question 2.
 # What is the difference in rodent host distributions between curated datasets and rodent trapping studies?
 
