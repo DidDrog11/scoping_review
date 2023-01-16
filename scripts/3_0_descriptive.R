@@ -175,6 +175,7 @@ rodent_data %>%
 # Number of each species
 genus_data <- read_rds(here("data_clean", "genus_hierarchy.rds"))
 species_data <- read_rds(here("data_clean", "species_data.rds"))
+species <- read_rds(here("data_clean", "species_gbif.rds"))
 
 sum(species_data$number)
 
@@ -219,6 +220,8 @@ species_identification %>%
   count() %>%
   arrange(order, -n) %>%
   drop_na()
+
+table(species_identification$order)
 
 # Number of studies investigating pathogens
 length(unique(long_pathogen$unique_id))
@@ -326,41 +329,6 @@ rodent_spatial <- rodent_data %>%
   drop_na(longitude, latitude) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = crs(contiguous_boundary))
 
-trap_site_mapping <- rodent_spatial[st_within(rodent_spatial, included_countries) %>% lengths > 0,]  %>%
-  select(unique_id, year_trapping, month_trapping, region, town_village, habitat, geometry) %>%
-  distinct() %>%
-  left_join(., imputed_tn) %>%
-  mutate(trap_nights_cat = cut(trap_nights, c(0, 100, 300, 500, 1000, 2000, 5000, 60000)))
-
-fig_1a_updated <- trap_site_mapping %>%
-  ggplot() +
-  geom_sf(aes(colour = trap_nights_cat)) +
-  geom_sf(data = included_countries, alpha = 0) +
-  scale_colour_viridis_d(direction = -1) +
-  labs(colour = "Trap nights") +
-  theme_minimal() +
-  annotation_north_arrow(height = unit(1, "cm"),
-                         style = north_arrow_minimal(text_size = 8)) +
-  annotation_scale(height = unit(0.1, "cm"),
-                   location = "tr") +
-  guides(colour = guide_coloursteps(show.limits = TRUE, ticks = TRUE))
-
-fig_1b_updated <- trap_site_mapping %>%
-  drop_na(trap_nights_cat) %>%
-  ggplot() +
-  geom_bar(aes(x = trap_nights_cat, fill = trap_nights_cat)) +
-  scale_fill_viridis_d(direction = -1) +
-  scale_x_discrete(labels = c("0-100", "101-300", "301-500", "501-1,000", "1,000-2,000", "2,001-5000", "5,001-50,320")) +
-  theme_minimal() +
-  labs(x = "Trap nights",
-       y = "Sites (n)") +
-  guides(fill = "none")
-
-
-save_plot(plot_grid(plotlist = list(fig_1a_updated, fig_1b_updated),
-                    ncol = 1, rel_heights = c(1, 0.2), labels = c("A", "B")),
-          filename = here("figures", "Figure_1_updated.png"), dpi = 320, base_height = 9, base_width = 10)
-
 summary(trap_site_mapping$trap_nights)
 
 # Figure 1 ----------------------------------------------------------------
@@ -373,12 +341,17 @@ trap_site_mapping <- rodent_spatial[st_within(rodent_spatial, included_countries
 
 fig_1a_updated <- trap_site_mapping %>%
   ggplot() +
-  geom_sf(aes(colour = trap_nights_cat)) +
   geom_sf(data = level_0 %>%
             filter(GID_0 %in% wa_countries) %>%
             filter(GID_0 != "CPV"), alpha = 0) +
+  geom_sf_text(data = level_0 %>%
+                  filter(GID_0 %in% wa_countries) %>%
+                  filter(GID_0 != "CPV"), aes(label = NAME_0), alpha = 0.5) +
+  geom_sf(aes(colour = trap_nights_cat)) +
   scale_colour_viridis_d(direction = -1) +
-  labs(colour = "Trap nights") +
+  labs(colour = "Trap nights",
+       x = element_blank(),
+       y = element_blank()) +
   theme_minimal() +
   annotation_north_arrow(height = unit(2, "cm"),
                          style = north_arrow_minimal(text_size = 10)) +
